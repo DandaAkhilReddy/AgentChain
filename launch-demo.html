@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 AgentChains.ai - Live Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0A0B0F 0%, #1A1B23 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: #B8BCC8;
+            margin-bottom: 2rem;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #00FF88 0%, #00D4FF 100%);
+            color: #0A0B0F;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(26, 27, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #00D4FF;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #FFFFFF;
+        }
+        
+        .feature-desc {
+            color: #B8BCC8;
+            line-height: 1.6;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 4rem 0;
+            padding: 3rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00D4FF 0%, #0099CC 100%);
+            color: #0A0B0F;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #FFFFFF;
+            border: 2px solid #00D4FF;
+        }
+        
+        .btn-outline:hover {
+            background: #00D4FF;
+            color: #0A0B0F;
+        }
+        
+        .live-urls {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+        }
+        
+        .live-urls h3 {
+            color: #00FF88;
+            margin-bottom: 1rem;
+        }
+        
+        .url-list {
+            list-style: none;
+        }
+        
+        .url-list li {
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+        
+        .url-list a {
+            color: #00D4FF;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .url-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .tech-stack {
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #6C7293;
+        }
+        
+        @media (max-width: 768px) {
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="header">
+            <div class="logo">🤖 AgentChains.ai</div>
+            <div class="tagline">The Future of AI Agent Economy</div>
+            <div class="status">🚀 LIVE & DEPLOYED - Q3 2025</div>
+        </div>
+        
+        <div class="live-urls">
+            <h3>🌐 Live Platform URLs</h3>
+            <ul class="url-list">
+                <li>
+                    <strong>Main Website:</strong> 
+                    <a href="https://icy-mushroom-029b4900f.1.azurestaticapps.net" target="_blank">
+                        https://icy-mushroom-029b4900f.1.azurestaticapps.net
+                    </a>
+                </li>
+                <li>
+                    <strong>Preview Site:</strong> 
+                    <a href="https://icy-mushroom-029b4900f-preview.eastus2.1.azurestaticapps.net" target="_blank">
+                        https://icy-mushroom-029b4900f-preview.eastus2.1.azurestaticapps.net
+                    </a>
+                </li>
+                <li>
+                    <strong>Coming Soon:</strong> 
+                    <a href="https://agentchains.ai" target="_blank">https://agentchains.ai</a>
+                    (after DNS setup)
+                </li>
+            </ul>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-title">Authentication System</div>
+                <div class="feature-desc">
+                    Google OAuth & MetaMask wallet integration with guest mode access and smart authentication modal
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">AI Agent Builder</div>
+                <div class="feature-desc">
+                    Visual interface to create AI agents with memory systems, custom prompts, and specialized capabilities
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <div class="feature-title">Memory System</div>
+                <div class="feature-desc">
+                    Advanced memory architecture with short-term, long-term, and working memory for intelligent agents
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <div class="feature-title">Technical Whitepaper</div>
+                <div class="feature-desc">
+                    47-page comprehensive documentation with interactive viewer and professional Q3 2025 roadmap
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">MCP Server</div>
+                <div class="feature-desc">
+                    Model Context Protocol server for AI agent communication with WebSocket API and task processing
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">MIND Token Economy</div>
+                <div class="feature-desc">
+                    Deflationary cryptocurrency with 1B total supply, governance rights, and staking rewards
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <div class="cta-title">🚀 Experience AgentChains.ai NOW</div>
+            <p>Your complete AI agent economy platform is live and ready to use!</p>
+            
+            <div class="cta-buttons">
+                <a href="https://icy-mushroom-029b4900f.1.azurestaticapps.net" target="_blank" class="btn btn-primary">
+                    🌐 Launch Website
+                </a>
+                <a href="./website/index.html" target="_blank" class="btn btn-outline">
+                    📱 View Locally
+                </a>
+                <a href="./agent-builder/index.html" target="_blank" class="btn btn-outline">
+                    🤖 Agent Builder
+                </a>
+            </div>
+        </div>
+        
+        <div class="tech-stack">
+            <h3>🛠️ Technology Stack</h3>
+            <div class="tech-grid">
+                <div class="tech-item">🎨 HTML5/CSS3</div>
+                <div class="tech-item">⚡ JavaScript ES6+</div>
+                <div class="tech-item">🔗 WebSocket API</div>
+                <div class="tech-item">🤖 MCP Protocol</div>
+                <div class="tech-item">☁️ Azure Static Apps</div>
+                <div class="tech-item">🔐 OAuth 2.0</div>
+                <div class="tech-item">🦊 MetaMask SDK</div>
+                <div class="tech-item">💾 SQLite Database</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🔗 <strong>GitHub:</strong> <a href="https://github.com/DandaAkhilReddy/AgentChain" target="_blank" style="color: #00D4FF;">https://github.com/DandaAkhilReddy/AgentChain</a></p>
+            <p>Built with ❤️ by AgentChains Team • Q3 2025 • Ready for Production</p>
+        </div>
+    </div>
+    
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate feature cards on scroll
+            const cards = document.querySelectorAll('.feature-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Add hover effects to buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.transform = 'translateY(-2px) scale(1.05)';
+                });
+                
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+        
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
