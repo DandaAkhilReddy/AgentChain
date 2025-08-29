@@ -23,6 +23,8 @@ function App() {
   const [agentCount, setAgentCount] = useState(0);
   const [agents, setAgents] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [agentListings, setAgentListings] = useState([]);
+  const [hasClaimedTrial, setHasClaimedTrial] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
   // Form states
@@ -30,6 +32,7 @@ function App() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskReward, setNewTaskReward] = useState('');
   const [newTaskDuration, setNewTaskDuration] = useState('24');
+  const [agentSalePrice, setAgentSalePrice] = useState('');
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -72,12 +75,14 @@ function App() {
       const mindToken = new ethers.Contract(CONTRACT_ADDRESSES.MIND_TOKEN, CONTRACT_ABIS.MIND_TOKEN, signer);
       const agentNFT = new ethers.Contract(CONTRACT_ADDRESSES.AI_AGENT_NFT, CONTRACT_ABIS.AI_AGENT_NFT, signer);
       const marketplace = new ethers.Contract(CONTRACT_ADDRESSES.MARKETPLACE, CONTRACT_ABIS.MARKETPLACE, signer);
+      const agentMarketplace = new ethers.Contract(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, CONTRACT_ABIS.AGENT_MARKETPLACE, signer);
 
-      setContracts({ mindToken, agentNFT, marketplace });
+      setContracts({ mindToken, agentNFT, marketplace, agentMarketplace });
 
       // Load initial data
       await loadUserData(mindToken, agentNFT, marketplace, account);
       await loadTasks(marketplace);
+      await loadAgentMarketplace(agentMarketplace, agentNFT, account);
 
       setLoading(false);
     } catch (error) {
@@ -147,6 +152,122 @@ function App() {
     }
   };
 
+  const loadAgentMarketplace = async (agentMarketplace, agentNFT, userAccount) => {
+    try {
+      // Check if user has claimed trial tokens
+      const hasClaimed = await agentMarketplace.hasClaimedTrial(userAccount);
+      setHasClaimedTrial(hasClaimed);
+
+      // Get active agent listings
+      const activeListingIds = await agentMarketplace.getActiveListings();
+      const listings = [];
+      
+      for (let i = 0; i < activeListingIds.length && i < 10; i++) {
+        try {
+          const agentId = activeListingIds[i];
+          const agentData = await agentMarketplace.getAgentWithListing(agentId);
+          listings.push({
+            agentId: Number(agentId),
+            name: agentData[0],
+            performanceScore: Number(agentData[1]),
+            isActive: agentData[2],
+            isListed: agentData[3],
+            price: ethers.formatEther(agentData[4]),
+            seller: agentData[5]
+          });
+        } catch (error) {
+          console.log("Error loading agent listing", activeListingIds[i], error);
+        }
+      }
+      setAgentListings(listings);
+    } catch (error) {
+      console.error("Error loading agent marketplace:", error);
+    }
+  };
+
+  const claimTrialTokens = async () => {
+    if (hasClaimedTrial) {
+      alert('Trial tokens already claimed');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const tx = await contracts.agentMarketplace.claimTrialTokens();
+      await tx.wait();
+      
+      alert('1000 MIND trial tokens claimed successfully!');
+      setHasClaimedTrial(true);
+      
+      // Refresh balance
+      const balance = await contracts.mindToken.balanceOf(account);
+      setMindBalance(ethers.formatEther(balance));
+    } catch (error) {
+      console.error("Error claiming trial tokens:", error);
+      alert('Error claiming trial tokens: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const listAgentForSale = async (agentId) => {
+    if (!agentSalePrice.trim()) {
+      alert('Please enter a sale price');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      // First approve agent marketplace to handle the NFT
+      const approveTx = await contracts.agentNFT.approve(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, agentId);
+      await approveTx.wait();
+
+      // List the agent
+      const priceWei = ethers.parseEther(agentSalePrice);
+      const tx = await contracts.agentMarketplace.listAgent(agentId, priceWei);
+      await tx.wait();
+      
+      alert(`Agent ${agentId} listed for ${agentSalePrice} MIND tokens!`);
+      setAgentSalePrice('');
+      
+      // Refresh data
+      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
+      await loadAgentMarketplace(contracts.agentMarketplace, contracts.agentNFT, account);
+    } catch (error) {
+      console.error("Error listing agent:", error);
+      alert('Error listing agent: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const buyAgent = async (agentId, price) => {
+    try {
+      setLoading(true);
+      
+      // First approve marketplace to spend tokens
+      const priceWei = ethers.parseEther(price);
+      const approveTx = await contracts.mindToken.approve(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, priceWei);
+      await approveTx.wait();
+
+      // Buy the agent
+      const tx = await contracts.agentMarketplace.buyAgent(agentId);
+      await tx.wait();
+      
+      alert(`Agent ${agentId} purchased successfully!`);
+      
+      // Refresh data
+      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
+      await loadAgentMarketplace(contracts.agentMarketplace, contracts.agentNFT, account);
+    } catch (error) {
+      console.error("Error buying agent:", error);
+      alert('Error buying agent: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const mintAgent = async () => {
     if (!newAgentName.trim()) {
       alert('Please enter an agent name');
@@ -163,6 +284,7 @@ function App() {
       
       // Refresh data
       await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
+      await loadAgentMarketplace(contracts.agentMarketplace, contracts.agentNFT, account);
     } catch (error) {
       console.error("Error minting agent:", error);
       alert('Error minting agent: ' + error.message);
@@ -318,7 +440,13 @@ function App() {
           className={activeTab === 'tasks' ? 'active' : ''} 
           onClick={() => setActiveTab('tasks')}
         >
-          📋 Marketplace
+          📋 Task Market
+        </button>
+        <button 
+          className={activeTab === 'agents-market' ? 'active' : ''} 
+          onClick={() => setActiveTab('agents-market')}
+        >
+          🏪 Agent Market
         </button>
         <button 
           className={activeTab === 'create' ? 'active' : ''} 
@@ -352,9 +480,23 @@ function App() {
             
             <div className="quick-actions">
               <h2>🚀 Quick Actions</h2>
+              {!hasClaimedTrial && (
+                <div className="trial-tokens">
+                  <button 
+                    onClick={claimTrialTokens} 
+                    className="trial-button"
+                    disabled={loading}
+                  >
+                    🎁 Claim 1000 Free Trial Tokens!
+                  </button>
+                </div>
+              )}
               <div className="action-buttons">
                 <button onClick={() => setActiveTab('agents')} className="action-button">
                   🤖 Manage Agents
+                </button>
+                <button onClick={() => setActiveTab('agents-market')} className="action-button">
+                  🏪 Buy/Sell Agents
                 </button>
                 <button onClick={() => setActiveTab('tasks')} className="action-button">
                   📋 Browse Tasks
@@ -393,6 +535,26 @@ function App() {
                   <p>ID: #{agent.id}</p>
                   <p>Performance: {agent.performanceScore}/100</p>
                   <p>Status: {agent.isActive ? '🟢 Active' : '🔴 Inactive'}</p>
+                  
+                  <div className="agent-actions">
+                    <div className="list-for-sale">
+                      <input
+                        type="number"
+                        placeholder="Price in MIND"
+                        value={agentSalePrice}
+                        onChange={(e) => setAgentSalePrice(e.target.value)}
+                        min="1"
+                        step="1"
+                      />
+                      <button 
+                        onClick={() => listAgentForSale(agent.id)} 
+                        disabled={loading || !agentSalePrice}
+                        className="list-button"
+                      >
+                        🏷️ List for Sale
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))}
               {agents.length === 0 && (
@@ -487,6 +649,116 @@ function App() {
             <div className="balance-info">
               <p>Your MIND Balance: {parseFloat(mindBalance).toLocaleString()} MIND</p>
               <p>Make sure you have enough MIND tokens to create tasks!</p>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'agents-market' && (
+          <div className="agent-market-section">
+            <h2>🏪 Agent Marketplace</h2>
+            <p>Buy and sell AI agents as NFTs. Each agent retains its performance score and history!</p>
+            
+            {!hasClaimedTrial && (
+              <div className="trial-banner">
+                <h3>🎁 First time here?</h3>
+                <p>Claim 1000 free MIND tokens to get started!</p>
+                <button 
+                  onClick={claimTrialTokens} 
+                  className="trial-button"
+                  disabled={loading}
+                >
+                  {loading ? 'Claiming...' : 'Claim Trial Tokens'}
+                </button>
+              </div>
+            )}
+
+            <div className="market-stats">
+              <div className="stat-card">
+                <h3>🏷️ Listed Agents</h3>
+                <p className="stat-value">{agentListings.length}</p>
+              </div>
+              <div className="stat-card">
+                <h3>💰 Your Balance</h3>
+                <p className="stat-value">{parseFloat(mindBalance).toLocaleString()} MIND</p>
+              </div>
+              <div className="stat-card">
+                <h3>🔥 Token Burns</h3>
+                <p className="stat-value">2% per transfer</p>
+              </div>
+            </div>
+
+            <div className="agents-grid">
+              {agentListings.map((listing) => (
+                <div key={listing.agentId} className="agent-listing-card">
+                  <div className="listing-header">
+                    <h3>🤖 {listing.name}</h3>
+                    <div className="price-tag">💰 {listing.price} MIND</div>
+                  </div>
+                  
+                  <div className="agent-details">
+                    <p>ID: #{listing.agentId}</p>
+                    <p>Performance: {listing.performanceScore}/100</p>
+                    <p>Status: {listing.isActive ? '🟢 Active' : '🔴 Inactive'}</p>
+                    <p>Seller: {listing.seller.slice(0, 6)}...{listing.seller.slice(-4)}</p>
+                  </div>
+
+                  <div className="listing-actions">
+                    {listing.seller.toLowerCase() !== account.toLowerCase() ? (
+                      <button 
+                        onClick={() => buyAgent(listing.agentId, listing.price)}
+                        disabled={loading || parseFloat(mindBalance) < parseFloat(listing.price)}
+                        className="buy-button"
+                      >
+                        {loading ? 'Buying...' : `Buy for ${listing.price} MIND`}
+                      </button>
+                    ) : (
+                      <div className="owner-badge">
+                        🏷️ Your Listing
+                      </div>
+                    )}
+                  </div>
+
+                  {parseFloat(mindBalance) < parseFloat(listing.price) && 
+                   listing.seller.toLowerCase() !== account.toLowerCase() && (
+                    <p className="insufficient-funds">⚠️ Insufficient MIND tokens</p>
+                  )}
+                </div>
+              ))}
+              
+              {agentListings.length === 0 && (
+                <div className="empty-state">
+                  <h3>🏪 No Agents Listed Yet</h3>
+                  <p>Be the first to list an agent for sale!</p>
+                  <p>Go to "My Agents" tab to list your agents.</p>
+                </div>
+              )}
+            </div>
+
+            <div className="market-info">
+              <h3>💡 How Agent Trading Works</h3>
+              <div className="info-grid">
+                <div className="info-card">
+                  <h4>🛍️ Buying</h4>
+                  <p>• Browse listed agents</p>
+                  <p>• Pay with MIND tokens</p>
+                  <p>• 2% tokens burned on purchase</p>
+                  <p>• Agent transfers to your wallet</p>
+                </div>
+                <div className="info-card">
+                  <h4>🏷️ Selling</h4>
+                  <p>• List your agents with custom price</p>
+                  <p>• 2% marketplace fee</p>
+                  <p>• Instant payment on sale</p>
+                  <p>• Agent history preserved</p>
+                </div>
+                <div className="info-card">
+                  <h4>🔥 Token Burns</h4>
+                  <p>• 2% burned on every transfer</p>
+                  <p>• Reduces total supply</p>
+                  <p>• Increases remaining token value</p>
+                  <p>• Deflationary economics</p>
+                </div>
+              </div>
             </div>
           </div>
         )}

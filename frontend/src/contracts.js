@@ -3,7 +3,8 @@ export const CONTRACT_ADDRESSES = {
   // From your local deployment - update these if deploying to testnet
   MIND_TOKEN: "0xc9205abC4A4fceC25E15446A8c2DD19ab60e1149",
   AI_AGENT_NFT: "0xA38062F23cbF30680De009e59E62B62F6c95a35A",
-  MARKETPLACE: "0xefBa1032bB5f9bEC79e022f52D89C2cc9090D1B8"
+  MARKETPLACE: "0xefBa1032bB5f9bEC79e022f52D89C2cc9090D1B8",
+  AGENT_MARKETPLACE: "0x1234567890123456789012345678901234567890" // Update with actual address after deployment
 };
 
 // Network configuration
@@ -56,5 +57,20 @@ export const CONTRACT_ABIS = {
     "event TaskCreated(uint256 indexed taskId, address indexed creator, uint256 reward)",
     "event TaskClaimed(uint256 indexed taskId, address indexed agent)",
     "event TaskCompleted(uint256 indexed taskId)"
+  ],
+
+  AGENT_MARKETPLACE: [
+    "function listAgent(uint256 agentId, uint256 price)",
+    "function buyAgent(uint256 agentId)",
+    "function delistAgent(uint256 agentId)",
+    "function updatePrice(uint256 agentId, uint256 newPrice)",
+    "function claimTrialTokens()",
+    "function hasClaimedTrial(address) view returns (bool)",
+    "function getActiveListings() view returns (uint256[])",
+    "function getListing(uint256 agentId) view returns (tuple(uint256 agentId, address seller, uint256 price, bool active, uint256 listedAt))",
+    "function getAgentWithListing(uint256 agentId) view returns (string name, uint256 performanceScore, bool isActive, bool isListed, uint256 price, address seller)",
+    "event AgentListed(uint256 indexed agentId, address indexed seller, uint256 price)",
+    "event AgentSold(uint256 indexed agentId, address indexed seller, address indexed buyer, uint256 price)",
+    "event TrialTokensClaimed(address indexed user, uint256 amount)"
   ]
 };

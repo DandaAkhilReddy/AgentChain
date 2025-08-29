@@ -32,8 +32,15 @@ async function main() {
     await marketplace.waitForDeployment();
     console.log("✅ Task Marketplace deployed:", marketplace.target);
 
-    // 4. Setup and demo
-    console.log("\n4. 🎭 Setting up demo data...");
+    // 4. Deploy AgentMarketplace
+    console.log("\n4. 🏪 Deploying AgentMarketplace...");
+    const AgentMarketplace = await hre.ethers.getContractFactory("AgentMarketplace");
+    const agentMarketplace = await AgentMarketplace.deploy(mindToken.target, agentNFT.target);
+    await agentMarketplace.waitForDeployment();
+    console.log("✅ Agent Marketplace deployed:", agentMarketplace.target);
+
+    // 5. Setup and demo
+    console.log("\n5. 🎭 Setting up demo data...");
     
     // Mint demo agents
     await agentNFT.mintAgent(deployer.address, "TranslatorBot");
@@ -50,7 +57,12 @@ async function main() {
     await marketplace.createTask("Create Content", taskReward, 72 * 3600);
     console.log("✅ Created 3 demo tasks");
 
-    // 5. Calculate costs
+    // Fund agent marketplace with trial tokens
+    const trialTokenAmount = ethers.parseEther("100000"); // 100k trial tokens
+    await mindToken.transfer(agentMarketplace.target, trialTokenAmount);
+    console.log("✅ Agent marketplace funded with trial tokens");
+
+    // 6. Calculate costs
     const totalGasUsed = 500000n; // Approximate gas used
     const gasPrice = 1000000000n; // 1 gwei
     const totalCost = totalGasUsed * gasPrice;
@@ -61,6 +73,7 @@ async function main() {
     console.log(`MIND Token: ${mindToken.target}`);
     console.log(`AI Agent NFT: ${agentNFT.target}`);
     console.log(`Task Marketplace: ${marketplace.target}`);
+    console.log(`Agent Marketplace: ${agentMarketplace.target}`);
     console.log(`Gas Used: ~${totalGasUsed.toLocaleString()}`);
     console.log(`Total Cost: ~${ethers.formatEther(totalCost)} ${network === "polygon" || network === "mumbai" ? "MATIC" : "ETH"}`);
     
@@ -68,7 +81,8 @@ async function main() {
       console.log("\n📱 VIEW ON MUMBAI POLYGONSCAN:");
       console.log(`🪙 MIND Token: https://mumbai.polygonscan.com/address/${mindToken.target}`);
       console.log(`🤖 AI Agents: https://mumbai.polygonscan.com/address/${agentNFT.target}`);
-      console.log(`🛒 Marketplace: https://mumbai.polygonscan.com/address/${marketplace.target}`);
+      console.log(`🛒 Task Marketplace: https://mumbai.polygonscan.com/address/${marketplace.target}`);
+      console.log(`🏪 Agent Marketplace: https://mumbai.polygonscan.com/address/${agentMarketplace.target}`);
     }
 
     console.log("\n🎯 WHAT YOU CAN DO NOW:");
@@ -77,10 +91,11 @@ async function main() {
     console.log("✅ 3 AI agents are ready to work");
     console.log("✅ 3 sample tasks are available to claim");
     console.log("\n💡 NEXT STEPS:");
-    console.log("1. Claim tasks with your AI agents");
-    console.log("2. Complete tasks to earn MIND tokens");
-    console.log("3. Create new tasks for other agents");
-    console.log("4. Mint more AI agents as needed");
+    console.log("1. Claim free trial tokens (1000 MIND per new user)");
+    console.log("2. Buy/sell AI agents on the agent marketplace");
+    console.log("3. Claim tasks with your AI agents");
+    console.log("4. Complete tasks to earn MIND tokens");
+    console.log("5. Watch token value increase as tokens burn on transfers");
 
   } catch (error) {
     console.error("❌ Deployment failed:", error);
