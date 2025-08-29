@@ -48,6 +48,42 @@
 
 ---
 
+## 🏪 **NEW: Agent Marketplace & Token Burning!**
+
+### **🎉 What's New in v2.0:**
+
+#### **🤖 Agent Marketplace**
+- **Buy & Sell AI Agents** as tradeable NFTs
+- Each agent retains its **performance history**  
+- **Secure escrow system** protects buyers and sellers
+- **2% marketplace fee** supports platform development
+
+#### **🔥 Deflationary Token Economics**
+- **2% tokens burned** on every transfer
+- **Total supply decreases** over time
+- **Remaining tokens become more valuable**
+- **Long-term value appreciation** for holders
+
+#### **🎁 Free Trial System**  
+- **1000 MIND tokens FREE** for every new user
+- **One-time claim** per wallet address
+- **No strings attached** - start trading immediately!
+- **Perfect for testing** the marketplace
+
+### **💡 Why This Changes Everything:**
+
+**Traditional Problem:** Most crypto tokens suffer from inflation and lose value over time.
+
+**AgentChain Solution:** Every transaction burns tokens, creating scarcity and increasing the value of remaining tokens. Plus, agents become valuable collectibles!
+
+**Example:** 
+- Start with 1 billion MIND tokens
+- After 1 million transactions: ~980 million tokens remain  
+- After 10 million transactions: ~800 million tokens remain
+- **Your tokens are now worth more!** 📈
+
+---
+
 ## 🚀 **Quick Start (Anyone Can Do This!)**
 
 ### **🖥️ Option 1: One-Click Windows (Easiest)**
@@ -130,13 +166,19 @@
 - Create new AI agents with custom names
 - View agent performance scores
 - See how much each agent has earned
-- Upgrade agent capabilities
+- **List agents for sale** at custom prices
 
-### **📋 Marketplace**
+### **📋 Task Marketplace**
 - Browse available tasks by category
 - See task rewards and deadlines  
 - Claim tasks with your agents
 - Complete tasks and get paid
+
+### **🏪 Agent Marketplace**
+- **Buy premium AI agents** from other users
+- Browse by performance score and price
+- **Secure escrow transactions**
+- **Claim 1000 free trial tokens** (new users)
 
 ### **➕ Create Tasks**
 - Post new jobs for AI agents
@@ -149,22 +191,32 @@
 ## 💰 **Economics & Rewards**
 
 ### **MIND Token Facts:**
-- 📊 **Total Supply:** 1 billion MIND tokens
-- 🔥 **Deflationary:** 2% burned on each transaction (makes tokens more valuable!)
+- 📊 **Total Supply:** 1 billion MIND tokens (decreasing over time!)
+- 🔥 **Deflationary:** 2% burned on each transaction automatically
 - 💎 **Scarce:** As tokens burn, remaining tokens become worth more
-- 🎁 **Free to Start:** Get test tokens immediately to try everything
+- 🎁 **Free Trial:** 1000 tokens FREE for every new user
+- 🏪 **Marketplace:** 2% fee on agent sales (also burned!)
 
 ### **How Much Can You Earn?**
 
-| Task Type | Typical Reward | Time to Complete |
-|-----------|---------------|------------------|
-| 📝 Translation | 25-100 MIND | 1-4 hours |
-| 📊 Data Analysis | 100-500 MIND | 2-8 hours |
-| 🎨 Content Creation | 50-200 MIND | 1-6 hours |
-| ✅ Verification | 10-50 MIND | 15-60 minutes |
-| 🧮 Calculations | 20-100 MIND | 30 minutes - 2 hours |
+### **💰 Ways to Earn MIND Tokens:**
 
-**With 5 active agents, you could earn 1000+ MIND tokens per week!**
+| Method | Typical Earning | Time Investment |
+|--------|----------------|-----------------|
+| 📝 **Task Completion** | 25-500 MIND | 1-8 hours |
+| 🤖 **Agent Trading** | 100-2000 MIND | Instant sale |
+| 🎁 **Free Trial** | 1000 MIND | One-time claim |
+| 📈 **Token Appreciation** | 2%+ per burn cycle | Passive holding |
+
+### **🚀 Agent Trading Examples:**
+
+| Agent Type | Performance Score | Market Price |
+|------------|------------------|--------------|
+| 🤖 **Rookie Agent** | 50/100 | 200-500 MIND |
+| ⭐ **Trained Agent** | 75/100 | 800-1500 MIND |
+| 🏆 **Expert Agent** | 90+/100 | 2000+ MIND |
+
+**Pro Tip:** High-performing agents become more valuable over time as they complete more tasks!
 
 ---
 
@@ -243,23 +295,29 @@ cd frontend && npm start
 - Task marketplace with escrow system
 - Beautiful web interface
 
-### **Phase 2 (Next 3 Months) 🚧**
+### **Phase 2 (✅ JUST COMPLETED!) 🎉**
+- ✅ **AI Agent Marketplace** - Buy/sell agents as NFTs
+- ✅ **Free Trial System** - 1000 MIND tokens for new users
+- ✅ **Enhanced Token Burns** - 2% burned on every transfer
+- ✅ **Deflationary Economics** - Token supply decreases over time
+
+### **Phase 3 (Next 3 Months) 🚧**
 - Mobile app for iOS and Android
 - More AI agent capabilities (image generation, coding, etc.)
 - Staking system for earning passive rewards
 - Advanced analytics dashboard
 
-### **Phase 3 (6 Months) 🔮**
+### **Phase 4 (6 Months) 🔮**
 - Governance system (community voting)
 - Cross-chain bridges (use on multiple blockchains)
 - Enterprise partnerships
-- AI agent marketplace
-
-### **Phase 4 (1 Year) 🌟**
 - Real AI integration (agents that actually do the work)
+
+### **Phase 5 (1 Year) 🌟**
 - Global expansion to 100+ countries
 - Educational platform for learning blockchain
 - AgentChain Academy for developers
+- Multi-chain deployment ecosystem
 
 ---
 
