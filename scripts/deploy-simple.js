@@ -6,10 +6,10 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   const network = hre.network.name;
   
-  console.log("🚀 Deploying SIMPLE blockchain contracts...");
+  console.log("🚀 Deploying AgentChains contracts...");
   console.log("Account:", deployer.address);
   console.log("Network:", network);
-  console.log("Balance:", hre.ethers.utils.formatEther(await deployer.getBalance()), network === "polygon" ? "MATIC" : "ETH");
+  console.log("Balance:", hre.ethers.formatEther(await deployer.provider.getBalance(deployer.address)), network === "polygon" ? "MATIC" : "ETH");
 
   const deploymentData = {
     network: network,
@@ -19,73 +19,61 @@ async function main() {
   };
 
   try {
-    // 1. Deploy SimpleConsciousCoin (MIND Token)
-    console.log("\n1. 🪙 Deploying SimpleConsciousCoin...");
-    const SimpleConsciousCoin = await hre.ethers.getContractFactory("SimpleConsciousCoin");
-    const mindToken = await SimpleConsciousCoin.deploy();
-    await mindToken.deployed();
+    // 1. Deploy BasicToken (MIND Token)
+    console.log("\n1. 🪙 Deploying ConsciousCoin (BasicToken)...");
+    const BasicToken = await hre.ethers.getContractFactory("BasicToken");
+    const mindToken = await BasicToken.deploy();
+    await mindToken.waitForDeployment();
     
-    console.log("✅ ConsciousCoin deployed to:", mindToken.address);
-    deploymentData.contracts.SimpleConsciousCoin = {
-      address: mindToken.address,
+    console.log("✅ ConsciousCoin deployed to:", await mindToken.getAddress());
+    deploymentData.contracts.BasicToken = {
+      address: await mindToken.getAddress(),
       constructorArgs: []
     };
 
-    // 2. Deploy SimpleAIAgentNFT
-    console.log("\n2. 🤖 Deploying SimpleAIAgentNFT...");
-    const SimpleAIAgentNFT = await hre.ethers.getContractFactory("SimpleAIAgentNFT");
-    const treasuryWallet = deployer.address; // In production, use separate treasury
-    const agentNFT = await SimpleAIAgentNFT.deploy(mindToken.address, treasuryWallet);
-    await agentNFT.deployed();
+    // 2. Deploy BasicNFT
+    console.log("\n2. 🤖 Deploying BasicNFT...");
+    const BasicNFT = await hre.ethers.getContractFactory("BasicNFT");
+    const agentNFT = await BasicNFT.deploy();
+    await agentNFT.waitForDeployment();
     
-    console.log("✅ AIAgentNFT deployed to:", agentNFT.address);
-    deploymentData.contracts.SimpleAIAgentNFT = {
-      address: agentNFT.address,
-      constructorArgs: [mindToken.address, treasuryWallet]
+    console.log("✅ BasicNFT deployed to:", await agentNFT.getAddress());
+    deploymentData.contracts.BasicNFT = {
+      address: await agentNFT.getAddress(),
+      constructorArgs: []
     };
 
-    // 3. Deploy SimpleTaskMarketplace
-    console.log("\n3. 🛒 Deploying SimpleTaskMarketplace...");
-    const SimpleTaskMarketplace = await hre.ethers.getContractFactory("SimpleTaskMarketplace");
-    const marketplace = await SimpleTaskMarketplace.deploy(
-      mindToken.address,
-      agentNFT.address,
-      treasuryWallet
+    // 3. Deploy BasicMarketplace
+    console.log("\n3. 🛒 Deploying BasicMarketplace...");
+    const BasicMarketplace = await hre.ethers.getContractFactory("BasicMarketplace");
+    const marketplace = await BasicMarketplace.deploy(
+      await mindToken.getAddress()
     );
-    await marketplace.deployed();
+    await marketplace.waitForDeployment();
     
-    console.log("✅ TaskMarketplace deployed to:", marketplace.address);
-    deploymentData.contracts.SimpleTaskMarketplace = {
-      address: marketplace.address,
-      constructorArgs: [mindToken.address, agentNFT.address, treasuryWallet]
+    console.log("✅ BasicMarketplace deployed to:", await marketplace.getAddress());
+    deploymentData.contracts.BasicMarketplace = {
+      address: await marketplace.getAddress(),
+      constructorArgs: [await mindToken.getAddress()]
     };
 
-    // 4. Setup contract interactions
-    console.log("\n4. ⚙️ Setting up contract interactions...");
-    
-    // Set marketplace in NFT contract
-    await agentNFT.setMarketplaceContract(marketplace.address);
-    console.log("✅ Marketplace connected to NFT contract");
-
-    // Authorize marketplace in NFT contract
-    await agentNFT.authorizeContract(marketplace.address);
-    console.log("✅ Marketplace authorized in NFT contract");
+    // 4. Setup contracts (Basic contracts don't need complex setup)
+    console.log("\n4. ⚙️ Contracts deployed and ready...");
 
     // 5. Mint some demo agents
     console.log("\n5. 🎭 Minting demo AI agents...");
     
     const demoAgents = [
-      { name: "TranslatorBot", capabilities: ["translation", "language"] },
-      { name: "DataAnalyst", capabilities: ["analysis", "data", "statistics"] },
-      { name: "CreativeAI", capabilities: ["creation", "content", "writing"] }
+      { name: "TranslatorBot" },
+      { name: "DataAnalyst" },
+      { name: "CreativeAI" }
     ];
 
     for (let i = 0; i < demoAgents.length; i++) {
       const agent = demoAgents[i];
       const tx = await agentNFT.mintAgent(
         deployer.address,
-        agent.name,
-        agent.capabilities
+        agent.name
       );
       await tx.wait();
       console.log(`✅ Minted ${agent.name}`);
@@ -95,25 +83,19 @@ async function main() {
     console.log("\n6. 📋 Creating sample tasks...");
     
     // First, approve marketplace to spend tokens
-    const approveAmount = hre.ethers.utils.parseEther("1000");
-    await mindToken.approve(marketplace.address, approveAmount);
+    const approveAmount = hre.ethers.parseEther("1000");
+    await mindToken.approve(await marketplace.getAddress(), approveAmount);
     
     const sampleTasks = [
       {
         title: "Translate Document",
-        description: "Translate English document to Spanish",
-        category: 0, // Translation
-        reward: hre.ethers.utils.parseEther("50"),
+        reward: hre.ethers.parseEther("50"),
         duration: 24 * 3600, // 24 hours
-        capabilities: ["translation"]
       },
       {
         title: "Data Analysis Report",
-        description: "Analyze sales data and create report",
-        category: 1, // Analysis
-        reward: hre.ethers.utils.parseEther("100"),
+        reward: hre.ethers.parseEther("100"),
         duration: 48 * 3600, // 48 hours
-        capabilities: ["analysis", "data"]
       }
     ];
 
@@ -121,11 +103,8 @@ async function main() {
       const task = sampleTasks[i];
       const tx = await marketplace.createTask(
         task.title,
-        task.description,
-        task.category,
         task.reward,
-        task.duration,
-        task.capabilities
+        task.duration
       );
       await tx.wait();
       console.log(`✅ Created task: ${task.title}`);
@@ -134,22 +113,22 @@ async function main() {
     // 7. Calculate deployment costs
     console.log("\n7. 💰 Calculating deployment costs...");
     
-    const mindReceipt = await hre.ethers.provider.getTransactionReceipt(mindToken.deployTransaction.hash);
-    const agentReceipt = await hre.ethers.provider.getTransactionReceipt(agentNFT.deployTransaction.hash);
-    const marketplaceReceipt = await hre.ethers.provider.getTransactionReceipt(marketplace.deployTransaction.hash);
+    const mindReceipt = await hre.ethers.provider.getTransactionReceipt(mindToken.deploymentTransaction().hash);
+    const agentReceipt = await hre.ethers.provider.getTransactionReceipt(agentNFT.deploymentTransaction().hash);
+    const marketplaceReceipt = await hre.ethers.provider.getTransactionReceipt(marketplace.deploymentTransaction().hash);
     
-    const totalGasUsed = mindReceipt.gasUsed.add(agentReceipt.gasUsed).add(marketplaceReceipt.gasUsed);
-    const gasPrice = mindReceipt.effectiveGasPrice;
-    const totalCost = totalGasUsed.mul(gasPrice);
+    const totalGasUsed = mindReceipt.gasUsed + agentReceipt.gasUsed + marketplaceReceipt.gasUsed;
+    const gasPrice = mindReceipt.gasPrice;
+    const totalCost = totalGasUsed * gasPrice;
     
     console.log(`Gas Used: ${totalGasUsed.toLocaleString()}`);
-    console.log(`Gas Price: ${hre.ethers.utils.formatUnits(gasPrice, "gwei")} gwei`);
-    console.log(`Total Cost: ${hre.ethers.utils.formatEther(totalCost)} ${network === "polygon" || network === "mumbai" ? "MATIC" : "ETH"}`);
+    console.log(`Gas Price: ${hre.ethers.formatUnits(gasPrice, "gwei")} gwei`);
+    console.log(`Total Cost: ${hre.ethers.formatEther(totalCost)} ${network === "polygon" || network === "mumbai" ? "MATIC" : "ETH"}`);
     
     deploymentData.gasMetrics = {
       totalGasUsed: totalGasUsed.toString(),
-      gasPriceGwei: hre.ethers.utils.formatUnits(gasPrice, "gwei"),
-      totalCostEth: hre.ethers.utils.formatEther(totalCost),
+      gasPriceGwei: hre.ethers.formatUnits(gasPrice, "gwei"),
+      totalCostEth: hre.ethers.formatEther(totalCost),
       currency: network === "polygon" || network === "mumbai" ? "MATIC" : "ETH"
     };
 
@@ -161,19 +140,19 @@ async function main() {
     fs.writeFileSync(deploymentFile, JSON.stringify(deploymentData, null, 2));
 
     // 9. Display success message
-    console.log("\n🎉 ===== DEPLOYMENT SUCCESSFUL! =====");
+    console.log("\n🎉 ===== AgentChains DEPLOYMENT SUCCESSFUL! =====");
     console.log(`Network: ${network.toUpperCase()}`);
-    console.log(`MIND Token: ${mindToken.address}`);
-    console.log(`AI Agent NFT: ${agentNFT.address}`);
-    console.log(`Task Marketplace: ${marketplace.address}`);
-    console.log(`Total Cost: ${hre.ethers.utils.formatEther(totalCost)} ${deploymentData.gasMetrics.currency}`);
-    console.log("\n✨ Your blockchain is now LIVE and ready to use!");
+    console.log(`MIND Token: ${await mindToken.getAddress()}`);
+    console.log(`AI Agent NFT: ${await agentNFT.getAddress()}`);
+    console.log(`Task Marketplace: ${await marketplace.getAddress()}`);
+    console.log(`Total Cost: ${hre.ethers.formatEther(totalCost)} ${deploymentData.gasMetrics.currency}`);
+    console.log("\n✨ Your AgentChains blockchain is now LIVE and ready to use!");
     
     if (network === "mumbai") {
       console.log("\n📱 View on PolygonScan Mumbai:");
-      console.log(`🪙 MIND Token: https://mumbai.polygonscan.com/address/${mindToken.address}`);
-      console.log(`🤖 AI Agents: https://mumbai.polygonscan.com/address/${agentNFT.address}`);
-      console.log(`🛒 Marketplace: https://mumbai.polygonscan.com/address/${marketplace.address}`);
+      console.log(`🪙 MIND Token: https://mumbai.polygonscan.com/address/${await mindToken.getAddress()}`);
+      console.log(`🤖 AI Agents: https://mumbai.polygonscan.com/address/${await agentNFT.getAddress()}`);
+      console.log(`🛒 Marketplace: https://mumbai.polygonscan.com/address/${await marketplace.getAddress()}`);
     }
 
     console.log("\n🎯 Next Steps:");

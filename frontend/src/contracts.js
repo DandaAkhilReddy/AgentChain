@@ -1,9 +1,9 @@
 // Contract addresses (update these with your deployed addresses)
 export const CONTRACT_ADDRESSES = {
   // From your local deployment - update these if deploying to testnet
-  MIND_TOKEN: "0xc9205abC4A4fceC25E15446A8c2DD19ab60e1149",
-  AI_AGENT_NFT: "0xA38062F23cbF30680De009e59E62B62F6c95a35A",
-  MARKETPLACE: "0xefBa1032bB5f9bEC79e022f52D89C2cc9090D1B8",
+  MIND_TOKEN: "0x6eaE6fE16708Ad36c38DAf73f1DEe3dad9BeC2ed",
+  AI_AGENT_NFT: "0x342b37DeFD122d9E421f75895fd091900b792969",
+  MARKETPLACE: "0x77079eb61bF15AF9ce4017832cdcEc57280E50F4",
   AGENT_MARKETPLACE: "0x1234567890123456789012345678901234567890" // Update with actual address after deployment
 };
 
@@ -11,7 +11,7 @@ export const CONTRACT_ADDRESSES = {
 export const NETWORKS = {
   hardhat: {
     chainId: 31337,
-    name: "Hardhat Local",
+    name: "AgentChains Local",
     rpc: "http://127.0.0.1:8545",
     currency: "ETH"
   },

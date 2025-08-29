@@ -1,40 +1,10 @@
-node_modules
-.env
-coverage
-coverage.json
-typechain
-typechain-types
-
-# Hardhat files
-cache
-artifacts
-gas-report.txt
-
-# Frontend
-frontend/build
-frontend/node_modules
-
-# VSCode
-.vscode
-
-# MacOS
-.DS_Store
-
-# Logs
+# Dependencies
+node_modules/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Build
-dist
-build
-
-# Testing
-test-results
-
-# Deployment
-deployment-*.json
-
-# OS
-Thumbs.db
+# Environment files
+.env
+# Build files
+build/
+dist/
+# Azure files
+*.zip

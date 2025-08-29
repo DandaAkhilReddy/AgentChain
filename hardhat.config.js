@@ -20,10 +20,11 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      forking: {
-        url: process.env.POLYGON_RPC_URL || "https://polygon-rpc.com",
-        blockNumber: 50000000
-      }
+      chainId: 31337
+    },
+    localhost: {
+      url: "http://127.0.0.1:8545",
+      chainId: 31337
     },
     // Polygon Mumbai Testnet (FREE)
     mumbai: {

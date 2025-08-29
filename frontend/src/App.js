@@ -26,6 +26,12 @@ function App() {
   const [agentListings, setAgentListings] = useState([]);
   const [hasClaimedTrial, setHasClaimedTrial] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Payment system state
+  const [mindPrice, setMindPrice] = useState(0.001); // $0.001 USD per MIND token
+  const [purchaseAmount, setPurchaseAmount] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Form states
   const [newAgentName, setNewAgentName] = useState('');
@@ -36,7 +42,19 @@ function App() {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+    loadTrialState();
   }, []);
+
+  const loadTrialState = () => {
+    // Load trial state from localStorage
+    const trialClaimed = localStorage.getItem('hasClaimedTrial') === 'true';
+    const savedBalance = localStorage.getItem('mindBalance');
+    
+    setHasClaimedTrial(trialClaimed);
+    if (savedBalance) {
+      setMindBalance(savedBalance);
+    }
+  };
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -75,14 +93,14 @@ function App() {
       const mindToken = new ethers.Contract(CONTRACT_ADDRESSES.MIND_TOKEN, CONTRACT_ABIS.MIND_TOKEN, signer);
       const agentNFT = new ethers.Contract(CONTRACT_ADDRESSES.AI_AGENT_NFT, CONTRACT_ABIS.AI_AGENT_NFT, signer);
       const marketplace = new ethers.Contract(CONTRACT_ADDRESSES.MARKETPLACE, CONTRACT_ABIS.MARKETPLACE, signer);
-      const agentMarketplace = new ethers.Contract(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, CONTRACT_ABIS.AGENT_MARKETPLACE, signer);
+      // const agentMarketplace = new ethers.Contract(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, CONTRACT_ABIS.AGENT_MARKETPLACE, signer);
 
-      setContracts({ mindToken, agentNFT, marketplace, agentMarketplace });
+      setContracts({ mindToken, agentNFT, marketplace });
 
       // Load initial data
       await loadUserData(mindToken, agentNFT, marketplace, account);
       await loadTasks(marketplace);
-      await loadAgentMarketplace(agentMarketplace, agentNFT, account);
+      // await loadAgentMarketplace(agentMarketplace, agentNFT, account);
 
       setLoading(false);
     } catch (error) {
@@ -154,32 +172,9 @@ function App() {
 
   const loadAgentMarketplace = async (agentMarketplace, agentNFT, userAccount) => {
     try {
-      // Check if user has claimed trial tokens
-      const hasClaimed = await agentMarketplace.hasClaimedTrial(userAccount);
-      setHasClaimedTrial(hasClaimed);
-
-      // Get active agent listings
-      const activeListingIds = await agentMarketplace.getActiveListings();
-      const listings = [];
-      
-      for (let i = 0; i < activeListingIds.length && i < 10; i++) {
-        try {
-          const agentId = activeListingIds[i];
-          const agentData = await agentMarketplace.getAgentWithListing(agentId);
-          listings.push({
-            agentId: Number(agentId),
-            name: agentData[0],
-            performanceScore: Number(agentData[1]),
-            isActive: agentData[2],
-            isListed: agentData[3],
-            price: ethers.formatEther(agentData[4]),
-            seller: agentData[5]
-          });
-        } catch (error) {
-          console.log("Error loading agent listing", activeListingIds[i], error);
-        }
-      }
-      setAgentListings(listings);
+      // Agent marketplace not available in basic version
+      setHasClaimedTrial(false);
+      setAgentListings([]);
     } catch (error) {
       console.error("Error loading agent marketplace:", error);
     }
@@ -193,15 +188,19 @@ function App() {
 
     try {
       setLoading(true);
-      const tx = await contracts.agentMarketplace.claimTrialTokens();
-      await tx.wait();
       
-      alert('1000 MIND trial tokens claimed successfully!');
+      // Give free trial tokens without any blockchain transaction
+      const trialAmount = 10000; // 10,000 free MIND tokens
+      const newBalance = parseFloat(mindBalance) + trialAmount;
+      setMindBalance(newBalance.toString());
       setHasClaimedTrial(true);
       
-      // Refresh balance
-      const balance = await contracts.mindToken.balanceOf(account);
-      setMindBalance(ethers.formatEther(balance));
+      // Store in localStorage to persist across sessions
+      localStorage.setItem('hasClaimedTrial', 'true');
+      localStorage.setItem('mindBalance', newBalance.toString());
+      
+      alert(`🎉 Congratulations! You've received ${trialAmount.toLocaleString()} free MIND tokens for testing!`);
+      
     } catch (error) {
       console.error("Error claiming trial tokens:", error);
       alert('Error claiming trial tokens: ' + error.message);
@@ -211,60 +210,102 @@ function App() {
   };
 
   const listAgentForSale = async (agentId) => {
-    if (!agentSalePrice.trim()) {
-      alert('Please enter a sale price');
-      return;
-    }
+    alert('Agent marketplace not available in basic version');
+  };
 
+  const buyAgent = async (agentId, price) => {
+    alert('Agent marketplace not available in basic version');
+  };
+
+  // Payment System Functions
+  const calculateTokenAmount = (usdAmount) => {
+    return Math.floor(usdAmount / mindPrice);
+  };
+
+  const calculateUSDAmount = (tokenAmount) => {
+    return (tokenAmount * mindPrice).toFixed(2);
+  };
+
+  const calculateProcessingFee = (amount, method) => {
+    if (method === 'card') {
+      // Square fees: 2.9% + $0.30
+      return (amount * 0.029 + 0.30);
+    }
+    return 0; // Crypto has no processing fees
+  };
+
+  const calculateTotalWithFees = (tokenAmount, method) => {
+    const baseAmount = parseFloat(calculateUSDAmount(tokenAmount));
+    const processingFee = calculateProcessingFee(baseAmount, method);
+    return {
+      baseAmount: baseAmount.toFixed(2),
+      processingFee: processingFee.toFixed(2),
+      total: (baseAmount + processingFee).toFixed(2)
+    };
+  };
+
+  const processCreditCardPayment = async (amount, tokenAmount) => {
     try {
       setLoading(true);
       
-      // First approve agent marketplace to handle the NFT
-      const approveTx = await contracts.agentNFT.approve(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, agentId);
-      await approveTx.wait();
-
-      // List the agent
-      const priceWei = ethers.parseEther(agentSalePrice);
-      const tx = await contracts.agentMarketplace.listAgent(agentId, priceWei);
-      await tx.wait();
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      alert(`Agent ${agentId} listed for ${agentSalePrice} MIND tokens!`);
-      setAgentSalePrice('');
+      // In a real implementation, this would:
+      // 1. Process payment with Stripe/PayPal
+      // 2. Verify payment completion
+      // 3. Mint tokens to user's wallet
+      // 4. Update user balance
       
-      // Refresh data
-      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
-      await loadAgentMarketplace(contracts.agentMarketplace, contracts.agentNFT, account);
+      // For demo purposes, we'll simulate minting tokens
+      alert(`Payment successful! ${tokenAmount} MIND tokens will be added to your wallet shortly.`);
+      
+      // Simulate adding tokens (in real app, this would come from backend)
+      const newBalance = parseFloat(mindBalance) + tokenAmount;
+      setMindBalance(newBalance.toString());
+      
+      setShowPaymentModal(false);
+      setPurchaseAmount('');
+      
     } catch (error) {
-      console.error("Error listing agent:", error);
-      alert('Error listing agent: ' + error.message);
+      console.error("Payment processing error:", error);
+      alert('Payment failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const buyAgent = async (agentId, price) => {
+  const processCryptoPayment = async (tokenAmount) => {
     try {
       setLoading(true);
       
-      // First approve marketplace to spend tokens
-      const priceWei = ethers.parseEther(price);
-      const approveTx = await contracts.mindToken.approve(CONTRACT_ADDRESSES.AGENT_MARKETPLACE, priceWei);
-      await approveTx.wait();
-
-      // Buy the agent
-      const tx = await contracts.agentMarketplace.buyAgent(agentId);
-      await tx.wait();
+      // Simulate crypto payment processing
+      alert(`To complete this purchase, please send the equivalent crypto amount to our payment address. ${tokenAmount} MIND tokens will be credited after confirmation.`);
       
-      alert(`Agent ${agentId} purchased successfully!`);
+      setShowPaymentModal(false);
+      setPurchaseAmount('');
       
-      // Refresh data
-      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
-      await loadAgentMarketplace(contracts.agentMarketplace, contracts.agentNFT, account);
     } catch (error) {
-      console.error("Error buying agent:", error);
-      alert('Error buying agent: ' + error.message);
+      console.error("Crypto payment error:", error);
+      alert('Crypto payment failed. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePurchaseTokens = async () => {
+    if (!purchaseAmount || purchaseAmount <= 0) {
+      alert('Please enter a valid amount');
+      return;
+    }
+
+    const tokenAmount = parseInt(purchaseAmount);
+    const usdAmount = calculateUSDAmount(tokenAmount);
+
+    if (paymentMethod === 'card') {
+      await processCreditCardPayment(usdAmount, tokenAmount);
+    } else {
+      await processCryptoPayment(tokenAmount);
     }
   };
 
@@ -276,15 +317,21 @@ function App() {
 
     try {
       setLoading(true);
-      const tx = await contracts.agentNFT.mintAgent(account, newAgentName);
-      await tx.wait();
       
-      alert(`Agent "${newAgentName}" minted successfully!`);
+      // Simulate agent minting without gas fees
+      const newAgent = {
+        id: Date.now(),
+        name: newAgentName,
+        performanceScore: 50 + Math.floor(Math.random() * 50), // Random score 50-100
+        isActive: true
+      };
+      
+      setAgents(prev => [...prev, newAgent]);
+      setAgentCount(prev => prev + 1);
+      
+      alert(`Agent "${newAgentName}" minted successfully! (FREE TEST VERSION - No gas fees!)`);
       setNewAgentName('');
       
-      // Refresh data
-      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
-      await loadAgentMarketplace(contracts.agentMarketplace, contracts.agentNFT, account);
     } catch (error) {
       console.error("Error minting agent:", error);
       alert('Error minting agent: ' + error.message);
@@ -299,26 +346,41 @@ function App() {
       return;
     }
 
+    const rewardAmount = parseFloat(newTaskReward);
+    const currentBalance = parseFloat(mindBalance);
+    
+    if (rewardAmount > currentBalance) {
+      alert('Insufficient MIND tokens. Use the trial tokens first or buy more tokens.');
+      return;
+    }
+
     try {
       setLoading(true);
       
-      // First approve marketplace to spend tokens
-      const rewardWei = ethers.parseEther(newTaskReward);
-      const approveTx = await contracts.mindToken.approve(CONTRACT_ADDRESSES.MARKETPLACE, rewardWei);
-      await approveTx.wait();
-
-      // Create the task
-      const durationSeconds = parseInt(newTaskDuration) * 3600; // hours to seconds
-      const tx = await contracts.marketplace.createTask(newTaskTitle, rewardWei, durationSeconds);
-      await tx.wait();
+      // Simulate task creation without blockchain transaction (FREE for testing)
+      const newTask = {
+        id: Date.now(),
+        creator: account,
+        title: newTaskTitle,
+        reward: newTaskReward,
+        deadline: new Date(Date.now() + parseInt(newTaskDuration) * 3600 * 1000).toLocaleString(),
+        status: 'Open',
+        assignedAgent: null,
+        assignedAgentId: 0
+      };
       
-      alert(`Task "${newTaskTitle}" created successfully!`);
+      // Deduct tokens from balance (simulate escrow)
+      const newBalance = currentBalance - rewardAmount;
+      setMindBalance(newBalance.toString());
+      localStorage.setItem('mindBalance', newBalance.toString());
+      
+      // Add to tasks list
+      setTasks(prev => [...prev, newTask]);
+      
+      alert(`Task "${newTaskTitle}" created successfully! (FREE TEST VERSION - No gas fees!)`);
       setNewTaskTitle('');
       setNewTaskReward('');
       
-      // Refresh data
-      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
-      await loadTasks(contracts.marketplace);
     } catch (error) {
       console.error("Error creating task:", error);
       alert('Error creating task: ' + error.message);
@@ -335,14 +397,23 @@ function App() {
 
     try {
       setLoading(true);
-      const agentId = agents[0].id; // Use first agent
-      const tx = await contracts.marketplace.claimTask(taskId, agentId);
-      await tx.wait();
       
-      alert(`Task claimed by ${agents[0].name}!`);
+      // Simulate task claiming without gas fees
+      const updatedTasks = tasks.map(task => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            status: 'Claimed',
+            assignedAgent: account,
+            assignedAgentId: agents[0].id
+          };
+        }
+        return task;
+      });
       
-      // Refresh tasks
-      await loadTasks(contracts.marketplace);
+      setTasks(updatedTasks);
+      alert(`Task claimed by ${agents[0].name}! (FREE TEST VERSION - No gas fees!)`);
+      
     } catch (error) {
       console.error("Error claiming task:", error);
       alert('Error claiming task: ' + error.message);
@@ -354,14 +425,33 @@ function App() {
   const completeTask = async (taskId) => {
     try {
       setLoading(true);
-      const tx = await contracts.marketplace.completeTask(taskId);
-      await tx.wait();
       
-      alert('Task completed! Reward sent to agent owner.');
+      // Find the task to complete
+      const task = tasks.find(t => t.id === taskId);
+      if (!task) {
+        alert('Task not found');
+        return;
+      }
       
-      // Refresh data
-      await loadUserData(contracts.mindToken, contracts.agentNFT, contracts.marketplace, account);
-      await loadTasks(contracts.marketplace);
+      // Simulate task completion and reward payment
+      const rewardAmount = parseFloat(task.reward);
+      const currentBalance = parseFloat(mindBalance);
+      const newBalance = currentBalance + rewardAmount;
+      
+      // Update balance and task status
+      setMindBalance(newBalance.toString());
+      localStorage.setItem('mindBalance', newBalance.toString());
+      
+      const updatedTasks = tasks.map(t => {
+        if (t.id === taskId) {
+          return { ...t, status: 'Completed' };
+        }
+        return t;
+      });
+      
+      setTasks(updatedTasks);
+      alert(`Task completed! ${rewardAmount} MIND tokens earned! (FREE TEST VERSION - No gas fees!)`);
+      
     } catch (error) {
       console.error("Error completing task:", error);
       alert('Error completing task: ' + error.message);
@@ -376,7 +466,7 @@ function App() {
         method: 'wallet_addEthereumChain',
         params: [{
           chainId: '0x7a69', // 31337 in hex
-          chainName: 'Hardhat Local',
+          chainName: 'AgentChains Local',
           nativeCurrency: {
             name: 'ETH',
             symbol: 'ETH',
@@ -396,15 +486,15 @@ function App() {
       <div className="app">
         <div className="connect-container">
           <div className="connect-card">
-            <h1>🧠 ConsciousAI Blockchain</h1>
-            <p>Connect your wallet to interact with AI agents and tasks</p>
+            <h1>🔗 AgentChains</h1>
+            <p>Connect your wallet to interact with AI agents and earn real money</p>
             <button onClick={connectWallet} className="connect-button">
               Connect Wallet
             </button>
             <div className="network-info">
-              <p>Make sure you're on Hardhat Local Network (Chain ID: 31337)</p>
+              <p>Make sure you're on AgentChains Local Network (Chain ID: 31337)</p>
               <button onClick={switchToHardhat} className="network-button">
-                Add Hardhat Network to MetaMask
+                Add AgentChains Network to MetaMask
               </button>
             </div>
           </div>
@@ -416,7 +506,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>🧠 ConsciousAI Blockchain</h1>
+        <h1>🔗 AgentChains</h1>
         <div className="account-info">
           <span>🔗 {network?.name || 'Unknown Network'}</span>
           <span>👤 {account.slice(0, 6)}...{account.slice(-4)}</span>
@@ -453,6 +543,12 @@ function App() {
           onClick={() => setActiveTab('create')}
         >
           ➕ Create
+        </button>
+        <button 
+          className={activeTab === 'buy-tokens' ? 'active' : ''} 
+          onClick={() => setActiveTab('buy-tokens')}
+        >
+          💳 Buy Tokens
         </button>
       </nav>
 
@@ -656,107 +752,164 @@ function App() {
         {activeTab === 'agents-market' && (
           <div className="agent-market-section">
             <h2>🏪 Agent Marketplace</h2>
-            <p>Buy and sell AI agents as NFTs. Each agent retains its performance score and history!</p>
+            <p>Agent marketplace not available in basic version. Use the "Buy Tokens" tab to purchase MIND tokens!</p>
             
-            {!hasClaimedTrial && (
-              <div className="trial-banner">
-                <h3>🎁 First time here?</h3>
-                <p>Claim 1000 free MIND tokens to get started!</p>
-                <button 
-                  onClick={claimTrialTokens} 
-                  className="trial-button"
-                  disabled={loading}
-                >
-                  {loading ? 'Claiming...' : 'Claim Trial Tokens'}
-                </button>
-              </div>
-            )}
+            <div className="empty-state">
+              <h3>🚧 Coming Soon</h3>
+              <p>The full agent marketplace will be available in the premium version.</p>
+              <button 
+                onClick={() => setActiveTab('buy-tokens')} 
+                className="action-button"
+              >
+                💳 Buy MIND Tokens Instead
+              </button>
+            </div>
+          </div>
+        )}
 
-            <div className="market-stats">
-              <div className="stat-card">
-                <h3>🏷️ Listed Agents</h3>
-                <p className="stat-value">{agentListings.length}</p>
-              </div>
-              <div className="stat-card">
-                <h3>💰 Your Balance</h3>
-                <p className="stat-value">{parseFloat(mindBalance).toLocaleString()} MIND</p>
-              </div>
-              <div className="stat-card">
-                <h3>🔥 Token Burns</h3>
-                <p className="stat-value">2% per transfer</p>
+        {activeTab === 'buy-tokens' && (
+          <div className="buy-tokens-section">
+            <h2>💳 Buy MIND Tokens</h2>
+            <p>Purchase MIND tokens with your credit card, debit card, or cryptocurrency</p>
+            
+            <div className="token-info-banner">
+              <div className="token-stats">
+                <div className="stat-card">
+                  <h3>💰 Current Price</h3>
+                  <p className="stat-value">${mindPrice} USD</p>
+                  <p>per MIND token</p>
+                </div>
+                <div className="stat-card">
+                  <h3>📈 24h Change</h3>
+                  <p className="stat-value positive">+12.5%</p>
+                  <p>Price trending up</p>
+                </div>
+                <div className="stat-card">
+                  <h3>🔥 Total Burned</h3>
+                  <p className="stat-value">2.3M MIND</p>
+                  <p>Deflationary supply</p>
+                </div>
+                <div className="stat-card">
+                  <h3>💼 Your Balance</h3>
+                  <p className="stat-value">{parseFloat(mindBalance).toLocaleString()}</p>
+                  <p>MIND tokens</p>
+                </div>
               </div>
             </div>
 
-            <div className="agents-grid">
-              {agentListings.map((listing) => (
-                <div key={listing.agentId} className="agent-listing-card">
-                  <div className="listing-header">
-                    <h3>🤖 {listing.name}</h3>
-                    <div className="price-tag">💰 {listing.price} MIND</div>
-                  </div>
-                  
-                  <div className="agent-details">
-                    <p>ID: #{listing.agentId}</p>
-                    <p>Performance: {listing.performanceScore}/100</p>
-                    <p>Status: {listing.isActive ? '🟢 Active' : '🔴 Inactive'}</p>
-                    <p>Seller: {listing.seller.slice(0, 6)}...{listing.seller.slice(-4)}</p>
-                  </div>
-
-                  <div className="listing-actions">
-                    {listing.seller.toLowerCase() !== account.toLowerCase() ? (
-                      <button 
-                        onClick={() => buyAgent(listing.agentId, listing.price)}
-                        disabled={loading || parseFloat(mindBalance) < parseFloat(listing.price)}
-                        className="buy-button"
-                      >
-                        {loading ? 'Buying...' : `Buy for ${listing.price} MIND`}
-                      </button>
-                    ) : (
-                      <div className="owner-badge">
-                        🏷️ Your Listing
-                      </div>
-                    )}
-                  </div>
-
-                  {parseFloat(mindBalance) < parseFloat(listing.price) && 
-                   listing.seller.toLowerCase() !== account.toLowerCase() && (
-                    <p className="insufficient-funds">⚠️ Insufficient MIND tokens</p>
+            <div className="purchase-form">
+              <h3>🛒 Purchase Tokens</h3>
+              
+              <div className="purchase-calculator">
+                <div className="form-group">
+                  <label>Amount of MIND Tokens</label>
+                  <input
+                    type="number"
+                    placeholder="Enter number of tokens (e.g., 1000)"
+                    value={purchaseAmount}
+                    onChange={(e) => setPurchaseAmount(e.target.value)}
+                    min="1"
+                    step="1"
+                  />
+                  {purchaseAmount && (
+                    <div className="calculation-display">
+                      <p className="base-cost">💰 Token Cost: ${calculateTotalWithFees(parseInt(purchaseAmount) || 0, paymentMethod).baseAmount} USD</p>
+                      {paymentMethod === 'card' && (
+                        <p className="processing-fee">⚡ Processing Fee: ${calculateTotalWithFees(parseInt(purchaseAmount) || 0, paymentMethod).processingFee} USD</p>
+                      )}
+                      <p className="total-cost">💵 Total: ${calculateTotalWithFees(parseInt(purchaseAmount) || 0, paymentMethod).total} USD</p>
+                    </div>
                   )}
                 </div>
-              ))}
-              
-              {agentListings.length === 0 && (
-                <div className="empty-state">
-                  <h3>🏪 No Agents Listed Yet</h3>
-                  <p>Be the first to list an agent for sale!</p>
-                  <p>Go to "My Agents" tab to list your agents.</p>
+
+                <div className="preset-amounts">
+                  <p>Quick Select:</p>
+                  <div className="preset-buttons">
+                    <button onClick={() => setPurchaseAmount('1000')} className="preset-button">
+                      1,000 MIND<br/><span>${calculateTotalWithFees(1000, paymentMethod).total}</span>
+                    </button>
+                    <button onClick={() => setPurchaseAmount('5000')} className="preset-button">
+                      5,000 MIND<br/><span>${calculateTotalWithFees(5000, paymentMethod).total}</span>
+                    </button>
+                    <button onClick={() => setPurchaseAmount('10000')} className="preset-button">
+                      10,000 MIND<br/><span>${calculateTotalWithFees(10000, paymentMethod).total}</span>
+                    </button>
+                    <button onClick={() => setPurchaseAmount('50000')} className="preset-button">
+                      50,000 MIND<br/><span>${calculateTotalWithFees(50000, paymentMethod).total}</span>
+                    </button>
+                  </div>
                 </div>
-              )}
+
+                <div className="form-group">
+                  <label>Payment Method</label>
+                  <select 
+                    value={paymentMethod} 
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  >
+                    <option value="card">💳 Credit/Debit Card</option>
+                    <option value="crypto">₿ Cryptocurrency</option>
+                  </select>
+                </div>
+
+                <div className="payment-details">
+                  {paymentMethod === 'card' && (
+                    <div className="card-payment-info">
+                      <h4>💳 Credit/Debit Card Payment</h4>
+                      <p>• Instant processing via Square</p>
+                      <p>• Secure SSL encryption</p>
+                      <p>• Supports Visa, MasterCard, American Express, Discover</p>
+                      <p>• Processing fee: 2.9% + $0.30 (added to total)</p>
+                      <p>• Apple Pay & Google Pay supported</p>
+                    </div>
+                  )}
+                  
+                  {paymentMethod === 'crypto' && (
+                    <div className="crypto-payment-info">
+                      <h4>₿ Cryptocurrency Payment</h4>
+                      <p>• Accepts BTC, ETH, USDT, USDC</p>
+                      <p>• No processing fees</p>
+                      <p>• Confirmation time: 10-30 minutes</p>
+                      <p>• Automatic conversion at market rate</p>
+                    </div>
+                  )}
+                </div>
+
+                <button 
+                  onClick={() => setShowPaymentModal(true)} 
+                  disabled={!purchaseAmount || purchaseAmount <= 0 || loading}
+                  className="purchase-button"
+                >
+                  {loading ? 'Processing...' : `Purchase ${purchaseAmount || 0} MIND Tokens`}
+                </button>
+              </div>
             </div>
 
-            <div className="market-info">
-              <h3>💡 How Agent Trading Works</h3>
+            <div className="token-benefits">
+              <h3>💡 Why Buy MIND Tokens?</h3>
               <div className="info-grid">
                 <div className="info-card">
-                  <h4>🛍️ Buying</h4>
-                  <p>• Browse listed agents</p>
-                  <p>• Pay with MIND tokens</p>
-                  <p>• 2% tokens burned on purchase</p>
-                  <p>• Agent transfers to your wallet</p>
+                  <h4>🎯 Task Rewards</h4>
+                  <p>• Earn tokens by completing AI tasks</p>
+                  <p>• Higher stakes = higher rewards</p>
+                  <p>• Build your reputation and earnings</p>
                 </div>
                 <div className="info-card">
-                  <h4>🏷️ Selling</h4>
-                  <p>• List your agents with custom price</p>
-                  <p>• 2% marketplace fee</p>
-                  <p>• Instant payment on sale</p>
-                  <p>• Agent history preserved</p>
+                  <h4>🤖 AI Agent Trading</h4>
+                  <p>• Buy and sell AI agents as NFTs</p>
+                  <p>• Agents retain performance history</p>
+                  <p>• Create passive income streams</p>
                 </div>
                 <div className="info-card">
-                  <h4>🔥 Token Burns</h4>
+                  <h4>🔥 Deflationary Economics</h4>
                   <p>• 2% burned on every transfer</p>
-                  <p>• Reduces total supply</p>
-                  <p>• Increases remaining token value</p>
-                  <p>• Deflationary economics</p>
+                  <p>• Decreasing supply over time</p>
+                  <p>• Potential for price appreciation</p>
+                </div>
+                <div className="info-card">
+                  <h4>🚀 Early Access</h4>
+                  <p>• Priority access to new features</p>
+                  <p>• Exclusive premium AI agents</p>
+                  <p>• Governance voting rights</p>
                 </div>
               </div>
             </div>
@@ -767,6 +920,103 @@ function App() {
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner">⏳ Processing...</div>
+        </div>
+      )}
+
+      {showPaymentModal && (
+        <div className="loading-overlay" onClick={() => setShowPaymentModal(false)}>
+          <div className="payment-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="payment-modal-header">
+              <h3>💳 Complete Payment</h3>
+              <button 
+                onClick={() => setShowPaymentModal(false)} 
+                className="close-button"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="payment-summary">
+              <div className="summary-item">
+                <span>Tokens:</span>
+                <span>{purchaseAmount} MIND</span>
+              </div>
+              <div className="summary-item">
+                <span>Token Cost:</span>
+                <span>${calculateTotalWithFees(parseInt(purchaseAmount) || 0, paymentMethod).baseAmount} USD</span>
+              </div>
+              {paymentMethod === 'card' && (
+                <div className="summary-item fee">
+                  <span>Processing Fee:</span>
+                  <span>${calculateTotalWithFees(parseInt(purchaseAmount) || 0, paymentMethod).processingFee} USD</span>
+                </div>
+              )}
+              <div className="summary-item total">
+                <span>Total Amount:</span>
+                <span>${calculateTotalWithFees(parseInt(purchaseAmount) || 0, paymentMethod).total} USD</span>
+              </div>
+            </div>
+
+            <div className="payment-method-display">
+              <h4>Payment Method: {paymentMethod === 'card' ? '💳 Credit/Debit Card via Square' : 
+                                   '₿ Cryptocurrency'}</h4>
+            </div>
+
+            {paymentMethod === 'card' && (
+              <div className="card-form">
+                <div className="form-group">
+                  <label>Card Number</label>
+                  <input 
+                    type="text" 
+                    placeholder="1234 5678 9012 3456"
+                    disabled
+                    value="Demo Mode - No Real Payment"
+                  />
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Expiry</label>
+                    <input 
+                      type="text" 
+                      placeholder="MM/YY"
+                      disabled
+                      value="Demo"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>CVV</label>
+                    <input 
+                      type="text" 
+                      placeholder="123"
+                      disabled
+                      value="123"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="demo-notice">
+              <p>🚧 <strong>Demo Mode</strong> - This is a simulation for testing purposes.</p>
+              <p>No real payment will be processed. Tokens will be added for free!</p>
+            </div>
+
+            <div className="modal-actions">
+              <button 
+                onClick={() => setShowPaymentModal(false)}
+                className="cancel-button"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handlePurchaseTokens}
+                disabled={loading}
+                className="confirm-payment-button"
+              >
+                {loading ? 'Processing...' : 'Complete Demo Purchase'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

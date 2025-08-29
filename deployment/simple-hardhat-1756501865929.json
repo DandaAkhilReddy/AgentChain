@@ -1,0 +1,27 @@
+{
+  "network": "hardhat",
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "timestamp": "2025-08-29T21:11:02.160Z",
+  "contracts": {
+    "BasicToken": {
+      "address": "0xc9205abC4A4fceC25E15446A8c2DD19ab60e1149",
+      "constructorArgs": []
+    },
+    "BasicNFT": {
+      "address": "0xA38062F23cbF30680De009e59E62B62F6c95a35A",
+      "constructorArgs": []
+    },
+    "BasicMarketplace": {
+      "address": "0xefBa1032bB5f9bEC79e022f52D89C2cc9090D1B8",
+      "constructorArgs": [
+        "0xc9205abC4A4fceC25E15446A8c2DD19ab60e1149"
+      ]
+    }
+  },
+  "gasMetrics": {
+    "totalGasUsed": "3745327",
+    "gasPriceGwei": "117.30633169",
+    "totalCostEth": "0.43935057134951263",
+    "currency": "ETH"
+  }
+}
