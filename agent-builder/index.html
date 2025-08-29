@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Builder - AgentChains.ai</title>
+    <meta name="description" content="Build and deploy powerful AI agents with memory and custom prompts">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles.css">
+    
+    <!-- Monaco Editor -->
+    <script src="https://unpkg.com/monaco-editor@0.44.0/min/vs/loader.js"></script>
+</head>
+<body>
+    <div class="builder-container">
+        <!-- Header -->
+        <header class="builder-header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🤖</span>
+                    <span class="logo-text">Agent Builder</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" id="saveAgent">
+                        <span class="btn-icon">💾</span>
+                        <span class="btn-text">Save</span>
+                    </button>
+                    <button class="btn btn-primary" id="deployAgent">
+                        <span class="btn-icon">🚀</span>
+                        <span class="btn-text">Deploy</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="builder-main">
+            <!-- Sidebar -->
+            <aside class="builder-sidebar">
+                <div class="sidebar-section">
+                    <h3>Agent Templates</h3>
+                    <div class="template-list" id="templateList">
+                        <div class="template-item active" data-template="general">
+                            <div class="template-icon">🎯</div>
+                            <div class="template-info">
+                                <div class="template-name">General Assistant</div>
+                                <div class="template-desc">Versatile AI assistant</div>
+                            </div>
+                        </div>
+                        <div class="template-item" data-template="analyst">
+                            <div class="template-icon">📊</div>
+                            <div class="template-info">
+                                <div class="template-name">Data Analyst</div>
+                                <div class="template-desc">Data analysis expert</div>
+                            </div>
+                        </div>
+                        <div class="template-item" data-template="developer">
+                            <div class="template-icon">👨‍💻</div>
+                            <div class="template-info">
+                                <div class="template-name">Code Assistant</div>
+                                <div class="template-desc">Programming helper</div>
+                            </div>
+                        </div>
+                        <div class="template-item" data-template="creative">
+                            <div class="template-icon">🎨</div>
+                            <div class="template-info">
+                                <div class="template-name">Creative Writer</div>
+                                <div class="template-desc">Content creator</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Memory Types</h3>
+                    <div class="memory-types">
+                        <div class="memory-type" data-type="short_term">
+                            <div class="memory-icon">⚡</div>
+                            <div class="memory-info">
+                                <div class="memory-name">Short Term</div>
+                                <div class="memory-desc">Session memory</div>
+                            </div>
+                        </div>
+                        <div class="memory-type" data-type="long_term">
+                            <div class="memory-icon">🧠</div>
+                            <div class="memory-info">
+                                <div class="memory-name">Long Term</div>
+                                <div class="memory-desc">Persistent storage</div>
+                            </div>
+                        </div>
+                        <div class="memory-type" data-type="working">
+                            <div class="memory-icon">⚙️</div>
+                            <div class="memory-info">
+                                <div class="memory-name">Working</div>
+                                <div class="memory-desc">Task context</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Agent Status</h3>
+                    <div class="agent-status" id="agentStatus">
+                        <div class="status-item">
+                            <span class="status-label">Status:</span>
+                            <span class="status-value" id="agentStatusValue">Not Deployed</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Tasks:</span>
+                            <span class="status-value" id="agentTasks">0</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Memory:</span>
+                            <span class="status-value" id="agentMemory">0 items</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Editor -->
+            <div class="builder-content">
+                <!-- Configuration Panel -->
+                <div class="config-panel">
+                    <div class="panel-header">
+                        <h2>Agent Configuration</h2>
+                        <div class="panel-tabs">
+                            <button class="tab-btn active" data-tab="basic">Basic</button>
+                            <button class="tab-btn" data-tab="prompts">Prompts</button>
+                            <button class="tab-btn" data-tab="memory">Memory</button>
+                            <button class="tab-btn" data-tab="advanced">Advanced</button>
+                        </div>
+                    </div>
+
+                    <!-- Basic Configuration -->
+                    <div class="tab-content active" id="basicTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="agentName">Agent Name</label>
+                                <input type="text" id="agentName" placeholder="My AI Assistant" value="My AI Assistant">
+                            </div>
+                            <div class="form-group">
+                                <label for="agentType">Agent Type</label>
+                                <select id="agentType">
+                                    <option value="general">General Assistant</option>
+                                    <option value="analyst">Data Analyst</option>
+                                    <option value="developer">Code Assistant</option>
+                                    <option value="creative">Creative Writer</option>
+                                    <option value="researcher">Research Agent</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="agentDescription">Description</label>
+                                <textarea id="agentDescription" placeholder="Describe what this agent does..." rows="3">A versatile AI assistant that can help with various tasks.</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prompts Configuration -->
+                    <div class="tab-content" id="promptsTab">
+                        <div class="prompt-section">
+                            <h3>System Prompt</h3>
+                            <div class="editor-container">
+                                <div id="systemPromptEditor" class="monaco-editor"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="prompt-section">
+                            <h3>Task Prompts</h3>
+                            <div class="task-prompts" id="taskPrompts">
+                                <div class="task-prompt-item">
+                                    <div class="prompt-header">
+                                        <input type="text" placeholder="Task type (e.g., question_answer)" class="task-type">
+                                        <button class="btn btn-small btn-danger remove-prompt">×</button>
+                                    </div>
+                                    <textarea placeholder="Prompt template for this task type..." class="prompt-template" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="addPrompt">
+                                <span class="btn-icon">+</span>
+                                <span class="btn-text">Add Task Prompt</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Memory Configuration -->
+                    <div class="tab-content" id="memoryTab">
+                        <div class="memory-config">
+                            <div class="form-group">
+                                <label>Memory Settings</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enableShortTerm" checked>
+                                        <span class="checkmark"></span>
+                                        Enable Short-term Memory
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enableLongTerm" checked>
+                                        <span class="checkmark"></span>
+                                        Enable Long-term Memory
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enableWorking" checked>
+                                        <span class="checkmark"></span>
+                                        Enable Working Memory
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="memoryCapacity">Memory Capacity</label>
+                                <select id="memoryCapacity">
+                                    <option value="small">Small (100 items)</option>
+                                    <option value="medium" selected>Medium (500 items)</option>
+                                    <option value="large">Large (1000 items)</option>
+                                    <option value="unlimited">Unlimited</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="memoryRetention">Memory Retention</label>
+                                <select id="memoryRetention">
+                                    <option value="1d">1 Day</option>
+                                    <option value="7d">7 Days</option>
+                                    <option value="30d" selected>30 Days</option>
+                                    <option value="90d">90 Days</option>
+                                    <option value="permanent">Permanent</option>
+                                </select>
+                            </div>
+
+                            <div class="memory-preview">
+                                <h4>Memory Preview</h4>
+                                <div class="memory-items" id="memoryItems">
+                                    <div class="memory-item">
+                                        <div class="memory-type-badge short-term">Short Term</div>
+                                        <div class="memory-content">No memories yet</div>
+                                        <div class="memory-timestamp">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Configuration -->
+                    <div class="tab-content" id="advancedTab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="temperature">Temperature</label>
+                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                                <span class="range-value" id="temperatureValue">0.7</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="maxTokens">Max Tokens</label>
+                                <input type="number" id="maxTokens" min="100" max="4000" step="100" value="1000">
+                            </div>
+                            <div class="form-group">
+                                <label for="contextWindow">Context Window</label>
+                                <input type="number" id="contextWindow" min="1000" max="32000" step="1000" value="4000">
+                            </div>
+                            <div class="form-group">
+                                <label for="priority">Default Priority</label>
+                                <select id="priority">
+                                    <option value="1">Low</option>
+                                    <option value="2" selected>Medium</option>
+                                    <option value="3">High</option>
+                                    <option value="4">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Capabilities</label>
+                            <div class="capability-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="capabilities" value="text_generation" checked>
+                                    <span class="checkmark"></span>
+                                    Text Generation
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="capabilities" value="data_analysis">
+                                    <span class="checkmark"></span>
+                                    Data Analysis
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="capabilities" value="code_generation">
+                                    <span class="checkmark"></span>
+                                    Code Generation
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="capabilities" value="translation">
+                                    <span class="checkmark"></span>
+                                    Translation
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="capabilities" value="summarization">
+                                    <span class="checkmark"></span>
+                                    Summarization
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="capabilities" value="creative_writing">
+                                    <span class="checkmark"></span>
+                                    Creative Writing
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Panel -->
+                <div class="test-panel">
+                    <div class="panel-header">
+                        <h3>Test Agent</h3>
+                        <div class="test-controls">
+                            <button class="btn btn-small btn-outline" id="clearTest">Clear</button>
+                            <button class="btn btn-small btn-primary" id="sendTest">Send</button>
+                        </div>
+                    </div>
+                    
+                    <div class="test-content">
+                        <div class="test-input">
+                            <textarea id="testPrompt" placeholder="Enter a test prompt for your agent..." rows="3"></textarea>
+                        </div>
+                        
+                        <div class="test-output">
+                            <div class="output-header">
+                                <span>Agent Response</span>
+                                <span class="response-time" id="responseTime"></span>
+                            </div>
+                            <div class="output-content" id="testOutput">
+                                <div class="placeholder">Agent response will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Deployment Modal -->
+    <div class="modal" id="deployModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Deploy Agent</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="deploy-step active" data-step="1">
+                    <h4>Step 1: Review Configuration</h4>
+                    <div class="config-summary" id="configSummary"></div>
+                </div>
+                
+                <div class="deploy-step" data-step="2">
+                    <h4>Step 2: Choose Deployment</h4>
+                    <div class="deployment-options">
+                        <div class="deploy-option" data-option="local">
+                            <div class="option-icon">🏠</div>
+                            <div class="option-info">
+                                <h5>Local Development</h5>
+                                <p>Deploy to local MCP server for testing</p>
+                            </div>
+                        </div>
+                        <div class="deploy-option" data-option="cloud">
+                            <div class="option-icon">☁️</div>
+                            <div class="option-info">
+                                <h5>Cloud Production</h5>
+                                <p>Deploy to AgentChains cloud infrastructure</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="deploy-step" data-step="3">
+                    <h4>Step 3: Deployment</h4>
+                    <div class="deploy-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="deployProgress"></div>
+                        </div>
+                        <div class="deploy-status" id="deployStatus">Ready to deploy...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="prevStep">Previous</button>
+                <button class="btn btn-primary" id="nextStep">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./agent-builder.js"></script>
+</body>
+</html>

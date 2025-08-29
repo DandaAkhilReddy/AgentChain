@@ -1133,6 +1133,669 @@ class ContactForm {
 }
 
 // ================================
+// AUTHENTICATION SYSTEM
+// ================================
+
+class AuthSystem {
+    constructor() {
+        this.user = null;
+        this.wallet = null;
+        this.web3 = null;
+        this.isAuthenticated = false;
+        this.init();
+    }
+    
+    init() {
+        this.setupGoogleAuth();
+        this.setupMetaMask();
+        this.bindEvents();
+        this.checkAuthState();
+    }
+    
+    setupGoogleAuth() {
+        if (typeof google !== 'undefined') {
+            google.accounts.id.initialize({
+                client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+                callback: this.handleGoogleSignIn.bind(this),
+                auto_select: false,
+                cancel_on_tap_outside: false
+            });
+        }
+    }
+    
+    setupMetaMask() {
+        if (typeof window.ethereum !== 'undefined' || typeof Web3 !== 'undefined') {
+            // MetaMask is available
+            console.log('🦊 MetaMask detected');
+        }
+    }
+    
+    bindEvents() {
+        // Google login button
+        const googleLoginBtn = $('#googleLogin');
+        if (googleLoginBtn) {
+            googleLoginBtn.addEventListener('click', this.handleGoogleLogin.bind(this));
+        }
+        
+        // MetaMask connect button
+        const metamaskBtn = $('#metamaskConnect');
+        if (metamaskBtn) {
+            metamaskBtn.addEventListener('click', this.connectMetaMask.bind(this));
+        }
+        
+        // Main launch button
+        const mainLaunchBtn = $('#mainLaunchBtn');
+        if (mainLaunchBtn) {
+            mainLaunchBtn.addEventListener('click', this.handleMainLaunch.bind(this));
+        }
+    }
+    
+    async handleGoogleLogin() {
+        try {
+            if (typeof google !== 'undefined') {
+                google.accounts.id.prompt();
+            } else {
+                // Fallback for when Google SDK isn't loaded
+                this.showAuthModal('google');
+            }
+        } catch (error) {
+            console.error('Google login error:', error);
+            this.showError('Google login failed. Please try again.');
+        }
+    }
+    
+    handleGoogleSignIn(response) {
+        try {
+            // Decode JWT token
+            const userInfo = this.parseJWT(response.credential);
+            this.user = {
+                id: userInfo.sub,
+                email: userInfo.email,
+                name: userInfo.name,
+                picture: userInfo.picture,
+                provider: 'google'
+            };
+            
+            this.isAuthenticated = true;
+            this.updateUI();
+            this.saveAuthState();
+            
+            this.showSuccess(`Welcome, ${this.user.name}! 🎉`);
+            
+        } catch (error) {
+            console.error('Error processing Google sign-in:', error);
+            this.showError('Authentication failed. Please try again.');
+        }
+    }
+    
+    async connectMetaMask() {
+        try {
+            if (typeof window.ethereum === 'undefined') {
+                this.showMetaMaskInstallPrompt();
+                return;
+            }
+            
+            // Request account access
+            const accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            
+            if (accounts.length === 0) {
+                throw new Error('No accounts found');
+            }
+            
+            this.wallet = {
+                address: accounts[0],
+                provider: 'metamask'
+            };
+            
+            // Initialize Web3
+            if (typeof Web3 !== 'undefined') {
+                this.web3 = new Web3(window.ethereum);
+            }
+            
+            // Get network info
+            const chainId = await window.ethereum.request({
+                method: 'eth_chainId'
+            });
+            
+            this.wallet.chainId = chainId;
+            this.wallet.networkName = this.getNetworkName(chainId);
+            
+            this.updateUI();
+            this.saveWalletState();
+            
+            this.showSuccess(`Wallet connected: ${this.wallet.address.slice(0, 6)}...${this.wallet.address.slice(-4)} 🦊`);
+            
+            // Listen for account changes
+            window.ethereum.on('accountsChanged', this.handleAccountsChanged.bind(this));
+            window.ethereum.on('chainChanged', this.handleChainChanged.bind(this));
+            
+        } catch (error) {
+            console.error('MetaMask connection error:', error);
+            this.showError('Wallet connection failed. Please try again.');
+        }
+    }
+    
+    handleMainLaunch() {
+        if (this.isAuthenticated || this.wallet) {
+            // User is authenticated, redirect to dApp
+            window.location.href = './dapp';
+        } else {
+            // Show authentication modal
+            this.showAuthModal();
+        }
+    }
+    
+    showAuthModal(preferredMethod = null) {
+        const modal = document.createElement('div');
+        modal.className = 'auth-modal';
+        modal.innerHTML = `
+            <div class="auth-modal-content">
+                <div class="auth-modal-header">
+                    <h3>Connect to AgentChains</h3>
+                    <button class="auth-modal-close">&times;</button>
+                </div>
+                <div class="auth-modal-body">
+                    <p>Choose your preferred way to connect:</p>
+                    
+                    <button class="auth-option google-auth" data-method="google">
+                        <span class="auth-icon">🔑</span>
+                        <div class="auth-content">
+                            <h4>Continue with Google</h4>
+                            <p>Quick and secure login with your Google account</p>
+                        </div>
+                    </button>
+                    
+                    <button class="auth-option metamask-auth" data-method="metamask">
+                        <span class="auth-icon">🦊</span>
+                        <div class="auth-content">
+                            <h4>Connect MetaMask Wallet</h4>
+                            <p>Connect your crypto wallet for full Web3 experience</p>
+                        </div>
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <button class="auth-option guest-auth" data-method="guest">
+                        <span class="auth-icon">👤</span>
+                        <div class="auth-content">
+                            <h4>Continue as Guest</h4>
+                            <p>Explore with limited features (no wallet required)</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="auth-modal-backdrop"></div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Animate modal in
+        setTimeout(() => modal.classList.add('show'), 10);
+        
+        // Bind events
+        modal.querySelector('.auth-modal-close').addEventListener('click', () => this.closeAuthModal(modal));
+        modal.querySelector('.auth-modal-backdrop').addEventListener('click', () => this.closeAuthModal(modal));
+        
+        modal.querySelectorAll('.auth-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const method = e.currentTarget.getAttribute('data-method');
+                this.handleAuthMethod(method);
+                this.closeAuthModal(modal);
+            });
+        });
+        
+        // Auto-focus preferred method
+        if (preferredMethod) {
+            const preferredOption = modal.querySelector(`[data-method="${preferredMethod}"]`);
+            if (preferredOption) {
+                preferredOption.classList.add('highlighted');
+                preferredOption.focus();
+            }
+        }
+    }
+    
+    handleAuthMethod(method) {
+        switch (method) {
+            case 'google':
+                this.handleGoogleLogin();
+                break;
+            case 'metamask':
+                this.connectMetaMask();
+                break;
+            case 'guest':
+                this.continueAsGuest();
+                break;
+        }
+    }
+    
+    continueAsGuest() {
+        this.user = {
+            id: 'guest_' + Date.now(),
+            name: 'Guest User',
+            provider: 'guest'
+        };
+        this.isAuthenticated = true;
+        this.updateUI();
+        this.showSuccess('Welcome, Guest! Some features may be limited. 👋');
+    }
+    
+    closeAuthModal(modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            if (modal.parentNode) {
+                modal.parentNode.removeChild(modal);
+            }
+        }, 300);
+    }
+    
+    showMetaMaskInstallPrompt() {
+        const installModal = document.createElement('div');
+        installModal.className = 'install-modal';
+        installModal.innerHTML = `
+            <div class="install-modal-content">
+                <div class="install-modal-header">
+                    <h3>MetaMask Required</h3>
+                </div>
+                <div class="install-modal-body">
+                    <div class="metamask-logo">🦊</div>
+                    <p>MetaMask wallet is required to connect to AgentChains.</p>
+                    <p>MetaMask is a secure wallet that lets you interact with Web3 applications.</p>
+                    
+                    <div class="install-actions">
+                        <a href="https://metamask.io/download/" target="_blank" class="btn btn-primary">
+                            Install MetaMask
+                        </a>
+                        <button class="btn btn-outline" onclick="this.closest('.install-modal').remove()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="install-modal-backdrop" onclick="this.parentElement.remove()"></div>
+        `;
+        
+        document.body.appendChild(installModal);
+        setTimeout(() => installModal.classList.add('show'), 10);
+    }
+    
+    handleAccountsChanged(accounts) {
+        if (accounts.length === 0) {
+            this.disconnectWallet();
+        } else {
+            this.wallet.address = accounts[0];
+            this.updateUI();
+            this.saveWalletState();
+        }
+    }
+    
+    handleChainChanged(chainId) {
+        this.wallet.chainId = chainId;
+        this.wallet.networkName = this.getNetworkName(chainId);
+        this.updateUI();
+        this.saveWalletState();
+    }
+    
+    getNetworkName(chainId) {
+        const networks = {
+            '0x1': 'Ethereum Mainnet',
+            '0x89': 'Polygon',
+            '0x38': 'BSC',
+            '0xa': 'Optimism',
+            '0xa4b1': 'Arbitrum',
+            '0x539': 'Localhost 8545'
+        };
+        return networks[chainId] || 'Unknown Network';
+    }
+    
+    updateUI() {
+        // Update login buttons
+        const googleLoginBtn = $('#googleLogin');
+        const metamaskBtn = $('#metamaskConnect');
+        const mainLaunchBtn = $('#mainLaunchBtn');
+        
+        if (this.isAuthenticated && googleLoginBtn) {
+            googleLoginBtn.innerHTML = `
+                <span class="btn-icon">👤</span>
+                <span class="btn-text">${this.user.name.split(' ')[0]}</span>
+            `;
+            googleLoginBtn.classList.add('authenticated');
+        }
+        
+        if (this.wallet && metamaskBtn) {
+            metamaskBtn.innerHTML = `
+                <span class="btn-icon">✅</span>
+                <span class="btn-text">${this.wallet.address.slice(0, 6)}...${this.wallet.address.slice(-4)}</span>
+            `;
+            metamaskBtn.classList.add('connected');
+        }
+        
+        if (mainLaunchBtn && (this.isAuthenticated || this.wallet)) {
+            mainLaunchBtn.innerHTML = `
+                <span class="btn-text">Enter Platform</span>
+                <span class="btn-icon">🚀</span>
+            `;
+        }
+    }
+    
+    parseJWT(token) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        
+        return JSON.parse(jsonPayload);
+    }
+    
+    saveAuthState() {
+        if (this.user) {
+            localStorage.setItem('agentchains-user', JSON.stringify(this.user));
+        }
+    }
+    
+    saveWalletState() {
+        if (this.wallet) {
+            localStorage.setItem('agentchains-wallet', JSON.stringify(this.wallet));
+        }
+    }
+    
+    checkAuthState() {
+        // Check saved user
+        const savedUser = localStorage.getItem('agentchains-user');
+        if (savedUser) {
+            try {
+                this.user = JSON.parse(savedUser);
+                this.isAuthenticated = true;
+            } catch (error) {
+                localStorage.removeItem('agentchains-user');
+            }
+        }
+        
+        // Check saved wallet
+        const savedWallet = localStorage.getItem('agentchains-wallet');
+        if (savedWallet) {
+            try {
+                this.wallet = JSON.parse(savedWallet);
+            } catch (error) {
+                localStorage.removeItem('agentchains-wallet');
+            }
+        }
+        
+        this.updateUI();
+    }
+    
+    logout() {
+        this.user = null;
+        this.isAuthenticated = false;
+        localStorage.removeItem('agentchains-user');
+        this.updateUI();
+        this.showSuccess('Logged out successfully');
+    }
+    
+    disconnectWallet() {
+        this.wallet = null;
+        this.web3 = null;
+        localStorage.removeItem('agentchains-wallet');
+        this.updateUI();
+        this.showSuccess('Wallet disconnected');
+    }
+    
+    showSuccess(message) {
+        this.showNotification(message, 'success');
+    }
+    
+    showError(message) {
+        this.showNotification(message, 'error');
+    }
+    
+    showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => notification.classList.add('show'), 10);
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
+    }
+}
+
+// ================================
+// WHITEPAPER HANDLER
+// ================================
+
+class WhitepaperHandler {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        const downloadBtn = $('#downloadWhitepaper');
+        const viewBtn = $('#viewOnline');
+        
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', this.handleDownload.bind(this));
+        }
+        
+        if (viewBtn) {
+            viewBtn.addEventListener('click', this.handleViewOnline.bind(this));
+        }
+    }
+    
+    handleDownload(e) {
+        e.preventDefault();
+        
+        // Track download
+        this.trackWhitepaperAction('download');
+        
+        // Show download modal
+        this.showDownloadModal();
+    }
+    
+    handleViewOnline(e) {
+        e.preventDefault();
+        
+        // Track view
+        this.trackWhitepaperAction('view');
+        
+        // Show online viewer
+        this.showOnlineViewer();
+    }
+    
+    showDownloadModal() {
+        const modal = document.createElement('div');
+        modal.className = 'whitepaper-modal';
+        modal.innerHTML = `
+            <div class="whitepaper-modal-content">
+                <div class="whitepaper-modal-header">
+                    <h3>Download Whitepaper</h3>
+                    <button class="whitepaper-modal-close">&times;</button>
+                </div>
+                <div class="whitepaper-modal-body">
+                    <div class="download-info">
+                        <div class="document-preview">
+                            <div class="document-icon">📄</div>
+                            <div class="document-details">
+                                <h4>AgentChains Technical Whitepaper v2.0</h4>
+                                <p>47 pages • 8.2 MB • PDF Format</p>
+                                <p>Last updated: September 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="download-form">
+                            <p>Get instant access to our comprehensive technical documentation:</p>
+                            <form id="whitepaperForm">
+                                <div class="form-group">
+                                    <input type="email" id="whitepaperEmail" required placeholder="Enter your email address">
+                                </div>
+                                <div class="form-group checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="whitepaperUpdates">
+                                        <span class="checkmark"></span>
+                                        Get notified about whitepaper updates and new releases
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="btn-text">Download Now</span>
+                                    <span class="btn-icon">📥</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="whitepaper-modal-backdrop"></div>
+        `;
+        
+        document.body.appendChild(modal);
+        setTimeout(() => modal.classList.add('show'), 10);
+        
+        // Bind events
+        modal.querySelector('.whitepaper-modal-close').addEventListener('click', () => this.closeModal(modal));
+        modal.querySelector('.whitepaper-modal-backdrop').addEventListener('click', () => this.closeModal(modal));
+        modal.querySelector('#whitepaperForm').addEventListener('submit', this.handleWhitepaperSubmit.bind(this));
+    }
+    
+    async handleWhitepaperSubmit(e) {
+        e.preventDefault();
+        
+        const email = $('#whitepaperEmail').value;
+        const updates = $('#whitepaperUpdates').checked;
+        
+        try {
+            // Simulate API call for whitepaper request
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Trigger download
+            this.triggerDownload();
+            
+            // Close modal
+            const modal = e.target.closest('.whitepaper-modal');
+            this.closeModal(modal);
+            
+            // Show success message
+            this.showNotification('✅ Whitepaper download started! Check your downloads folder.', 'success');
+            
+        } catch (error) {
+            this.showNotification('❌ Download failed. Please try again.', 'error');
+        }
+    }
+    
+    triggerDownload() {
+        // In a real implementation, this would download the actual PDF
+        // For demo purposes, we'll create a placeholder PDF
+        const link = document.createElement('a');
+        link.href = 'data:application/pdf;base64,JVBERi0xLjMKJf////8KMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKL01lZGlhQm94IFswIDAgNTk1IDg0Ml0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovRm9udCA0IDAgUgovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSA0IDAgUgo+Pgo+Pgo+Pgo+Pgo+PgplbmRvYmoK';
+        link.download = 'AgentChains-Whitepaper-v2.0.pdf';
+        link.click();
+    }
+    
+    showOnlineViewer() {
+        const viewer = document.createElement('div');
+        viewer.className = 'whitepaper-viewer';
+        viewer.innerHTML = `
+            <div class="viewer-header">
+                <h3>AgentChains Technical Whitepaper</h3>
+                <button class="viewer-close">&times;</button>
+            </div>
+            <div class="viewer-content">
+                <div class="viewer-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading whitepaper...</p>
+                </div>
+                <iframe src="about:blank" frameborder="0"></iframe>
+            </div>
+        `;
+        
+        document.body.appendChild(viewer);
+        setTimeout(() => viewer.classList.add('show'), 10);
+        
+        // Simulate loading
+        setTimeout(() => {
+            const iframe = viewer.querySelector('iframe');
+            const loading = viewer.querySelector('.viewer-loading');
+            
+            // In production, this would load the actual PDF
+            iframe.src = 'data:text/html,<div style="padding:50px;text-align:center;font-family:sans-serif;"><h1>AgentChains Whitepaper Preview</h1><p>This is a preview of the AgentChains technical whitepaper.</p><p>The full document contains 47 pages of comprehensive technical documentation.</p><br><a href="#" onclick="parent.postMessage(\'download\', \'*\')" style="color:#00D4FF;">Download Full PDF</a></div>';
+            
+            loading.style.display = 'none';
+            iframe.style.display = 'block';
+        }, 2000);
+        
+        // Bind events
+        viewer.querySelector('.viewer-close').addEventListener('click', () => {
+            viewer.classList.remove('show');
+            setTimeout(() => {
+                if (viewer.parentNode) {
+                    viewer.parentNode.removeChild(viewer);
+                }
+            }, 300);
+        });
+        
+        // Listen for download message from iframe
+        window.addEventListener('message', (e) => {
+            if (e.data === 'download') {
+                this.handleDownload({ preventDefault: () => {} });
+            }
+        });
+    }
+    
+    closeModal(modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            if (modal.parentNode) {
+                modal.parentNode.removeChild(modal);
+            }
+        }, 300);
+    }
+    
+    showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.add('show'), 10);
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
+    }
+    
+    trackWhitepaperAction(action) {
+        console.log(`📊 Whitepaper ${action}:`, { action, timestamp: new Date().toISOString() });
+        
+        // Analytics tracking
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'whitepaper_' + action, {
+                event_category: 'Whitepaper',
+                event_label: 'v2.0',
+                value: 1
+            });
+        }
+    }
+}
+
+// ================================
 // INITIALIZATION
 // ================================
 
@@ -1149,6 +1812,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const performanceMonitor = new PerformanceMonitor();
     const accessibilityEnhancer = new AccessibilityEnhancer();
     const contactForm = new ContactForm();
+    const authSystem = new AuthSystem();
+    const whitepaperHandler = new WhitepaperHandler();
     
     // Optional smooth scrolling (can be resource intensive)
     const enableSmoothScroll = false;

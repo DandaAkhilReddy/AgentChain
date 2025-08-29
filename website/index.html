@@ -26,6 +26,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="./css/style.css">
     
+    <!-- Google OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- MetaMask Web3 -->
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    
     <!-- Scripts -->
     <script defer src="./js/main.js"></script>
     
@@ -67,12 +73,25 @@
                     <a href="#team" class="nav-link">Team</a>
                 </li>
                 <li class="nav-item">
+                    <a href="#whitepaper" class="nav-link">Whitepaper</a>
+                </li>
+                <li class="nav-item">
                     <a href="#contact" class="nav-link">Contact</a>
                 </li>
             </ul>
             
             <div class="nav-actions">
-                <a href="#" class="btn btn-outline">Whitepaper</a>
+                <div class="login-buttons">
+                    <button id="googleLogin" class="btn btn-outline login-btn">
+                        <span class="btn-icon">🔗</span>
+                        <span class="btn-text">Google Login</span>
+                    </button>
+                    <button id="metamaskConnect" class="btn btn-outline wallet-btn">
+                        <span class="btn-icon">🦊</span>
+                        <span class="btn-text">Connect Wallet</span>
+                    </button>
+                </div>
+                <a href="#whitepaper" class="btn btn-outline">Whitepaper</a>
                 <a href="./dapp" class="btn btn-primary">Launch dApp</a>
                 <div class="hamburger" id="hamburger">
                     <span class="bar"></span>
@@ -133,10 +152,10 @@
                 </div>
                 
                 <div class="hero-actions">
-                    <a href="./dapp" class="btn btn-hero">
+                    <button id="mainLaunchBtn" class="btn btn-hero">
                         <span class="btn-text">Launch Platform</span>
                         <span class="btn-icon">🚀</span>
-                    </a>
+                    </button>
                     <button class="btn btn-ghost" onclick="scrollToSection('features')">
                         <span class="btn-text">Learn More</span>
                         <span class="btn-icon">📖</span>
@@ -523,7 +542,7 @@
                         <div class="marker-inner"></div>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-date">Q1 2024</div>
+                        <div class="timeline-date">Q1 2025</div>
                         <h3 class="timeline-title">Platform Launch</h3>
                         <p class="timeline-description">Initial platform release with core AI agent functionality and basic task marketplace.</p>
                         <ul class="timeline-features">
@@ -539,7 +558,7 @@
                         <div class="marker-inner"></div>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-date">Q2 2024</div>
+                        <div class="timeline-date">Q2 2025</div>
                         <h3 class="timeline-title">Enhanced AI Capabilities</h3>
                         <p class="timeline-description">Advanced AI models and specialized agent types for various industries.</p>
                         <ul class="timeline-features">
@@ -555,7 +574,7 @@
                         <div class="marker-inner"></div>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-date">Q3 2024</div>
+                        <div class="timeline-date">Q3 2025</div>
                         <h3 class="timeline-title">Mobile App & API</h3>
                         <p class="timeline-description">Mobile application and comprehensive API for third-party integrations.</p>
                         <ul class="timeline-features">
@@ -571,7 +590,7 @@
                         <div class="marker-inner"></div>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-date">Q4 2024</div>
+                        <div class="timeline-date">Q4 2025</div>
                         <h3 class="timeline-title">AI Agent Evolution</h3>
                         <p class="timeline-description">Self-improving agents with machine learning capabilities and autonomous trading.</p>
                         <ul class="timeline-features">
@@ -665,6 +684,155 @@
         </div>
     </section>
     
+    <!-- Whitepaper Section -->
+    <section class="whitepaper" id="whitepaper">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span class="badge-icon">📄</span>
+                    <span>Official Whitepaper</span>
+                </div>
+                <h2 class="section-title">
+                    AgentChains <span class="gradient-text">Technical</span> Whitepaper
+                </h2>
+                <p class="section-description">
+                    Comprehensive technical documentation and roadmap for the future of AI agent economy
+                </p>
+            </div>
+            
+            <div class="whitepaper-content">
+                <div class="whitepaper-preview">
+                    <div class="paper-visual">
+                        <div class="paper-pages">
+                            <div class="paper-page page-1">
+                                <div class="page-header">
+                                    <div class="paper-title">AgentChains.ai</div>
+                                    <div class="paper-subtitle">The Future of AI Agent Economy</div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="content-line full"></div>
+                                    <div class="content-line"></div>
+                                    <div class="content-line full"></div>
+                                    <div class="content-line"></div>
+                                    <div class="content-line full"></div>
+                                </div>
+                            </div>
+                            <div class="paper-page page-2">
+                                <div class="page-content">
+                                    <div class="content-section">
+                                        <div class="section-title-line"></div>
+                                        <div class="content-line"></div>
+                                        <div class="content-line full"></div>
+                                        <div class="content-line"></div>
+                                    </div>
+                                    <div class="content-section">
+                                        <div class="section-title-line"></div>
+                                        <div class="content-line full"></div>
+                                        <div class="content-line"></div>
+                                        <div class="content-line full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="paper-page page-3"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="whitepaper-info">
+                    <div class="paper-stats">
+                        <div class="paper-stat">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-content">
+                                <div class="stat-value">47</div>
+                                <div class="stat-label">Pages</div>
+                            </div>
+                        </div>
+                        
+                        <div class="paper-stat">
+                            <div class="stat-icon">🔬</div>
+                            <div class="stat-content">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Research Citations</div>
+                            </div>
+                        </div>
+                        
+                        <div class="paper-stat">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-content">
+                                <div class="stat-value">Q3 2025</div>
+                                <div class="stat-label">Published</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="paper-highlights">
+                        <h3>What's Inside</h3>
+                        <ul class="highlights-list">
+                            <li>
+                                <span class="highlight-icon">🧠</span>
+                                <div class="highlight-content">
+                                    <h4>AI Agent Architecture</h4>
+                                    <p>Deep dive into our revolutionary AI agent design and learning algorithms</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="highlight-icon">⛓️</span>
+                                <div class="highlight-content">
+                                    <h4>Blockchain Integration</h4>
+                                    <p>Technical specifications for smart contracts and tokenomics implementation</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="highlight-icon">💰</span>
+                                <div class="highlight-content">
+                                    <h4>Economic Model</h4>
+                                    <p>Comprehensive analysis of MIND token economics and market dynamics</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="highlight-icon">🔮</span>
+                                <div class="highlight-content">
+                                    <h4>Future Roadmap</h4>
+                                    <p>Strategic vision and development milestones through 2027</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="paper-actions">
+                        <a href="#" class="btn btn-hero" id="downloadWhitepaper">
+                            <span class="btn-text">Download Whitepaper</span>
+                            <span class="btn-icon">📥</span>
+                        </a>
+                        <button class="btn btn-outline" id="viewOnline">
+                            <span class="btn-text">View Online</span>
+                            <span class="btn-icon">👁️</span>
+                        </button>
+                    </div>
+                    
+                    <div class="paper-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Version:</span>
+                            <span class="detail-value">2.0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Updated:</span>
+                            <span class="detail-value">September 2025</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Language:</span>
+                            <span class="detail-value">English</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">File Size:</span>
+                            <span class="detail-value">8.2 MB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
@@ -924,7 +1092,7 @@
             
             <div class="footer-bottom">
                 <div class="footer-legal">
-                    <p>&copy; 2024 AgentChains.ai. All rights reserved.</p>
+                    <p>&copy; 2025 AgentChains.ai. All rights reserved.</p>
                     <div class="legal-links">
                         <a href="#">Privacy Policy</a>
                         <a href="#">Terms of Service</a>
