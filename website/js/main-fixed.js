@@ -221,74 +221,58 @@ class AuthSystem {
     }
 
     launchPlatform() {
-        // Check if authenticated
-        if (!this.isAuthenticated) {
-            this.showAuthModal();
-            return;
-        }
-        
-        // Save auth state
-        localStorage.setItem('agentchains-auth', 'true');
-        if (this.user) {
-            localStorage.setItem('agentchains-user', JSON.stringify(this.user));
-        }
-        if (this.wallet) {
-            localStorage.setItem('agentchains-wallet', this.wallet);
-        }
-        
-        // Redirect to app
-        this.showNotification('Launching AgentChains Platform...', 'success');
-        
-        setTimeout(() => {
-            window.location.href = './app/index.html';
-        }, 1500);
+        // Show coming soon message
+        this.showComingSoonModal();
     }
 
-    showAuthModal() {
+    showComingSoonModal() {
         const modal = document.createElement('div');
-        modal.className = 'auth-modal';
+        modal.className = 'coming-soon-modal';
         modal.innerHTML = `
             <div class="modal-overlay"></div>
-            <div class="modal-content">
+            <div class="modal-content coming-soon-content">
                 <div class="modal-header">
-                    <h2>Connect to AgentChains</h2>
-                    <p>Choose your preferred authentication method</p>
+                    <div class="coming-soon-icon">🚀</div>
+                    <h2>AgentChains Platform</h2>
+                    <p>Coming Soon - Q3 2025</p>
                     <button class="modal-close">&times;</button>
                 </div>
-                <div class="auth-options">
-                    <button class="auth-option google-auth" data-method="google">
-                        <svg class="auth-icon" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        <div class="auth-text">
-                            <span class="auth-title">Continue with Google</span>
-                            <span class="auth-subtitle">Quick and secure</span>
+                <div class="coming-soon-body">
+                    <div class="feature-preview">
+                        <div class="preview-item">
+                            <div class="preview-icon">🤖</div>
+                            <div class="preview-text">
+                                <h3>AI Agent Builder</h3>
+                                <p>Create intelligent agents with visual interface</p>
+                            </div>
                         </div>
-                    </button>
-                    <button class="auth-option wallet-auth" data-method="wallet">
-                        <svg class="auth-icon metamask-icon" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="#E17726" d="M22.32 1.5L13.5 8.08l1.63-3.8 7.19-2.78z"/>
-                            <path fill="#E27625" d="M1.68 1.5l8.74 6.64-1.55-3.86L1.68 1.5z"/>
-                            <path fill="#E27625" d="M19.07 16.5l-2.35 3.58 5.02 1.38 1.44-4.87-4.11-.09z"/>
-                            <path fill="#E27625" d="M1.02 16.59l1.44 4.87 5.02-1.38-2.35-3.58-4.11.09z"/>
-                            <path fill="#F5841F" d="M7.14 10.42l-1.39 2.1 4.99.22-.17-5.37-3.43 3.05z"/>
-                            <path fill="#F5841F" d="M16.86 10.42l-3.51-3.13-.11 5.45 4.99-.22-1.37-2.1z"/>
-                        </svg>
-                        <div class="auth-text">
-                            <span class="auth-title">Connect MetaMask</span>
-                            <span class="auth-subtitle">Web3 wallet connection</span>
+                        <div class="preview-item">
+                            <div class="preview-icon">💰</div>
+                            <div class="preview-text">
+                                <h3>MIND Token Economy</h3>
+                                <p>Earn real cryptocurrency with your agents</p>
+                            </div>
                         </div>
-                    </button>
-                    <button class="auth-option guest-auth" data-method="guest">
-                        <div class="guest-icon">👤</div>
-                        <div class="auth-text">
-                            <span class="auth-title">Continue as Guest</span>
-                            <span class="auth-subtitle">Limited features</span>
+                        <div class="preview-item">
+                            <div class="preview-icon">🏪</div>
+                            <div class="preview-text">
+                                <h3>Agent Marketplace</h3>
+                                <p>Buy, sell and trade AI agents as NFTs</p>
+                            </div>
                         </div>
-                    </button>
+                    </div>
+                    <div class="notify-section">
+                        <h3>Get Notified When We Launch</h3>
+                        <div class="email-signup">
+                            <input type="email" placeholder="Enter your email" class="email-input">
+                            <button class="notify-btn">Notify Me</button>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📱 Join Telegram</a>
+                        <a href="#" class="social-link">🐦 Follow Twitter</a>
+                        <a href="#" class="social-link">💬 Join Discord</a>
+                    </div>
                 </div>
             </div>
         `;
@@ -304,19 +288,148 @@ class AuthSystem {
             document.body.removeChild(modal);
         });
         
-        modal.querySelectorAll('.auth-option').forEach(option => {
-            option.addEventListener('click', (e) => {
-                const method = e.currentTarget.getAttribute('data-method');
+        modal.querySelector('.notify-btn').addEventListener('click', () => {
+            const email = modal.querySelector('.email-input').value;
+            if (email && email.includes('@')) {
+                this.showNotification('Thank you! We\'ll notify you when we launch.', 'success');
                 document.body.removeChild(modal);
+            } else {
+                this.showNotification('Please enter a valid email address', 'warning');
+            }
+        });
+    }
+
+    showAuthModal() {
+        const modal = document.createElement('div');
+        modal.className = 'auth-modal clean-auth';
+        modal.innerHTML = `
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="auth-logo">🤖</div>
+                    <h2>Welcome to AgentChains</h2>
+                    <p>Connect your account to get started</p>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="auth-step-container">
+                    <div class="auth-step" id="authStep1">
+                        <div class="step-header">
+                            <h3>Choose Authentication Method</h3>
+                            <p>Select how you'd like to connect</p>
+                        </div>
+                        <div class="auth-options-clean">
+                            <button class="auth-option-clean google-option" onclick="this.closest('.auth-modal').showStep2('google')">
+                                <div class="option-icon">
+                                    <svg viewBox="0 0 24 24" width="32" height="32">
+                                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                    </svg>
+                                </div>
+                                <div class="option-content">
+                                    <div class="option-title">Google Account</div>
+                                    <div class="option-subtitle">Sign in with your Google account</div>
+                                </div>
+                                <div class="option-arrow">→</div>
+                            </button>
+                            
+                            <button class="auth-option-clean crypto-option" onclick="this.closest('.auth-modal').showStep2('wallet')">
+                                <div class="option-icon">
+                                    <svg viewBox="0 0 24 24" width="32" height="32">
+                                        <path fill="#F6851B" d="M22.32 1.5L13.5 8.08l1.63-3.8 7.19-2.78z"/>
+                                        <path fill="#E27625" d="M1.68 1.5l8.74 6.64-1.55-3.86L1.68 1.5z"/>
+                                        <path fill="#E27625" d="M19.07 16.5l-2.35 3.58 5.02 1.38 1.44-4.87-4.11-.09z"/>
+                                        <path fill="#E27625" d="M1.02 16.59l1.44 4.87 5.02-1.38-2.35-3.58-4.11.09z"/>
+                                        <path fill="#F5841F" d="M7.14 10.42l-1.39 2.1 4.99.22-.17-5.37-3.43 3.05z"/>
+                                        <path fill="#F5841F" d="M16.86 10.42l-3.51-3.13-.11 5.45 4.99-.22-1.37-2.1z"/>
+                                    </svg>
+                                </div>
+                                <div class="option-content">
+                                    <div class="option-title">Crypto Wallet</div>
+                                    <div class="option-subtitle">Connect with MetaMask or other wallets</div>
+                                </div>
+                                <div class="option-arrow">→</div>
+                            </button>
+                        </div>
+                        <div class="auth-divider">
+                            <span>or</span>
+                        </div>
+                        <button class="guest-button" onclick="authSystem.continueAsGuest(); document.body.removeChild(this.closest('.auth-modal'))">
+                            Continue as Guest
+                            <span class="guest-note">Limited features available</span>
+                        </button>
+                    </div>
+                    
+                    <div class="auth-step hidden" id="authStep2">
+                        <div class="step-header">
+                            <button class="back-btn" onclick="this.closest('.auth-modal').showStep1()">← Back</button>
+                            <h3 id="step2Title">Connect Account</h3>
+                            <p id="step2Subtitle">Follow the prompts to connect</p>
+                        </div>
+                        <div class="connection-status">
+                            <div class="status-animation">
+                                <div class="spinner"></div>
+                            </div>
+                            <div class="status-text" id="connectionStatus">Connecting...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Add modal methods
+        modal.showStep1 = function() {
+            this.querySelector('#authStep1').classList.remove('hidden');
+            this.querySelector('#authStep2').classList.add('hidden');
+        };
+        
+        modal.showStep2 = function(method) {
+            this.querySelector('#authStep1').classList.add('hidden');
+            this.querySelector('#authStep2').classList.remove('hidden');
+            
+            const title = this.querySelector('#step2Title');
+            const subtitle = this.querySelector('#step2Subtitle');
+            const status = this.querySelector('#connectionStatus');
+            
+            if (method === 'google') {
+                title.textContent = 'Connecting Google Account';
+                subtitle.textContent = 'Redirecting to Google OAuth...';
+                status.textContent = 'Connecting to Google...';
                 
-                if (method === 'google') {
-                    this.loginWithGoogle();
-                } else if (method === 'wallet') {
-                    this.connectWallet();
-                } else if (method === 'guest') {
-                    this.continueAsGuest();
-                }
-            });
+                // Simulate connection then authenticate
+                setTimeout(() => {
+                    status.textContent = 'Success! Logging you in...';
+                    setTimeout(() => {
+                        document.body.removeChild(modal);
+                        authSystem.loginWithGoogle();
+                    }, 1000);
+                }, 2000);
+            } else if (method === 'wallet') {
+                title.textContent = 'Connecting Wallet';
+                subtitle.textContent = 'Please approve in MetaMask...';
+                status.textContent = 'Waiting for wallet approval...';
+                
+                // Simulate connection then authenticate
+                setTimeout(() => {
+                    status.textContent = 'Connecting to blockchain...';
+                    setTimeout(() => {
+                        document.body.removeChild(modal);
+                        authSystem.connectWallet();
+                    }, 1000);
+                }, 1500);
+            }
+        };
+        
+        // Add event listeners
+        modal.querySelector('.modal-close').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        modal.querySelector('.modal-overlay').addEventListener('click', () => {
+            document.body.removeChild(modal);
         });
     }
 
