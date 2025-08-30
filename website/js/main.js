@@ -472,16 +472,31 @@ class LoadingScreen {
     }
     
     initPageAnimations() {
-        // Animate hero section
-        gsap.fromTo('.hero-content', 
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-        );
+        // Animate hero section without GSAP
+        const heroContent = document.querySelector('.hero-content');
+        const heroVisual = document.querySelector('.hero-visual');
         
-        gsap.fromTo('.hero-visual', 
-            { opacity: 0, scale: 0.8 },
-            { opacity: 1, scale: 1, duration: 1.2, ease: 'back.out(1.7)', delay: 0.3 }
-        );
+        if (heroContent) {
+            heroContent.style.opacity = '0';
+            heroContent.style.transform = 'translateY(50px)';
+            heroContent.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+            
+            setTimeout(() => {
+                heroContent.style.opacity = '1';
+                heroContent.style.transform = 'translateY(0)';
+            }, 100);
+        }
+        
+        if (heroVisual) {
+            heroVisual.style.opacity = '0';
+            heroVisual.style.transform = 'scale(0.8)';
+            heroVisual.style.transition = 'opacity 1.2s ease-out, transform 1.2s ease-out';
+            
+            setTimeout(() => {
+                heroVisual.style.opacity = '1';
+                heroVisual.style.transform = 'scale(1)';
+            }, 400);
+        }
     }
 }
 
@@ -2188,7 +2203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const performanceMonitor = new PerformanceMonitor();
     const accessibilityEnhancer = new AccessibilityEnhancer();
     const contactForm = new ContactForm();
-    const authSystem = new AuthSystem();
+    // authSystem is already initialized at the top of the file
     const whitepaperHandler = new WhitepaperHandler();
     
     // Optional smooth scrolling (can be resource intensive)

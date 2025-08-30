@@ -263,6 +263,17 @@
   }
 }
 
+/* Loading Screen Hide Animation */
+.loading-screen.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+body.loaded .loading-screen {
+  display: none;
+}
+
 :root {
   /* Core Colors */
   --primary-cyan: #00D4FF;
