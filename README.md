@@ -221,9 +221,10 @@ graph TB
 https://icy-mushroom-029b4900f.1.azurestaticapps.net
 
 ✅ Google/MetaMask Login
-✅ Agent Builder Interface  
-✅ Interactive Whitepaper
-✅ Live Demo Available
+✅ Full dApp Platform
+✅ Token Buy/Sell/Stake
+✅ AI Agent Dashboard
+✅ Testnet Integration
 ```
 
 </td>
@@ -275,10 +276,10 @@ http://localhost:3001
 **🎯 Step-by-Step Demo Experience:**
 1. **Visit Platform** → [Click here](https://icy-mushroom-029b4900f.1.azurestaticapps.net) for instant access
 2. **Choose Authentication** → Google OAuth or MetaMask wallet  
-3. **Explore Interface** → Modern, intuitive design
-4. **Build Your Agent** → Visual drag-and-drop tools
-5. **Test AI Intelligence** → See real responses
-6. **Download Technical Docs** → Complete 47-page whitepaper
+3. **Launch dApp** → Click "Launch Platform" to enter the full application
+4. **Manage Tokens** → Buy, stake, and trade 1000 test MIND tokens
+5. **Create AI Agents** → Deploy intelligent agents and earn rewards
+6. **Track Performance** → Monitor earnings and success rates in real-time
 
 ---
 
