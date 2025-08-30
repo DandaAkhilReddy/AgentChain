@@ -227,11 +227,20 @@ class AuthSystem {
             return;
         }
         
+        // Save auth state
+        localStorage.setItem('agentchains-auth', 'true');
+        if (this.user) {
+            localStorage.setItem('agentchains-user', JSON.stringify(this.user));
+        }
+        if (this.wallet) {
+            localStorage.setItem('agentchains-wallet', this.wallet);
+        }
+        
         // Redirect to app
         this.showNotification('Launching AgentChains Platform...', 'success');
         
         setTimeout(() => {
-            window.location.href = '/app';
+            window.location.href = './app/index.html';
         }, 1500);
     }
 

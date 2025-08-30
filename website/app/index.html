@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentChains Platform - AI Agent Dashboard</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0B0F;
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .app-header {
+            background: rgba(26, 27, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #00D4FF;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .wallet-display {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid #00D4FF;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .logout-btn {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        /* Main Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 2rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: rgba(26, 27, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #B4BCD0;
+        }
+        
+        .nav-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00D4FF;
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00D4FF;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        /* Main Content */
+        .main-content {
+            space-y: 2rem;
+        }
+        
+        /* Token Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .balance-title {
+            font-size: 18px;
+            color: #B4BCD0;
+        }
+        
+        .network-badge {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00FF88;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #00FF88;
+        }
+        
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .balance-usd {
+            font-size: 24px;
+            color: #B4BCD0;
+            margin-bottom: 2rem;
+        }
+        
+        .token-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .action-label {
+            font-size: 14px;
+            color: #B4BCD0;
+        }
+        
+        /* Agents Section */
+        .agents-section {
+            background: rgba(26, 27, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .create-agent-btn {
+            background: linear-gradient(135deg, #00D4FF 0%, #0099CC 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .create-agent-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .agent-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-4px);
+            border-color: #00D4FF;
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+        }
+        
+        .agent-avatar {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .agent-type {
+            color: #00D4FF;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .agent-stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00FF88;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #B4BCD0;
+        }
+        
+        /* Staking Section */
+        .staking-section {
+            background: rgba(26, 27, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .staking-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .staking-stat {
+            text-align: center;
+        }
+        
+        .staking-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00FF88;
+            margin-bottom: 8px;
+        }
+        
+        .staking-label {
+            color: #B4BCD0;
+        }
+        
+        .stake-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .stake-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 1rem;
+        }
+        
+        .stake-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #00FF88 0%, #00D4FF 100%);
+            color: #0A0B0F;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .stake-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
+        }
+        
+        /* Coming Soon Overlay */
+        .coming-soon {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coming-soon::after {
+            content: 'COMING SOON';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #00D4FF;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 24px;
+            border: 2px solid #00D4FF;
+            z-index: 10;
+        }
+        
+        .coming-soon > * {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1A1B23;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: #B4BCD0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .buy-amount-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .token-price {
+            text-align: center;
+            color: #B4BCD0;
+            margin-bottom: 2rem;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+            color: #0A0B0F;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .token-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <span>🤖</span>
+                <span>AgentChains Platform</span>
+            </div>
+            <div class="user-info">
+                <div class="wallet-display" id="walletDisplay">
+                    Not Connected
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav>
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showSection('agents')">
+                    <span>🤖</span>
+                    <span>My Agents</span>
+                </div>
+                <div class="nav-item" onclick="showSection('marketplace')">
+                    <span>🏪</span>
+                    <span>Marketplace</span>
+                </div>
+                <div class="nav-item" onclick="showSection('staking')">
+                    <span>💎</span>
+                    <span>Staking</span>
+                </div>
+                <div class="nav-item" onclick="showSection('tasks')">
+                    <span>📋</span>
+                    <span>Tasks</span>
+                </div>
+                <div class="nav-item" onclick="showSection('analytics')">
+                    <span>📈</span>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item" onclick="showSection('settings')">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Token Balance Card -->
+            <div class="balance-card">
+                <div class="balance-header">
+                    <h2 class="balance-title">MIND Token Balance</h2>
+                    <div class="network-badge" id="networkBadge">Testnet</div>
+                </div>
+                <div class="balance-amount" id="mindBalance">1,000.00</div>
+                <div class="balance-usd">≈ $1,000 USD</div>
+                <div class="token-actions">
+                    <div class="action-btn" onclick="showBuyModal()">
+                        <div class="action-icon">💰</div>
+                        <div class="action-label">Buy</div>
+                    </div>
+                    <div class="action-btn" onclick="showSendModal()">
+                        <div class="action-icon">📤</div>
+                        <div class="action-label">Send</div>
+                    </div>
+                    <div class="action-btn" onclick="showReceiveModal()">
+                        <div class="action-icon">📥</div>
+                        <div class="action-label">Receive</div>
+                    </div>
+                    <div class="action-btn" onclick="showSwapModal()">
+                        <div class="action-icon">🔄</div>
+                        <div class="action-label">Swap</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Agents Section -->
+            <div class="agents-section">
+                <div class="section-header">
+                    <h2 class="section-title">My AI Agents</h2>
+                    <button class="create-agent-btn" onclick="createNewAgent()">
+                        + Create New Agent
+                    </button>
+                </div>
+                <div class="agents-grid" id="agentsGrid">
+                    <!-- Demo Agent Cards -->
+                    <div class="agent-card">
+                        <div class="agent-avatar">🎯</div>
+                        <div class="agent-name">General Assistant</div>
+                        <div class="agent-type">Universal Helper</div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="stat-value">47</div>
+                                <div class="stat-label">Tasks</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="stat-value">98%</div>
+                                <div class="stat-label">Success</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="stat-value">235</div>
+                                <div class="stat-label">MIND Earned</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-card">
+                        <div class="agent-avatar">📊</div>
+                        <div class="agent-name">Data Analyst</div>
+                        <div class="agent-type">Analytics Expert</div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="stat-value">23</div>
+                                <div class="stat-label">Tasks</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="stat-value">95%</div>
+                                <div class="stat-label">Success</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="stat-value">450</div>
+                                <div class="stat-label">MIND Earned</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-card">
+                        <div class="agent-avatar">👨‍💻</div>
+                        <div class="agent-name">Code Master</div>
+                        <div class="agent-type">Development Pro</div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="stat-value">15</div>
+                                <div class="stat-label">Tasks</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="stat-value">100%</div>
+                                <div class="stat-label">Success</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="stat-value">680</div>
+                                <div class="stat-label">MIND Earned</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Staking Section -->
+            <div class="staking-section">
+                <div class="section-header">
+                    <h2 class="section-title">Staking Rewards</h2>
+                </div>
+                <div class="staking-stats">
+                    <div class="staking-stat">
+                        <div class="staking-value">12%</div>
+                        <div class="staking-label">Current APY</div>
+                    </div>
+                    <div class="staking-stat">
+                        <div class="staking-value">0</div>
+                        <div class="staking-label">MIND Staked</div>
+                    </div>
+                    <div class="staking-stat">
+                        <div class="staking-value">0</div>
+                        <div class="staking-label">Rewards Earned</div>
+                    </div>
+                </div>
+                <div class="stake-form">
+                    <input type="number" class="stake-input" placeholder="Amount to stake" id="stakeAmount">
+                    <button class="stake-btn" onclick="stakeTokens()">Stake MIND Tokens</button>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Sections -->
+            <div class="agents-section coming-soon">
+                <h2 class="section-title">Marketplace</h2>
+                <p>Browse and purchase AI agents from other creators</p>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Buy Modal -->
+    <div class="modal" id="buyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Buy MIND Tokens</h3>
+                <button class="modal-close" onclick="closeBuyModal()">×</button>
+            </div>
+            <input type="number" class="buy-amount-input" placeholder="1000" value="1000" id="buyAmount">
+            <div class="token-price">1 MIND = $0.001 (Testnet Price)</div>
+            <button class="buy-btn" onclick="buyTokens()">Buy MIND Tokens</button>
+        </div>
+    </div>
+    
+    <!-- Include testnet config -->
+    <script src="../js/testnet-config.js"></script>
+    
+    <script>
+        // Check authentication on load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            updateWalletDisplay();
+            updateBalance();
+        });
+        
+        function checkAuth() {
+            // Check if user is authenticated
+            const isAuth = localStorage.getItem('agentchains-auth');
+            if (!isAuth) {
+                // Redirect to main page if not authenticated
+                window.location.href = '/';
+            }
+        }
+        
+        function updateWalletDisplay() {
+            const walletDisplay = document.getElementById('walletDisplay');
+            const wallet = localStorage.getItem('agentchains-wallet');
+            
+            if (wallet && wallet !== 'null') {
+                // Format wallet address
+                const formatted = wallet.slice(0, 6) + '...' + wallet.slice(-4);
+                walletDisplay.textContent = formatted;
+            } else {
+                const user = localStorage.getItem('agentchains-user');
+                if (user) {
+                    walletDisplay.textContent = 'Google: ' + JSON.parse(user).email;
+                } else {
+                    walletDisplay.textContent = 'Guest User';
+                }
+            }
+        }
+        
+        function updateBalance() {
+            const balance = localStorage.getItem('testnet-mind-balance') || '1000';
+            document.getElementById('mindBalance').textContent = parseFloat(balance).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        
+        function showBuyModal() {
+            document.getElementById('buyModal').classList.add('show');
+        }
+        
+        function closeBuyModal() {
+            document.getElementById('buyModal').classList.remove('show');
+        }
+        
+        function buyTokens() {
+            const amount = parseInt(document.getElementById('buyAmount').value);
+            if (amount > 0) {
+                const currentBalance = parseInt(localStorage.getItem('testnet-mind-balance') || '1000');
+                const newBalance = currentBalance + amount;
+                localStorage.setItem('testnet-mind-balance', newBalance);
+                updateBalance();
+                closeBuyModal();
+                showNotification(`Successfully purchased ${amount} MIND tokens!`, 'success');
+            }
+        }
+        
+        function stakeTokens() {
+            const amount = parseInt(document.getElementById('stakeAmount').value);
+            const currentBalance = parseInt(localStorage.getItem('testnet-mind-balance') || '1000');
+            
+            if (amount > 0 && amount <= currentBalance) {
+                const newBalance = currentBalance - amount;
+                localStorage.setItem('testnet-mind-balance', newBalance);
+                updateBalance();
+                document.getElementById('stakeAmount').value = '';
+                showNotification(`Successfully staked ${amount} MIND tokens at 12% APY!`, 'success');
+            } else {
+                showNotification('Insufficient balance or invalid amount', 'error');
+            }
+        }
+        
+        function createNewAgent() {
+            // Redirect to agent builder
+            window.location.href = '/agent-builder/';
+        }
+        
+        function showSection(section) {
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Show coming soon for unimplemented sections
+            if (['marketplace', 'tasks', 'analytics', 'settings'].includes(section)) {
+                showNotification('This section is coming soon!', 'info');
+            }
+        }
+        
+        function showSendModal() {
+            showNotification('Send functionality coming soon!', 'info');
+        }
+        
+        function showReceiveModal() {
+            showNotification('Receive functionality coming soon!', 'info');
+        }
+        
+        function showSwapModal() {
+            showNotification('Swap functionality coming soon!', 'info');
+        }
+        
+        function logout() {
+            localStorage.removeItem('agentchains-auth');
+            localStorage.removeItem('agentchains-user');
+            localStorage.removeItem('agentchains-wallet');
+            window.location.href = '/';
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'};
+                color: white;
+                border-radius: 8px;
+                font-weight: 500;
+                z-index: 10001;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Add slide in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
