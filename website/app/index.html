@@ -473,6 +473,63 @@
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
         }
         
+        /* Mining Modal */
+        .mining-animation {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .mining-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            animation: swing 1s ease-in-out infinite;
+        }
+        
+        @keyframes swing {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+            transition: width 0.3s ease;
+            border-radius: 15px;
+        }
+        
+        .mining-status {
+            color: #B4BCD0;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .mining-reward {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00FF88;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .reward-text {
+            font-size: 1.2rem;
+            color: #00FF88;
+        }
+        
+        .reward-amount {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .app-container {
@@ -671,6 +728,27 @@
                 </div>
             </div>
             
+            <!-- Blockchain Stats -->
+            <div class="agents-section">
+                <div class="section-header">
+                    <h2 class="section-title">⛓️ Blockchain Statistics</h2>
+                </div>
+                <div class="staking-stats">
+                    <div class="staking-stat">
+                        <div class="staking-value" id="blockHeight">1</div>
+                        <div class="staking-label">Block Height</div>
+                    </div>
+                    <div class="staking-stat">
+                        <div class="staking-value" id="totalTransactions">0</div>
+                        <div class="staking-label">Total Transactions</div>
+                    </div>
+                    <div class="staking-stat">
+                        <div class="staking-value" id="totalSupply">1B</div>
+                        <div class="staking-label">Total Supply</div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Coming Soon Sections -->
             <div class="agents-section coming-soon">
                 <h2 class="section-title">Marketplace</h2>
@@ -692,15 +770,40 @@
         </div>
     </div>
     
-    <!-- Include testnet config -->
+    <!-- Include blockchain and testnet config -->
+    <script src="../js/blockchain.js"></script>
     <script src="../js/testnet-config.js"></script>
     
+    <!-- Mining Modal -->
+    <div class="modal" id="miningModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">⛏️ Mining New Block</h3>
+            </div>
+            <div class="mining-animation">
+                <div class="mining-icon">⛏️</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="miningProgress" style="width: 0%"></div>
+                </div>
+                <div class="mining-status" id="miningStatus">Initializing mining...</div>
+            </div>
+            <div class="mining-reward">
+                <div class="reward-text">Mining Reward: <span class="reward-amount">10 MIND</span></div>
+            </div>
+        </div>
+    </div>
+    
     <script>
+        // Initialize blockchain account
+        let userAddress = null;
+        
         // Check authentication on load
         window.addEventListener('DOMContentLoaded', () => {
             checkAuth();
+            initializeBlockchain();
             updateWalletDisplay();
             updateBalance();
+            setupBlockchainListeners();
         });
         
         function checkAuth() {
@@ -710,6 +813,63 @@
                 // Redirect to main page if not authenticated
                 window.location.href = '../';
             }
+        }
+        
+        function initializeBlockchain() {
+            // Get user identifier
+            const wallet = localStorage.getItem('agentchains-wallet');
+            const user = localStorage.getItem('agentchains-user');
+            
+            if (wallet && wallet !== 'null') {
+                userAddress = wallet;
+            } else if (user) {
+                const userData = JSON.parse(user);
+                userAddress = userData.email || 'guest_' + Date.now();
+            } else {
+                userAddress = 'guest_' + Date.now();
+            }
+            
+            // Create blockchain account if new user
+            const isNewAccount = agentBlockchain.createAccount(userAddress);
+            
+            if (isNewAccount) {
+                showNotification('Welcome! You\'ve received 1000 MIND tokens as a welcome bonus!', 'success');
+                // Show mining animation for welcome bonus
+                showMiningModal();
+            }
+        }
+        
+        function setupBlockchainListeners() {
+            agentBlockchain.on('blockMined', (block) => {
+                updateBalance();
+                updateTransactionHistory();
+                updateBlockchainStats();
+                showNotification(`New block mined! Block #${block.index}`, 'success');
+            });
+            
+            agentBlockchain.on('miningProgress', (progress) => {
+                document.getElementById('miningProgress').style.width = progress + '%';
+                document.getElementById('miningStatus').textContent = `Mining... ${Math.floor(progress)}%`;
+            });
+            
+            agentBlockchain.on('miningCompleted', () => {
+                setTimeout(() => {
+                    closeMiningModal();
+                }, 1000);
+            });
+            
+            // Initial stats update
+            updateBlockchainStats();
+        }
+        
+        function updateBlockchainStats() {
+            const stats = agentBlockchain.getStats();
+            document.getElementById('blockHeight').textContent = stats.blockHeight;
+            document.getElementById('totalTransactions').textContent = stats.totalTransactions;
+            
+            // Format total supply
+            const supplyInBillions = (stats.totalSupply / 1000000000).toFixed(3);
+            document.getElementById('totalSupply').textContent = `${supplyInBillions}B`;
         }
         
         function updateWalletDisplay() {
@@ -731,11 +891,23 @@
         }
         
         function updateBalance() {
-            const balance = localStorage.getItem('testnet-mind-balance') || '1000';
-            document.getElementById('mindBalance').textContent = parseFloat(balance).toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            if (userAddress) {
+                const balance = agentBlockchain.getBalance(userAddress);
+                document.getElementById('mindBalance').textContent = balance.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                
+                // Update USD value
+                const usdValue = balance * 0.001; // $0.001 per MIND
+                document.querySelector('.balance-usd').textContent = `≈ $${usdValue.toFixed(2)} USD`;
+            }
+        }
+        
+        function updateTransactionHistory() {
+            // This will be called when we add transaction history UI
+            const transactions = agentBlockchain.getTransactionHistory(userAddress);
+            console.log('Transaction history:', transactions);
         }
         
         function showBuyModal() {
@@ -746,31 +918,56 @@
             document.getElementById('buyModal').classList.remove('show');
         }
         
-        function buyTokens() {
+        async function buyTokens() {
             const amount = parseInt(document.getElementById('buyAmount').value);
             if (amount > 0) {
-                const currentBalance = parseInt(localStorage.getItem('testnet-mind-balance') || '1000');
-                const newBalance = currentBalance + amount;
-                localStorage.setItem('testnet-mind-balance', newBalance);
-                updateBalance();
+                showMiningModal();
+                
+                // Create buy transaction
+                const buyTx = new Transaction(
+                    agentBlockchain.systemAddress,
+                    userAddress,
+                    amount,
+                    'purchase'
+                );
+                
+                agentBlockchain.createTransaction(buyTx);
+                await agentBlockchain.minePendingTransactions(userAddress);
+                
                 closeBuyModal();
                 showNotification(`Successfully purchased ${amount} MIND tokens!`, 'success');
             }
         }
         
-        function stakeTokens() {
+        async function stakeTokens() {
             const amount = parseInt(document.getElementById('stakeAmount').value);
-            const currentBalance = parseInt(localStorage.getItem('testnet-mind-balance') || '1000');
+            const currentBalance = agentBlockchain.getBalance(userAddress);
             
             if (amount > 0 && amount <= currentBalance) {
-                const newBalance = currentBalance - amount;
-                localStorage.setItem('testnet-mind-balance', newBalance);
-                updateBalance();
+                showMiningModal();
+                
+                const stakeTx = agentBlockchain.stake(userAddress, amount);
+                await agentBlockchain.minePendingTransactions(userAddress);
+                
                 document.getElementById('stakeAmount').value = '';
+                
+                // Update staking stats
+                document.querySelector('.staking-stat:nth-child(2) .staking-value').textContent = amount;
+                
                 showNotification(`Successfully staked ${amount} MIND tokens at 12% APY!`, 'success');
             } else {
                 showNotification('Insufficient balance or invalid amount', 'error');
             }
+        }
+        
+        function showMiningModal() {
+            document.getElementById('miningModal').classList.add('show');
+            document.getElementById('miningProgress').style.width = '0%';
+            document.getElementById('miningStatus').textContent = 'Initializing mining...';
+        }
+        
+        function closeMiningModal() {
+            document.getElementById('miningModal').classList.remove('show');
         }
         
         function createNewAgent() {
@@ -791,8 +988,59 @@
             }
         }
         
-        function showSendModal() {
-            showNotification('Send functionality coming soon!', 'info');
+        async function showSendModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Send MIND Tokens</h3>
+                        <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <input type="text" class="buy-amount-input" placeholder="Recipient Address" id="sendAddress">
+                    <input type="number" class="buy-amount-input" placeholder="Amount" id="sendAmount">
+                    <div class="token-price">Current Balance: ${agentBlockchain.getBalance(userAddress)} MIND</div>
+                    <button class="buy-btn" onclick="sendTokens()">Send Tokens</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        async function sendTokens() {
+            const recipient = document.getElementById('sendAddress').value;
+            const amount = parseInt(document.getElementById('sendAmount').value);
+            const balance = agentBlockchain.getBalance(userAddress);
+            
+            if (!recipient || !amount || amount <= 0) {
+                showNotification('Please enter valid recipient and amount', 'error');
+                return;
+            }
+            
+            if (amount > balance) {
+                showNotification('Insufficient balance', 'error');
+                return;
+            }
+            
+            showMiningModal();
+            document.querySelector('.modal').remove();
+            
+            // Create send transaction
+            const sendTx = new Transaction(
+                userAddress,
+                recipient,
+                amount,
+                'transfer'
+            );
+            
+            try {
+                agentBlockchain.createTransaction(sendTx);
+                await agentBlockchain.minePendingTransactions(userAddress);
+                
+                const burnAmount = Math.floor(amount * 0.02); // 2% burn
+                showNotification(`Successfully sent ${amount} MIND tokens! (${burnAmount} MIND burned)`, 'success');
+            } catch (error) {
+                showNotification('Transaction failed: ' + error.message, 'error');
+            }
         }
         
         function showReceiveModal() {

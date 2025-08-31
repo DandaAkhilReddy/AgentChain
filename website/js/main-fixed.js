@@ -618,8 +618,10 @@ document.addEventListener('DOMContentLoaded', () => {
     authSystem = new AuthSystem();
     window.authSystem = authSystem; // Make it accessible from HTML onclick
     
-    // Initialize whitepaper handler
-    const whitepaperHandler = new WhitepaperGenerator();
+    // Initialize whitepaper handler if it exists
+    if (typeof WhitepaperGenerator !== 'undefined') {
+        const whitepaperHandler = new WhitepaperGenerator();
+    }
     
     console.log('🔗 AgentChains.ai initialized successfully');
 });
