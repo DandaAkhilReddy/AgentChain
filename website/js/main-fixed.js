@@ -240,7 +240,7 @@ class AuthSystem {
                 this.showNotification('Welcome! You\'ve received 1000 free MIND tokens!', 'success');
             }
             // Redirect to platform dashboard
-            window.location.href = './app/';
+            window.location.href = './app/simple.html';
         } else {
             // Show authentication modal if not logged in
             this.showAuthModal();
@@ -496,7 +496,7 @@ class AuthSystem {
         this.updateUIAfterAuth('guest');
         // Redirect to platform
         setTimeout(() => {
-            window.location.href = './app/';
+            window.location.href = './app/simple.html';
         }, 1000);
     }
 

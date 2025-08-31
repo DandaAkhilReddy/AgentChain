@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0A0B0F;
+            color: #FFFFFF;
+            padding: 20px;
+        }
+        .status {
+            background: #1a1b23;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Dashboard</h1>
+    
+    <div class="status">
+        <h2>Authentication Status</h2>
+        <p>Auth: <span id="authStatus">Checking...</span></p>
+        <p>User: <span id="userInfo">Checking...</span></p>
+        <p>Wallet: <span id="walletInfo">Checking...</span></p>
+    </div>
+    
+    <div class="status">
+        <h2>Blockchain Status</h2>
+        <p>Blockchain Loaded: <span id="blockchainStatus">Checking...</span></p>
+        <p>Error Messages: <span id="errorMessages">None</span></p>
+    </div>
+    
+    <button onclick="window.location.href='index.html'">Go to Full Dashboard</button>
+    <button onclick="window.location.href='../'">Back to Main Site</button>
+    
+    <script>
+        // Check authentication
+        const auth = localStorage.getItem('agentchains-auth');
+        const user = localStorage.getItem('agentchains-user');
+        const wallet = localStorage.getItem('agentchains-wallet');
+        
+        document.getElementById('authStatus').textContent = auth || 'Not authenticated';
+        document.getElementById('userInfo').textContent = user || 'No user data';
+        document.getElementById('walletInfo').textContent = wallet || 'No wallet';
+        
+        // Check if blockchain script exists
+        document.getElementById('blockchainStatus').textContent = 
+            typeof AgentChainsBlockchain !== 'undefined' ? 'Loaded' : 'Not loaded';
+        
+        // Capture any errors
+        window.addEventListener('error', function(e) {
+            document.getElementById('errorMessages').textContent = e.message + ' at ' + e.filename + ':' + e.lineno;
+        });
+    </script>
+</body>
+</html>

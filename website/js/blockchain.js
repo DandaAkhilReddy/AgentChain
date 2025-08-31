@@ -3,6 +3,24 @@
  * Handles mining, transactions, and token management
  */
 
+// Simple SHA256 implementation for demo (in production, use crypto library)
+const CryptoJS = {
+    SHA256: function(message) {
+        // Simple hash function for demo
+        let hash = 0;
+        for (let i = 0; i < message.length; i++) {
+            const char = message.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return {
+            toString: function() {
+                return Math.abs(hash).toString(16).padStart(64, '0');
+            }
+        };
+    }
+};
+
 class Block {
     constructor(index, timestamp, data, previousHash = '') {
         this.index = index;
@@ -312,24 +330,6 @@ class AgentChainsBlockchain {
 
 // Initialize blockchain instance
 const agentBlockchain = new AgentChainsBlockchain();
-
-// Simple SHA256 implementation for demo (in production, use crypto library)
-const CryptoJS = {
-    SHA256: function(message) {
-        // Simple hash function for demo
-        let hash = 0;
-        for (let i = 0; i < message.length; i++) {
-            const char = message.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-        return {
-            toString: function() {
-                return Math.abs(hash).toString(16).padStart(64, '0');
-            }
-        };
-    }
-};
 
 // Export for use in other scripts
 window.AgentChainsBlockchain = AgentChainsBlockchain;
