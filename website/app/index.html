@@ -708,7 +708,7 @@
             const isAuth = localStorage.getItem('agentchains-auth');
             if (!isAuth) {
                 // Redirect to main page if not authenticated
-                window.location.href = '/';
+                window.location.href = '../';
             }
         }
         
@@ -775,7 +775,7 @@
         
         function createNewAgent() {
             // Redirect to agent builder
-            window.location.href = '/agent-builder/';
+            window.location.href = '../agent-builder/';
         }
         
         function showSection(section) {
@@ -807,7 +807,7 @@
             localStorage.removeItem('agentchains-auth');
             localStorage.removeItem('agentchains-user');
             localStorage.removeItem('agentchains-wallet');
-            window.location.href = '/';
+            window.location.href = '../';
         }
         
         function showNotification(message, type) {

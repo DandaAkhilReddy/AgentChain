@@ -178,6 +178,12 @@ class AuthSystem {
                 const chainId = await window.ethereum.request({ method: 'eth_chainId' });
                 const network = this.getNetworkName(chainId);
                 
+                localStorage.setItem('agentchains-auth', 'wallet');
+                localStorage.setItem('agentchains-wallet', this.wallet);
+                // Give new users 1000 free tokens
+                if (!localStorage.getItem('testnet-mind-balance')) {
+                    localStorage.setItem('testnet-mind-balance', '1000');
+                }
                 this.showNotification(`Connected to ${this.formatAddress(this.wallet)} on ${network}`, 'success');
                 this.updateUIAfterAuth('wallet');
                 
@@ -211,6 +217,12 @@ class AuthSystem {
                 picture: 'https://ui-avatars.com/api/?name=Demo+User&background=4285F4&color=fff'
             };
             this.isAuthenticated = true;
+            localStorage.setItem('agentchains-auth', 'google');
+            localStorage.setItem('agentchains-user', JSON.stringify(this.user));
+            // Give new users 1000 free tokens
+            if (!localStorage.getItem('testnet-mind-balance')) {
+                localStorage.setItem('testnet-mind-balance', '1000');
+            }
             this.showNotification('Successfully logged in with Google! (Demo Mode)', 'success');
             this.updateUIAfterAuth('google');
             
@@ -221,8 +233,18 @@ class AuthSystem {
     }
 
     launchPlatform() {
-        // Show coming soon message
-        this.showComingSoonModal();
+        if (this.isAuthenticated) {
+            // Set initial balance if not already set
+            if (!localStorage.getItem('testnet-mind-balance')) {
+                localStorage.setItem('testnet-mind-balance', '1000');
+                this.showNotification('Welcome! You\'ve received 1000 free MIND tokens!', 'success');
+            }
+            // Redirect to platform dashboard
+            window.location.href = './app/';
+        } else {
+            // Show authentication modal if not logged in
+            this.showAuthModal();
+        }
     }
 
     showComingSoonModal() {
@@ -405,6 +427,10 @@ class AuthSystem {
                     setTimeout(() => {
                         document.body.removeChild(modal);
                         authSystem.loginWithGoogle();
+                        // After successful login, launch platform
+                        setTimeout(() => {
+                            authSystem.launchPlatform();
+                        }, 500);
                     }, 1000);
                 }, 2000);
             } else if (method === 'wallet') {
@@ -418,6 +444,10 @@ class AuthSystem {
                     setTimeout(() => {
                         document.body.removeChild(modal);
                         authSystem.connectWallet();
+                        // After successful connection, launch platform
+                        setTimeout(() => {
+                            authSystem.launchPlatform();
+                        }, 500);
                     }, 1000);
                 }, 1500);
             }
@@ -436,9 +466,18 @@ class AuthSystem {
     continueAsGuest() {
         this.isAuthenticated = true;
         this.user = { name: 'Guest User', type: 'guest' };
-        this.showNotification('Continuing as guest with limited features', 'info');
+        localStorage.setItem('agentchains-auth', 'guest');
+        localStorage.setItem('agentchains-user', JSON.stringify(this.user));
+        // Give guest users 1000 free tokens too
+        if (!localStorage.getItem('testnet-mind-balance')) {
+            localStorage.setItem('testnet-mind-balance', '1000');
+        }
+        this.showNotification('Continuing as guest - You\'ve received 1000 free MIND tokens!', 'info');
         this.updateUIAfterAuth('guest');
-        this.launchPlatform();
+        // Redirect to platform
+        setTimeout(() => {
+            window.location.href = './app/';
+        }, 1000);
     }
 
     updateUIAfterAuth(method) {
@@ -566,14 +605,18 @@ class AuthSystem {
 // INITIALIZATION
 // ================================
 
+// Global variables
+let authSystem = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🔗 AgentChains.ai initializing...');
     
     // Initialize loading screen first
     const loadingScreen = new LoadingScreen();
     
-    // Initialize authentication system
-    const authSystem = new AuthSystem();
+    // Initialize authentication system and make it global
+    authSystem = new AuthSystem();
+    window.authSystem = authSystem; // Make it accessible from HTML onclick
     
     // Initialize whitepaper handler
     const whitepaperHandler = new WhitepaperGenerator();
