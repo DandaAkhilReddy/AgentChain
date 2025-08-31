@@ -322,6 +322,7 @@ class AuthSystem {
     }
 
     showAuthModal() {
+        const authInstance = this; // Capture auth instance
         const modal = document.createElement('div');
         modal.className = 'auth-modal clean-auth';
         modal.innerHTML = `
@@ -340,7 +341,7 @@ class AuthSystem {
                             <p>Select how you'd like to connect</p>
                         </div>
                         <div class="auth-options-clean">
-                            <button class="auth-option-clean google-option" onclick="this.closest('.auth-modal').showStep2('google')">
+                            <button class="auth-option-clean google-option" data-method="google">
                                 <div class="option-icon">
                                     <svg viewBox="0 0 24 24" width="32" height="32">
                                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -356,7 +357,7 @@ class AuthSystem {
                                 <div class="option-arrow">→</div>
                             </button>
                             
-                            <button class="auth-option-clean crypto-option" onclick="this.closest('.auth-modal').showStep2('wallet')">
+                            <button class="auth-option-clean crypto-option" data-method="wallet">
                                 <div class="option-icon">
                                     <svg viewBox="0 0 24 24" width="32" height="32">
                                         <path fill="#F6851B" d="M22.32 1.5L13.5 8.08l1.63-3.8 7.19-2.78z"/>
@@ -377,7 +378,7 @@ class AuthSystem {
                         <div class="auth-divider">
                             <span>or</span>
                         </div>
-                        <button class="guest-button" onclick="authSystem.continueAsGuest(); document.body.removeChild(this.closest('.auth-modal'))">
+                        <button class="guest-button" data-method="guest">
                             Continue as Guest
                             <span class="guest-note">Limited features available</span>
                         </button>
@@ -385,7 +386,7 @@ class AuthSystem {
                     
                     <div class="auth-step hidden" id="authStep2">
                         <div class="step-header">
-                            <button class="back-btn" onclick="this.closest('.auth-modal').showStep1()">← Back</button>
+                            <button class="back-btn">← Back</button>
                             <h3 id="step2Title">Connect Account</h3>
                             <p id="step2Subtitle">Follow the prompts to connect</p>
                         </div>
@@ -426,10 +427,10 @@ class AuthSystem {
                     status.textContent = 'Success! Logging you in...';
                     setTimeout(() => {
                         document.body.removeChild(modal);
-                        authSystem.loginWithGoogle();
+                        authInstance.loginWithGoogle();
                         // After successful login, launch platform
                         setTimeout(() => {
-                            authSystem.launchPlatform();
+                            authInstance.launchPlatform();
                         }, 500);
                     }, 1000);
                 }, 2000);
@@ -443,10 +444,10 @@ class AuthSystem {
                     status.textContent = 'Connecting to blockchain...';
                     setTimeout(() => {
                         document.body.removeChild(modal);
-                        authSystem.connectWallet();
+                        authInstance.connectWallet();
                         // After successful connection, launch platform
                         setTimeout(() => {
-                            authSystem.launchPlatform();
+                            authInstance.launchPlatform();
                         }, 500);
                     }, 1000);
                 }, 1500);
@@ -460,6 +461,25 @@ class AuthSystem {
         
         modal.querySelector('.modal-overlay').addEventListener('click', () => {
             document.body.removeChild(modal);
+        });
+        
+        // Add event listeners for auth options
+        modal.querySelectorAll('.auth-option-clean').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const method = e.currentTarget.getAttribute('data-method');
+                modal.showStep2(method);
+            });
+        });
+        
+        // Guest button listener
+        modal.querySelector('.guest-button').addEventListener('click', () => {
+            document.body.removeChild(modal);
+            authInstance.continueAsGuest();
+        });
+        
+        // Back button listener
+        modal.querySelector('.back-btn').addEventListener('click', () => {
+            modal.showStep1();
         });
     }
 
