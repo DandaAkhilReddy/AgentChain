@@ -187,6 +187,11 @@ class AuthSystem {
                 this.showNotification(`Connected to ${this.formatAddress(this.wallet)} on ${network}`, 'success');
                 this.updateUIAfterAuth('wallet');
                 
+                // Automatically redirect to dashboard after successful connection
+                setTimeout(() => {
+                    this.launchPlatform();
+                }, 1000);
+                
                 // Listen for account changes
                 window.ethereum.on('accountsChanged', (accounts) => {
                     if (accounts.length === 0) {
@@ -226,6 +231,11 @@ class AuthSystem {
             this.showNotification('Successfully logged in with Google! (Demo Mode)', 'success');
             this.updateUIAfterAuth('google');
             
+            // Automatically redirect to dashboard after successful login
+            setTimeout(() => {
+                this.launchPlatform();
+            }, 1000);
+            
         } catch (error) {
             console.error('Error with Google login:', error);
             this.showNotification('Google login failed: ' + error.message, 'error');
@@ -240,7 +250,7 @@ class AuthSystem {
                 this.showNotification('Welcome! You\'ve received 1000 free MIND tokens!', 'success');
             }
             // Redirect to platform dashboard
-            window.location.href = './app/simple.html';
+            window.location.href = './app/index.html';
         } else {
             // Show authentication modal if not logged in
             this.showAuthModal();
@@ -428,10 +438,6 @@ class AuthSystem {
                     setTimeout(() => {
                         document.body.removeChild(modal);
                         authInstance.loginWithGoogle();
-                        // After successful login, launch platform
-                        setTimeout(() => {
-                            authInstance.launchPlatform();
-                        }, 500);
                     }, 1000);
                 }, 2000);
             } else if (method === 'wallet') {
@@ -445,10 +451,6 @@ class AuthSystem {
                     setTimeout(() => {
                         document.body.removeChild(modal);
                         authInstance.connectWallet();
-                        // After successful connection, launch platform
-                        setTimeout(() => {
-                            authInstance.launchPlatform();
-                        }, 500);
                     }, 1000);
                 }, 1500);
             }
@@ -496,7 +498,7 @@ class AuthSystem {
         this.updateUIAfterAuth('guest');
         // Redirect to platform
         setTimeout(() => {
-            window.location.href = './app/simple.html';
+            window.location.href = './app/index.html';
         }, 1000);
     }
 

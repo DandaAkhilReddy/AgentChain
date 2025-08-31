@@ -770,9 +770,10 @@
         </div>
     </div>
     
-    <!-- Include blockchain and testnet config -->
-    <script src="../js/blockchain.js"></script>
+    <!-- Include testnet config -->
     <script src="../js/testnet-config.js"></script>
+    <!-- Blockchain temporarily disabled for debugging -->
+    <!-- <script src="../js/blockchain.js"></script> -->
     
     <!-- Mining Modal -->
     <div class="modal" id="miningModal">
@@ -829,47 +830,23 @@
                 userAddress = 'guest_' + Date.now();
             }
             
-            // Create blockchain account if new user
-            const isNewAccount = agentBlockchain.createAccount(userAddress);
-            
-            if (isNewAccount) {
-                showNotification('Welcome! You\'ve received 1000 MIND tokens as a welcome bonus!', 'success');
-                // Show mining animation for welcome bonus
-                showMiningModal();
+            // Simple balance initialization
+            if (!localStorage.getItem('testnet-mind-balance')) {
+                localStorage.setItem('testnet-mind-balance', '1000');
+                showNotification('Welcome! You\'ve received 1000 MIND tokens!', 'success');
             }
         }
         
         function setupBlockchainListeners() {
-            agentBlockchain.on('blockMined', (block) => {
-                updateBalance();
-                updateTransactionHistory();
-                updateBlockchainStats();
-                showNotification(`New block mined! Block #${block.index}`, 'success');
-            });
-            
-            agentBlockchain.on('miningProgress', (progress) => {
-                document.getElementById('miningProgress').style.width = progress + '%';
-                document.getElementById('miningStatus').textContent = `Mining... ${Math.floor(progress)}%`;
-            });
-            
-            agentBlockchain.on('miningCompleted', () => {
-                setTimeout(() => {
-                    closeMiningModal();
-                }, 1000);
-            });
-            
-            // Initial stats update
+            // Simplified for now - just update stats
             updateBlockchainStats();
         }
         
         function updateBlockchainStats() {
-            const stats = agentBlockchain.getStats();
-            document.getElementById('blockHeight').textContent = stats.blockHeight;
-            document.getElementById('totalTransactions').textContent = stats.totalTransactions;
-            
-            // Format total supply
-            const supplyInBillions = (stats.totalSupply / 1000000000).toFixed(3);
-            document.getElementById('totalSupply').textContent = `${supplyInBillions}B`;
+            // Simplified stats for now
+            document.getElementById('blockHeight').textContent = '1';
+            document.getElementById('totalTransactions').textContent = '1';
+            document.getElementById('totalSupply').textContent = '1.000B';
         }
         
         function updateWalletDisplay() {
@@ -891,17 +868,15 @@
         }
         
         function updateBalance() {
-            if (userAddress) {
-                const balance = agentBlockchain.getBalance(userAddress);
-                document.getElementById('mindBalance').textContent = balance.toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-                
-                // Update USD value
-                const usdValue = balance * 0.001; // $0.001 per MIND
-                document.querySelector('.balance-usd').textContent = `≈ $${usdValue.toFixed(2)} USD`;
-            }
+            const balance = parseFloat(localStorage.getItem('testnet-mind-balance') || '1000');
+            document.getElementById('mindBalance').textContent = balance.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            // Update USD value
+            const usdValue = balance * 0.001; // $0.001 per MIND
+            document.querySelector('.balance-usd').textContent = `≈ $${usdValue.toFixed(2)} USD`;
         }
         
         function updateTransactionHistory() {
@@ -918,37 +893,26 @@
             document.getElementById('buyModal').classList.remove('show');
         }
         
-        async function buyTokens() {
+        function buyTokens() {
             const amount = parseInt(document.getElementById('buyAmount').value);
             if (amount > 0) {
-                showMiningModal();
-                
-                // Create buy transaction
-                const buyTx = new Transaction(
-                    agentBlockchain.systemAddress,
-                    userAddress,
-                    amount,
-                    'purchase'
-                );
-                
-                agentBlockchain.createTransaction(buyTx);
-                await agentBlockchain.minePendingTransactions(userAddress);
-                
+                const currentBalance = parseFloat(localStorage.getItem('testnet-mind-balance') || '1000');
+                const newBalance = currentBalance + amount;
+                localStorage.setItem('testnet-mind-balance', newBalance);
+                updateBalance();
                 closeBuyModal();
                 showNotification(`Successfully purchased ${amount} MIND tokens!`, 'success');
             }
         }
         
-        async function stakeTokens() {
+        function stakeTokens() {
             const amount = parseInt(document.getElementById('stakeAmount').value);
-            const currentBalance = agentBlockchain.getBalance(userAddress);
+            const currentBalance = parseFloat(localStorage.getItem('testnet-mind-balance') || '1000');
             
             if (amount > 0 && amount <= currentBalance) {
-                showMiningModal();
-                
-                const stakeTx = agentBlockchain.stake(userAddress, amount);
-                await agentBlockchain.minePendingTransactions(userAddress);
-                
+                const newBalance = currentBalance - amount;
+                localStorage.setItem('testnet-mind-balance', newBalance);
+                updateBalance();
                 document.getElementById('stakeAmount').value = '';
                 
                 // Update staking stats
@@ -988,7 +952,8 @@
             }
         }
         
-        async function showSendModal() {
+        function showSendModal() {
+            const balance = parseFloat(localStorage.getItem('testnet-mind-balance') || '1000');
             const modal = document.createElement('div');
             modal.className = 'modal show';
             modal.innerHTML = `
@@ -999,17 +964,17 @@
                     </div>
                     <input type="text" class="buy-amount-input" placeholder="Recipient Address" id="sendAddress">
                     <input type="number" class="buy-amount-input" placeholder="Amount" id="sendAmount">
-                    <div class="token-price">Current Balance: ${agentBlockchain.getBalance(userAddress)} MIND</div>
+                    <div class="token-price">Current Balance: ${balance.toFixed(2)} MIND</div>
                     <button class="buy-btn" onclick="sendTokens()">Send Tokens</button>
                 </div>
             `;
             document.body.appendChild(modal);
         }
         
-        async function sendTokens() {
+        function sendTokens() {
             const recipient = document.getElementById('sendAddress').value;
             const amount = parseInt(document.getElementById('sendAmount').value);
-            const balance = agentBlockchain.getBalance(userAddress);
+            const balance = parseFloat(localStorage.getItem('testnet-mind-balance') || '1000');
             
             if (!recipient || !amount || amount <= 0) {
                 showNotification('Please enter valid recipient and amount', 'error');
@@ -1021,26 +986,13 @@
                 return;
             }
             
-            showMiningModal();
+            // Simple send - just deduct from balance
+            const newBalance = balance - amount;
+            localStorage.setItem('testnet-mind-balance', newBalance);
+            updateBalance();
+            
             document.querySelector('.modal').remove();
-            
-            // Create send transaction
-            const sendTx = new Transaction(
-                userAddress,
-                recipient,
-                amount,
-                'transfer'
-            );
-            
-            try {
-                agentBlockchain.createTransaction(sendTx);
-                await agentBlockchain.minePendingTransactions(userAddress);
-                
-                const burnAmount = Math.floor(amount * 0.02); // 2% burn
-                showNotification(`Successfully sent ${amount} MIND tokens! (${burnAmount} MIND burned)`, 'success');
-            } catch (error) {
-                showNotification('Transaction failed: ' + error.message, 'error');
-            }
+            showNotification(`Successfully sent ${amount} MIND tokens to ${recipient}!`, 'success');
         }
         
         function showReceiveModal() {

@@ -2833,6 +2833,60 @@ html {
 /* This will be enhanced with JavaScript for the tilt effect */
 
 /* ================================
+   MODERN AUTH BUTTONS
+   ================================ */
+
+.login-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.modern-google-btn,
+.modern-metamask-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 38px;
+}
+
+.modern-google-btn:hover {
+  background: rgba(66, 133, 244, 0.1);
+  border-color: #4285F4;
+  color: #4285F4;
+  transform: translateY(-2px);
+}
+
+.modern-metamask-btn:hover {
+  background: rgba(241, 119, 38, 0.1);
+  border-color: #F17726;
+  color: #F17726;
+  transform: translateY(-2px);
+}
+
+.google-icon,
+.metamask-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .login-buttons {
+    display: none;
+  }
+}
+
+/* ================================
    CLEAN AUTHENTICATION MODAL
    ================================ */
 
