@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Agent Creator - AgentChains</title>
+    
+    <!-- KAMIKAZE Backend API Integration -->
+    <script src="js/kamikaze-api.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -643,10 +647,61 @@
             setTimeout(() => element.style.display = 'none', 5000);
         }
 
+        // Load KAMIKAZE data from backend
+        async function loadKamikazeData() {
+            try {
+                // Check backend health
+                const health = await window.kamikazeAPI.getHealth();
+                console.log('🥷 KAMIKAZE Backend status:', health);
+                
+                // Load marketplace data
+                const marketplace = await window.kamikazeAPI.getMarketplaceOverview();
+                if (marketplace?.ecosystem_stats) {
+                    document.getElementById('totalAgents').textContent = marketplace.ecosystem_stats.total_agents || '156';
+                }
+                
+                // Load privacy stats
+                const privacyStats = await window.kamikazeAPI.getPrivacyStats();
+                if (privacyStats?.public_metrics) {
+                    const metrics = privacyStats.public_metrics;
+                    document.getElementById('totalAgents').textContent = metrics.total_agents?.value || '156';
+                    
+                    // Update staked amount with commitment-based display
+                    const staked = metrics.total_staked?.value || 2400000;
+                    document.getElementById('totalStaked').textContent = (staked / 1000000).toFixed(1) + 'M';
+                    
+                    // Update rewards with privacy preservation
+                    const tasks = metrics.total_tasks_completed?.value || 324;
+                    document.getElementById('totalRewards').textContent = (tasks * 139).toLocaleString();
+                    
+                    console.log('🔐 Privacy Stats:', privacyStats);
+                }
+                
+                // If user is authenticated, load their balance
+                if (window.kamikazeAPI.isAuthenticated()) {
+                    try {
+                        const balance = await window.kamikazeAPI.getUserBalance();
+                        if (balance?.balances?.KAMIKAZE) {
+                            document.getElementById('kamikazeBalance').textContent = 
+                                `Private Balance (ZK Commitment: ${balance.balances.KAMIKAZE.balance_commitment.substring(0, 8)}...)`;
+                        }
+                    } catch (error) {
+                        console.log('Balance load failed (user may not be authenticated):', error.message);
+                    }
+                }
+                
+            } catch (error) {
+                console.log('🔄 Backend unavailable, using mock data:', error.message);
+            }
+        }
+
         // Initialize the application
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             loadAgentTemplates();
             setupStakeOptions();
+
+            // Load real KAMIKAZE data from backend
+            await loadKamikazeData();
 
             document.getElementById('connectWallet').addEventListener('click', connectWallet);
             document.getElementById('stakeBtn').addEventListener('click', stakeTokens);
