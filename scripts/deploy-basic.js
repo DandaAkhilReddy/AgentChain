@@ -11,12 +11,12 @@ async function main() {
   console.log("Balance:", ethers.formatEther(balance), network === "polygon" || network === "mumbai" ? "MATIC" : "ETH");
 
   try {
-    // 1. Deploy BasicToken (MIND)
-    console.log("\n1. 🪙 Deploying BasicToken (MIND)...");
+    // 1. Deploy BasicToken (KAMIKAZE)
+    console.log("\n1. 🪙 Deploying BasicToken (KAMIKAZE)...");
     const BasicToken = await hre.ethers.getContractFactory("BasicToken");
-    const mindToken = await BasicToken.deploy();
-    await mindToken.waitForDeployment();
-    console.log("✅ MIND Token deployed:", mindToken.target);
+    const kamikazeToken = await BasicToken.deploy();
+    await kamikazeToken.waitForDeployment();
+    console.log("✅ KAMIKAZE Token deployed:", kamikazeToken.target);
 
     // 2. Deploy BasicNFT (AI Agents)
     console.log("\n2. 🤖 Deploying BasicNFT (AI Agents)...");
@@ -28,14 +28,14 @@ async function main() {
     // 3. Deploy BasicMarketplace
     console.log("\n3. 🛒 Deploying BasicMarketplace...");
     const BasicMarketplace = await hre.ethers.getContractFactory("BasicMarketplace");
-    const marketplace = await BasicMarketplace.deploy(mindToken.target);
+    const marketplace = await BasicMarketplace.deploy(kamikazeToken.target);
     await marketplace.waitForDeployment();
     console.log("✅ Task Marketplace deployed:", marketplace.target);
 
     // 4. Deploy AgentMarketplace
     console.log("\n4. 🏪 Deploying AgentMarketplace...");
     const AgentMarketplace = await hre.ethers.getContractFactory("AgentMarketplace");
-    const agentMarketplace = await AgentMarketplace.deploy(mindToken.target, agentNFT.target);
+    const agentMarketplace = await AgentMarketplace.deploy(kamikazeToken.target, agentNFT.target);
     await agentMarketplace.waitForDeployment();
     console.log("✅ Agent Marketplace deployed:", agentMarketplace.target);
 
@@ -49,8 +49,8 @@ async function main() {
     console.log("✅ Minted 3 demo AI agents");
 
     // Create demo tasks
-    const taskReward = ethers.parseEther("100"); // 100 MIND tokens
-    await mindToken.approve(marketplace.target, taskReward * 3n);
+    const taskReward = ethers.parseEther("100"); // 100 KAMIKAZE tokens
+    await kamikazeToken.approve(marketplace.target, taskReward * 3n);
     
     await marketplace.createTask("Translate Document", taskReward, 24 * 3600);
     await marketplace.createTask("Analyze Data", taskReward, 48 * 3600);
@@ -59,7 +59,7 @@ async function main() {
 
     // Fund agent marketplace with trial tokens
     const trialTokenAmount = ethers.parseEther("100000"); // 100k trial tokens
-    await mindToken.transfer(agentMarketplace.target, trialTokenAmount);
+    await kamikazeToken.transfer(agentMarketplace.target, trialTokenAmount);
     console.log("✅ Agent marketplace funded with trial tokens");
 
     // 6. Calculate costs
@@ -70,7 +70,7 @@ async function main() {
     // Success message
     console.log("\n🎉 ===== BLOCKCHAIN DEPLOYED SUCCESSFULLY! =====");
     console.log(`Network: ${network.toUpperCase()}`);
-    console.log(`MIND Token: ${mindToken.target}`);
+    console.log(`KAMIKAZE Token: ${kamikazeToken.target}`);
     console.log(`AI Agent NFT: ${agentNFT.target}`);
     console.log(`Task Marketplace: ${marketplace.target}`);
     console.log(`Agent Marketplace: ${agentMarketplace.target}`);
@@ -79,7 +79,7 @@ async function main() {
     
     if (network === "mumbai") {
       console.log("\n📱 VIEW ON MUMBAI POLYGONSCAN:");
-      console.log(`🪙 MIND Token: https://mumbai.polygonscan.com/address/${mindToken.target}`);
+      console.log(`🪙 KAMIKAZE Token: https://mumbai.polygonscan.com/address/${kamikazeToken.target}`);
       console.log(`🤖 AI Agents: https://mumbai.polygonscan.com/address/${agentNFT.target}`);
       console.log(`🛒 Task Marketplace: https://mumbai.polygonscan.com/address/${marketplace.target}`);
       console.log(`🏪 Agent Marketplace: https://mumbai.polygonscan.com/address/${agentMarketplace.target}`);
@@ -87,14 +87,14 @@ async function main() {
 
     console.log("\n🎯 WHAT YOU CAN DO NOW:");
     console.log("✅ Your blockchain is LIVE and functional!");
-    console.log("✅ You have 1 billion MIND tokens in your wallet");
+    console.log("✅ You have 1 billion KAMIKAZE tokens in your wallet");
     console.log("✅ 3 AI agents are ready to work");
     console.log("✅ 3 sample tasks are available to claim");
     console.log("\n💡 NEXT STEPS:");
-    console.log("1. Claim free trial tokens (1000 MIND per new user)");
+    console.log("1. Claim free trial tokens (1000 KAMIKAZE per new user)");
     console.log("2. Buy/sell AI agents on the agent marketplace");
     console.log("3. Claim tasks with your AI agents");
-    console.log("4. Complete tasks to earn MIND tokens");
+    console.log("4. Complete tasks to earn KAMIKAZE tokens");
     console.log("5. Watch token value increase as tokens burn on transfers");
 
   } catch (error) {

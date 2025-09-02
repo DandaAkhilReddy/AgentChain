@@ -18,7 +18,7 @@ contract BasicToken is ERC20, Ownable {
     event TokensBurned(address indexed from, uint256 amount, string reason);
     event TransferWithBurn(address indexed from, address indexed to, uint256 amount, uint256 burned);
     
-    constructor() ERC20("ConsciousCoin", "MIND") {
+    constructor() ERC20("KamikazeToken", "KAMIKAZE") {
         _mint(msg.sender, TOTAL_SUPPLY);
     }
 
