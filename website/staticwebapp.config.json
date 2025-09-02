@@ -18,6 +18,26 @@
       "route": "/launch",
       "redirect": "/dapp/index.html",
       "statusCode": 301
+    },
+    {
+      "route": "/kamikaze",
+      "redirect": "/agent-creator.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/staking",
+      "redirect": "/agent-creator.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/agents",
+      "redirect": "/agent-creator.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/create-agent",
+      "redirect": "/agent-creator.html",
+      "statusCode": 301
     }
   ],
   "navigationFallback": {
