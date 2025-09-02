@@ -1,6 +1,6 @@
-# 🔥 KAMIKAZE Token - AI Agent Cryptocurrency Platform
+# 🔗 AgentChains - AI Agent Cryptocurrency Platform
 
-> **Revolutionary deflationary token with AI agent integration, automated staking, and real blockchain transactions**
+> **Revolutionary deflationary KAMIKAZE token with AI agent integration, automated staking, and real blockchain transactions**
 
 [![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Try_Now-ff6b35?style=for-the-badge)](https://icy-mushroom-029b4900f.1.azurestaticapps.net)
 [![Blockchain](https://img.shields.io/badge/⛓️_BLOCKCHAIN-ERC20_Compatible-00d4ff?style=for-the-badge)](#blockchain)

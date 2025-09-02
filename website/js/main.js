@@ -1,7 +1,7 @@
 /**
- * KAMIKAZE Token - Clean Main JavaScript
+ * AgentChains - Clean Main JavaScript
  * Modern implementation without authentication systems
- * MetaMask-only integration for dApp launch
+ * MetaMask-only integration for KAMIKAZE token dApp launch
  */
 
 // ================================
@@ -111,7 +111,7 @@ class KamikazeWallet {
     showInstallPrompt() {
         const shouldInstall = confirm(
             '🦊 MetaMask Required!\n\n' +
-            'MetaMask wallet is required to access the KAMIKAZE dApp.\n\n' +
+            'MetaMask wallet is required to access the AgentChains dApp.\n\n' +
             'Would you like to install MetaMask now?'
         );
         
@@ -197,7 +197,7 @@ class ModernLoader {
         this.loadingText = $('.loading-text');
         
         this.messages = [
-            '🔥 Igniting KAMIKAZE Engine...',
+            '🔗 Initializing AgentChains...',
             '🚀 Launching AI Protocols...',
             '🌟 Connecting to Blockchain...',
             '⚡ Powering Up Interface...',
@@ -344,7 +344,7 @@ function showLaunchAnimation() {
     overlay.innerHTML = `
         <div style="text-align: center; color: white;">
             <div style="font-size: 4rem; margin-bottom: 20px; animation: pulse 2s infinite;">🚀</div>
-            <h2 style="font-size: 2rem; margin-bottom: 15px; font-weight: 700;">Launching KAMIKAZE dApp</h2>
+            <h2 style="font-size: 2rem; margin-bottom: 15px; font-weight: 700;">Launching AgentChains dApp</h2>
             <p style="font-size: 1.2rem; opacity: 0.9;">Welcome to the future of AI-powered finance</p>
             <div style="margin-top: 30px;">
                 <div style="width: 200px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; margin: 0 auto;">
@@ -426,7 +426,7 @@ class MobileMenu {
 // ================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🔥 KAMIKAZE Platform initializing...');
+    console.log('🔗 AgentChains Platform initializing...');
     
     // Initialize components
     const loader = new ModernLoader();
@@ -440,5 +440,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.handleLaunchDApp = handleLaunchDApp;
     window.scrollToSection = scrollToSection;
     
-    console.log('🚀 KAMIKAZE Platform ready!');
+    console.log('🚀 AgentChains Platform ready!');
 });
