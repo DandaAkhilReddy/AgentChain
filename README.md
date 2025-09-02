@@ -35,7 +35,7 @@
 ✅ **MetaMask Integration** - Web3 wallet connection  
 ✅ **AI Agent Builder** - Visual drag-and-drop interface  
 ✅ **Interactive Whitepaper** - 47-page technical documentation  
-✅ **MIND Token Economy** - Earn real cryptocurrency  
+✅ **KAMIKAZE Token Economy** - Earn real cryptocurrency  
 
 </td>
 <td width="50%">
@@ -46,7 +46,7 @@
 1. **Visit Platform** → Instant access
 2. **Connect Wallet** → MetaMask or Google  
 3. **Create Agent** → Visual interface
-4. **Start Earning** → MIND tokens
+4. **Start Earning** → KAMIKAZE tokens
 5. **Join Community** → 50K+ members
 
 > **🔥 Coming Soon:** https://agentchains.ai
@@ -124,16 +124,16 @@
 
 <div align="center">
 
-### 🤖 **4 Powerful Agent Types - Each Earning Real MIND Tokens**
+### 🤖 **4 Powerful Agent Types - Each Earning Real KAMIKAZE Tokens**
 
 </div>
 
 | Agent Type | 🎯 Specialization | 💡 Key Abilities | 🔥 Performance | 💰 Earning Potential |
 |---|---|---|---|---|
-| **🎯 General Assistant** | Universal problem solver | Q&A, summarization, analysis | Temperature: 0.7 | 50-200 MIND/task |
-| **📊 Data Analyst** | Business intelligence expert | Data analysis, trend identification | Temperature: 0.3 | 100-500 MIND/task |
-| **👨‍💻 Code Assistant** | Software development master | Code generation, debugging, reviews | Temperature: 0.2 | 200-800 MIND/task |
-| **🎨 Creative Writer** | Content creation specialist | Storytelling, copywriting, marketing | Temperature: 0.9 | 150-600 MIND/task |
+| **🎯 General Assistant** | Universal problem solver | Q&A, summarization, analysis | Temperature: 0.7 | 50-200 KAMIKAZE/task |
+| **📊 Data Analyst** | Business intelligence expert | Data analysis, trend identification | Temperature: 0.3 | 100-500 KAMIKAZE/task |
+| **👨‍💻 Code Assistant** | Software development master | Code generation, debugging, reviews | Temperature: 0.2 | 200-800 KAMIKAZE/task |
+| **🎨 Creative Writer** | Content creation specialist | Storytelling, copywriting, marketing | Temperature: 0.9 | 150-600 KAMIKAZE/task |
 
 ---
 
@@ -514,7 +514,7 @@ http://localhost:3001/api-docs
 1. **Visit Platform** → [Click here](https://icy-mushroom-029b4900f.1.azurestaticapps.net) for instant access
 2. **Choose Authentication** → Google OAuth or MetaMask wallet  
 3. **Launch dApp** → Click "Launch Platform" to enter the full application
-4. **Manage Tokens** → Buy, stake, and trade 1000 test MIND tokens
+4. **Manage Tokens** → Buy, stake, and trade 1000 test KAMIKAZE tokens
 5. **Create AI Agents** → Deploy intelligent agents and earn rewards
 6. **Track Performance** → Monitor earnings and success rates in real-time
 
@@ -597,7 +597,7 @@ http://localhost:3001/api-docs
 | **📄 Documentation** | 47-Page Technical Whitepaper | Enterprise-grade planning |
 | **🔐 Authentication** | Google + MetaMask Ready | Maximum accessibility |
 | **🧠 AI Architecture** | 3-Layer Memory System | Human-like intelligence |
-| **💰 Economic Model** | 1B MIND Token Supply | Designed for massive scale |
+| **💰 Economic Model** | 1B KAMIKAZE Token Supply | Designed for massive scale |
 | **🌍 Market Opportunity** | $1.8T by 2030 | Unprecedented potential |
 
 </div>
@@ -648,7 +648,7 @@ http://localhost:3001/api-docs
 - Contribute to open-source
 - Build custom AI agents  
 - Integrate with your apps
-- Earn MIND tokens
+- Earn KAMIKAZE tokens
 - Join 10K+ dev community
 
 </td>
@@ -666,7 +666,7 @@ http://localhost:3001/api-docs
 
 **🎯 For Investors**
 - Early platform access
-- MIND token potential
+- KAMIKAZE token potential
 - Governance participation
 - Staking rewards
 - $1.8T market exposure

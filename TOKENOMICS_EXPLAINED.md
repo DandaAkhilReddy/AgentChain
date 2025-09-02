@@ -10,7 +10,7 @@ Most cryptocurrencies face inflation:
 - Early holders disadvantaged
 
 ### **AgentChain's Solution: Deflationary Economics**
-Every MIND token transfer burns 2% automatically:
+Every KAMIKAZE token transfer burns 2% automatically:
 - Supply constantly decreasing
 - Scarcity increases value
 - Early holders benefit most
@@ -20,11 +20,11 @@ Every MIND token transfer burns 2% automatically:
 
 ### **Simple Example:**
 ```
-Initial Supply: 1,000,000,000 MIND
+Initial Supply: 1,000,000,000 KAMIKAZE
 Price per token: $0.001
 
 After 10 million transfers:
-Remaining Supply: ~800,000,000 MIND (-20%)
+Remaining Supply: ~800,000,000 KAMIKAZE (-20%)
 Expected price: $0.00125 (+25% increase)
 
 Why? Same market cap ÷ fewer tokens = higher price per token
@@ -40,30 +40,30 @@ Each burn makes subsequent burns more valuable:
 ## **Real-World Scenarios**
 
 ### **Scenario 1: Active Trader**
-- Buys 10 agents for 5,000 MIND each
-- Sells them for 6,000 MIND each (+20% profit)
-- Burns: ~2,000 MIND total
-- Net profit: 8,000 MIND
-- Bonus: All remaining MIND worth more due to burns!
+- Buys 10 agents for 5,000 KAMIKAZE each
+- Sells them for 6,000 KAMIKAZE each (+20% profit)
+- Burns: ~2,000 KAMIKAZE total
+- Net profit: 8,000 KAMIKAZE
+- Bonus: All remaining KAMIKAZE worth more due to burns!
 
 ### **Scenario 2: Long-Term Holder**
-- Holds 100,000 MIND tokens
+- Holds 100,000 KAMIKAZE tokens
 - Never sells, just watches
 - As others trade, supply decreases
-- After 1 year: Same 100,000 MIND worth 50% more
+- After 1 year: Same 100,000 KAMIKAZE worth 50% more
 - Passive gains from others' activity!
 
 ### **Scenario 3: Task Economy User**
-- Earns 1,000 MIND per week from tasks
-- Spends 500 MIND on services
-- Burns: ~20 MIND per week
-- After 1 year: Earned 52,000 MIND
-- Bonus: Each MIND worth more than when earned!
+- Earns 1,000 KAMIKAZE per week from tasks
+- Spends 500 KAMIKAZE on services
+- Burns: ~20 KAMIKAZE per week
+- After 1 year: Earned 52,000 KAMIKAZE
+- Bonus: Each KAMIKAZE worth more than when earned!
 
 ## **Agent Marketplace Impact**
 
 ### **Why Agents Have Value:**
-1. **Earning Power**: Agents complete tasks for MIND
+1. **Earning Power**: Agents complete tasks for KAMIKAZE
 2. **Performance History**: Higher scores = higher value
 3. **Scarcity**: Each agent name is unique
 4. **Utility**: Needed to participate in task economy
@@ -109,7 +109,7 @@ Each burn makes subsequent burns more valuable:
 ### **Natural Stabilizers:**
 1. **Arbitrage**: Price differences create trading
 2. **Task Economy**: Real utility creates floor price
-3. **Agent Values**: Tied to MIND creates correlation
+3. **Agent Values**: Tied to KAMIKAZE creates correlation
 4. **Burn Rate**: Self-adjusting with volume
 
 ### **Anti-Manipulation:**

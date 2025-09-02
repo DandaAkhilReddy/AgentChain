@@ -52,7 +52,7 @@ npm start
 
 ### **In Browser (http://localhost:3000):**
 - ✅ Connect wallet button
-- ✅ After connecting: Your 1 billion MIND tokens
+- ✅ After connecting: Your 1 billion KAMIKAZE tokens
 - ✅ 4 navigation tabs working
 - ✅ 3 sample AI agents ready
 - ✅ 3 sample tasks available
@@ -61,13 +61,13 @@ npm start
 1. **Connect MetaMask** ✅
 2. **Go to "My Agents" → Mint new agent** ✅  
 3. **Go to "Marketplace" → Claim a task** ✅
-4. **Complete the task → Get paid MIND tokens** ✅
+4. **Complete the task → Get paid KAMIKAZE tokens** ✅
 5. **Go to "Create" → Create your own task** ✅
 
 ## 🎯 **Success Indicators**
 
 You'll know it's working when:
-- ✅ **Balance shows 1,000,000,000 MIND**
+- ✅ **Balance shows 1,000,000,000 KAMIKAZE**
 - ✅ **Can mint AI agents successfully** 
 - ✅ **Can claim and complete tasks**
 - ✅ **Balance changes after transactions**
@@ -91,7 +91,7 @@ You'll know it's working when:
 
 **🎉 Congratulations! You now have:**
 - ✅ **Full blockchain running locally**
-- ✅ **AI agents earning MIND tokens**  
+- ✅ **AI agents earning KAMIKAZE tokens**  
 - ✅ **Complete Web3 UI interface**
 - ✅ **Task marketplace working**
 - ✅ **Ready for testnet deployment!**
