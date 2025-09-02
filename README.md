@@ -137,11 +137,11 @@
 
 ---
 
-## 💰 **MIND TOKEN: THE AI ECONOMY CURRENCY**
+## 🥷 **KAMIKAZE TOKEN: ZERO-KNOWLEDGE AI ECONOMY**
 
 <div align="center">
 
-### 🚀 **1 Billion Total Supply • Deflationary Mechanics • Real Utility**
+### 🚀 **1 Billion Total Supply • Zero-Knowledge Privacy • Deflationary Mechanics**
 
 </div>
 
@@ -149,38 +149,47 @@
 <tr>
 <td width="33%">
 
-**💎 Token Allocation**
-- 40% **Task Rewards** (400M)
-- 25% **Development** (250M)  
-- 20% **Community** (200M)
-- 10% **Team** (100M)
-- 5% **Advisors** (50M)
+**🔐 Privacy Features**
+- **Zero-Knowledge Proofs** for all transactions
+- **Commitment-based** balances
+- **Range proofs** for reputation
+- **Anonymous staking** rewards
+- **Private agent** earnings
 
 </td>
 <td width="33%">
 
 **🔥 Deflationary Power**
 - **2% burn** on all transfers
-- **50% platform fees** burned
+- **Platform fees** burned
 - Target: **500M supply** by 2030
 - **Increasing scarcity** = Rising value
+- **Private burn** amounts
 
 </td>
 <td width="34%">
 
 **⚡ Utility & Rewards**
-- Pay AI agents for tasks
-- Governance voting rights  
-- Staking for passive income
-- Platform fee discounts
+- Pay AI agents **anonymously**
+- **Confidential staking** (10-20% APY)
+- **Private governance** voting
+- **Hidden transaction** amounts
+- **Anonymous marketplace** trading
 
 </td>
 </tr>
 </table>
 
+### 🔒 **Zero-Knowledge Architecture**
+- **Poseidon Hashes**: ZK-friendly cryptographic commitments
+- **Groth16 SNARKs**: Efficient proof verification
+- **Range Proofs**: Prove performance without revealing scores
+- **Membership Proofs**: Anonymous whitelist verification
+- **Batch Aggregation**: Scalable privacy-preserving statistics
+
 ---
 
-## 🏗️ **ENTERPRISE-GRADE ARCHITECTURE**
+## 🏗️ **PRIVACY-FIRST ENTERPRISE ARCHITECTURE**
 
 ```mermaid
 graph TB
@@ -191,15 +200,240 @@ graph TB
     E[⚡ Backend Services] --> F[🧠 AI Memory System]
     E --> G[📋 Task Processing]  
     E --> H[🔌 WebSocket API]
+    E --> I[🔒 Zero-Knowledge Service]
     
-    I[⛓️ Blockchain Layer] --> J[💰 MIND Token]
-    I --> K[📜 Smart Contracts]
-    I --> L[🎯 Agent NFTs]
+    J[🥷 Privacy Layer] --> K[💰 KAMIKAZE Token]
+    J --> L[📜 ZK Smart Contracts]
+    J --> M[🎯 Agent NFTs]
+    J --> N[🔐 Commitment Database]
     
-    M[☁️ Infrastructure] --> N[🚀 Azure Static Apps]
-    M --> O[💾 Database Layer]
-    M --> P[📦 File Storage]
+    O[☁️ Infrastructure] --> P[🚀 Azure Static Apps]
+    O --> Q[🚀 Azure Container Apps]
+    O --> R[💾 Private Database]
+    O --> S[📦 Encrypted Storage]
+    
+    T[🔒 ZK Protocols] --> U[🌟 Poseidon Hashes]
+    T --> V[⚡ Groth16 SNARKs]
+    T --> W[📊 Range Proofs]
+    T --> X[👥 Membership Proofs]
 ```
+
+### 🔐 **Zero-Knowledge Backend Services**
+- **Live API**: `https://kamikaze-backend.azurewebsites.net` (Coming Soon)
+- **ZK Proof System**: Poseidon hashes + Groth16 SNARKs
+- **Privacy Database**: Commitment-based storage
+- **Anonymous APIs**: 9 comprehensive route sets
+- **Swagger Docs**: Complete API documentation
+
+---
+
+## 🔐 **ZERO-KNOWLEDGE PROOF PROTOCOLS**
+
+<div align="center">
+
+### 🥷 **Complete Privacy • Public Verifiability • Enterprise Security**
+
+[![ZK Documentation](https://img.shields.io/badge/📖_ZK_PROTOCOLS-Complete_Guide-00D4FF?style=for-the-badge)](./ZERO_KNOWLEDGE_PROTOCOLS.md)
+[![Backend API](https://img.shields.io/badge/🚀_BACKEND_API-Live_Soon-FF6B35?style=for-the-badge)](#)
+[![Privacy Report](https://img.shields.io/badge/🔒_PRIVACY_REPORT-Maximum_Security-00FF88?style=for-the-badge)](#)
+
+</div>
+
+### 🔒 **Core ZK Implementations**
+
+<table>
+<tr>
+<td width="50%">
+
+**🏗️ Cryptographic Foundation**
+- **Poseidon Hashes**: ZK-friendly commitment scheme
+- **Groth16 SNARKs**: Efficient proof verification (<100ms)
+- **BN254 Elliptic Curve**: Pairing-friendly operations
+- **Pedersen Commitments**: Information-theoretic hiding
+
+**📊 Proof Types Available**
+- **Balance Proofs**: Private KAMIKAZE holdings
+- **Range Proofs**: Performance without exact scores
+- **Membership Proofs**: Anonymous whitelist access
+- **Staking Proofs**: Confidential stake amounts
+- **Task Completion**: Quality verification
+
+</td>
+<td width="50%">
+
+**🔐 Privacy Guarantees**
+- **Zero-Knowledge**: No sensitive data revealed
+- **Soundness**: Invalid proofs rejected (cryptographic security)
+- **Completeness**: Valid statements provable
+- **Non-Interactive**: Verification without prover
+
+**🚀 Backend API Endpoints**
+```bash
+# Generate ZK commitment
+POST /api/zk/generate-commitment
+
+# Create range proof  
+POST /api/zk/range-proof
+
+# Verify any proof
+POST /api/zk/verify-proof
+
+# Privacy statistics
+GET /api/analytics/privacy-report
+```
+
+</td>
+</tr>
+</table>
+
+### 🛡️ **Privacy Protection Features**
+
+| Component | Privacy Method | Benefit |
+|-----------|----------------|---------|
+| **💰 Balances** | Cryptographic commitments | Amounts completely hidden |
+| **📈 Performance** | Range proofs | Scores proven without revelation |
+| **💎 Staking** | Commitment-based rewards | Stakes and earnings private |
+| **🤖 Agents** | Anonymous performance tracking | Quality without identity |
+| **📋 Tasks** | Private budget proofs | Payment amounts confidential |
+| **🏪 Marketplace** | ZK trading verification | Transaction amounts hidden |
+
+---
+
+## 🔌 **MODEL CONTEXT PROTOCOL (MCP) INTEGRATION**
+
+<div align="center">
+
+### 🤖 **Advanced AI Agent Communication • Claude Integration • Secure Context Sharing**
+
+</div>
+
+### 🧠 **MCP Server Implementation**
+
+<table>
+<tr>
+<td width="50%">
+
+**🛠️ Technical Architecture**
+```bash
+# MCP Server Location
+./mcp-server/
+
+# Installation & Launch
+npm install
+npm start
+
+# Server runs on:
+http://localhost:3001
+```
+
+**🔗 Integration Features**
+- **Claude AI Integration**: Direct model communication
+- **Context Sharing**: Secure agent-to-agent data exchange
+- **Memory Persistence**: Long-term conversation storage
+- **Tool Access**: File system, web, and custom tools
+
+</td>
+<td width="50%">
+
+**🚀 Capabilities Enabled**
+- **Multi-Agent Workflows**: Coordinated task execution
+- **Context Preservation**: Conversation continuity
+- **Secure Communication**: Encrypted agent messaging
+- **Resource Sharing**: Safe file and data access
+
+**📡 Protocol Benefits**
+- **Standardized Communication**: Universal agent interface
+- **Scalable Architecture**: Support for unlimited agents
+- **Privacy Preservation**: ZK-compatible data sharing
+- **Enterprise Ready**: Production-grade reliability
+
+</td>
+</tr>
+</table>
+
+### 🔐 **MCP + Zero-Knowledge Fusion**
+- **Private Context Sharing**: Agent communications use ZK commitments
+- **Anonymous Coordination**: Multi-agent workflows without identity revelation
+- **Secure Tool Access**: File operations with privacy preservation
+- **Confidential Memory**: Long-term storage with commitment-based encryption
+
+---
+
+## 🚀 **LIVE BACKEND DEPLOYMENT**
+
+<div align="center">
+
+### ⚡ **Production-Ready API • Azure Hosted • Zero-Knowledge Enabled**
+
+[![Backend Status](https://img.shields.io/badge/🟢_BACKEND_STATUS-Running_Locally-00FF88?style=for-the-badge)](#)
+[![API Documentation](https://img.shields.io/badge/📚_API_DOCS-Swagger_Available-00D4FF?style=for-the-badge)](#)
+[![Deploy Azure](https://img.shields.io/badge/☁️_DEPLOY_AZURE-Production_Ready-FF6B35?style=for-the-badge)](#)
+
+</div>
+
+### 🏗️ **Backend Architecture**
+
+<table>
+<tr>
+<td width="50%">
+
+**🛠️ Technology Stack**
+- **Node.js + Express**: High-performance API server
+- **Zero-Knowledge Service**: Poseidon + Groth16 integration
+- **Privacy Database**: MySQL with commitment storage
+- **JWT Authentication**: Wallet signature verification
+- **Swagger Documentation**: Complete API reference
+
+**📊 API Route Coverage**
+- **Authentication**: Wallet-based login with ZK proofs
+- **Users**: Dashboard with KAMIKAZE token display
+- **Tokens**: Balance proofs and transfer verification
+- **Staking**: Private stake amounts and rewards
+- **Agents**: Anonymous performance tracking
+
+</td>
+<td width="50%">
+
+**🚀 Deployment Ready**
+```bash
+# Local Development
+cd backend/
+npm install
+npm start
+
+# Server runs on:
+http://localhost:3001
+
+# API Documentation:
+http://localhost:3001/api-docs
+
+# Health Check:
+http://localhost:3001/health
+```
+
+**☁️ Azure Configuration**
+- **Azure Container Apps**: Scalable hosting
+- **Environment Variables**: Secure configuration
+- **Database Integration**: MySQL with ZK schema
+- **HTTPS/SSL**: Encrypted communications
+- **Auto-scaling**: Handle high traffic loads
+
+</td>
+</tr>
+</table>
+
+### 🔐 **API Endpoints Overview**
+
+| Route | Purpose | Privacy Level | Status |
+|-------|---------|---------------|---------|
+| `/api/auth/*` | Wallet authentication | Pseudonymous | ✅ Working |
+| `/api/users/*` | Dashboard & profiles | ZK commitments | ✅ Working |
+| `/api/tokens/*` | KAMIKAZE token operations | Private balances | ✅ Working |
+| `/api/staking/*` | Anonymous staking | Hidden amounts | ✅ Working |
+| `/api/agents/*` | AI agent marketplace | Private earnings | ✅ Working |
+| `/api/tasks/*` | Task management | Confidential budgets | ✅ Working |
+| `/api/zk/*` | Zero-knowledge proofs | Maximum privacy | ✅ Working |
+| `/api/analytics/*` | Privacy-preserving stats | Aggregated only | ✅ Working |
 
 ---
 
@@ -218,13 +452,13 @@ graph TB
 ### 🌐 **Instant Access**
 ```bash
 # Just click and go!
-https://icy-mushroom-029b4900f.1.azurestaticapps.net
+https://mango-tree-08f94b50f.2.azurestaticapps.net
 
 ✅ Google/MetaMask Login
 ✅ Full dApp Platform
-✅ Token Buy/Sell/Stake
+✅ KAMIKAZE Token Trading
 ✅ AI Agent Dashboard
-✅ Testnet Integration
+✅ Zero-Knowledge Privacy
 ```
 
 </td>
@@ -235,7 +469,7 @@ https://icy-mushroom-029b4900f.1.azurestaticapps.net
 git clone https://github.com/DandaAkhilReddy/AgentChain.git
 cd AgentChain
 
-# Choose your experience:
+# Frontend Experience:
 ./website/index.html
 ./agent-builder/index.html  
 ./launch-demo.html
@@ -244,14 +478,17 @@ cd AgentChain
 </td>
 <td width="34%">
 
-### 🚀 **Full Platform**
+### 🚀 **Full Backend API**
 ```bash
-# Advanced features
-cd mcp-server
+# Zero-Knowledge Backend
+cd backend/
 npm install && npm start
 
-# Platform runs on:
+# API runs on:
 http://localhost:3001
+
+# Swagger docs:
+http://localhost:3001/api-docs
 ```
 
 </td>
