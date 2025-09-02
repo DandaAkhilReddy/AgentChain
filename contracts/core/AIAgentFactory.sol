@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "../interfaces/IAIAgentNFT.sol";
+import "../interfaces/IBasicNFT.sol";
 
 contract AIAgentFactory is ReentrancyGuard, Ownable {
     IERC20 public immutable kamikazeToken;
-    IAIAgentNFT public immutable agentNFT;
+    IBasicNFT public immutable agentNFT;
     
     struct AgentTemplate {
         string name;
@@ -46,7 +46,7 @@ contract AIAgentFactory is ReentrancyGuard, Ownable {
     
     constructor(address _kamikazeToken, address _agentNFT) {
         kamikazeToken = IERC20(_kamikazeToken);
-        agentNFT = IAIAgentNFT(_agentNFT);
+        agentNFT = IBasicNFT(_agentNFT);
         
         _initializeTemplates();
     }

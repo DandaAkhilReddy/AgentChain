@@ -64,7 +64,7 @@ async function main() {
     
     // Create demo AI agents using the factory
     const agentCreationCost = ethers.parseEther("1000");
-    const initialStake = ethers.parseEther("500");
+    const initialStake = ethers.parseEther("1000"); // Use higher stake to meet requirements
     const totalAgentCost = (agentCreationCost + initialStake) * 3n;
     
     await kamikazeToken.approve(agentFactory.target, totalAgentCost);

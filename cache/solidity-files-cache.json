@@ -800,8 +800,8 @@
       ]
     },
     "C:\\Users\\akhil\\AgentChain\\contracts\\core\\BasicToken.sol": {
-      "lastModificationDate": 1756501478070,
-      "contentHash": "592c5dea7cf933113fdc6a319f4568ef",
+      "lastModificationDate": 1756787836487,
+      "contentHash": "5dca928b833fafe7e47bf445c15e7e56",
       "sourceName": "contracts/core/BasicToken.sol",
       "solcConfig": {
         "version": "0.8.19",
@@ -910,6 +910,126 @@
       ],
       "artifacts": [
         "ITaskMarketplace"
+      ]
+    },
+    "C:\\Users\\akhil\\AgentChain\\contracts\\core\\MindStaking.sol": {
+      "lastModificationDate": 1756787858352,
+      "contentHash": "899aabc7b2095c31800398c501d11151",
+      "sourceName": "contracts/core/MindStaking.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "KamikazeStaking"
+      ]
+    },
+    "C:\\Users\\akhil\\AgentChain\\contracts\\core\\AIAgentFactory.sol": {
+      "lastModificationDate": 1756788105324,
+      "contentHash": "a09f682972abeabf2d1facabd17e0c9a",
+      "sourceName": "contracts/core/AIAgentFactory.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "../interfaces/IBasicNFT.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "AIAgentFactory"
+      ]
+    },
+    "C:\\Users\\akhil\\AgentChain\\contracts\\interfaces\\IBasicNFT.sol": {
+      "lastModificationDate": 1756788095581,
+      "contentHash": "48969baf5566f175033ea9d9e968a616",
+      "sourceName": "contracts/interfaces/IBasicNFT.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/IERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "IBasicNFT"
       ]
     }
   }
