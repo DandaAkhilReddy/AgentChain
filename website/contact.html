@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - AgentChains AI-Powered Blockchain Platform</title>
+    <meta name="description" content="Contact the AgentChains team. Reach out to CEO Akhil Reddy Danda and our AI development team for partnerships, support, and collaboration opportunities.">
+    <meta name="keywords" content="AgentChains contact, AI blockchain support, Akhil Reddy Danda, KAMIKAZE token support, AI agent development">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/modern-theme.css">
+    <link rel="stylesheet" href="./css/colorful-theme.css">
+    <link rel="stylesheet" href="./css/ultra-modern-theme.css">
+    <link rel="stylesheet" href="./css/futuristic-ai-theme.css">
+    
+    <style>
+        .contact-hero {
+            background: var(--gradient-neural);
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300ffdc20" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            animation: grid-flow 20s linear infinite;
+        }
+        
+        @keyframes grid-flow {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(10px) translateY(10px); }
+        }
+        
+        .contact-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: var(--font-ai);
+            background: var(--gradient-matrix);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: title-pulse 3s ease-in-out infinite;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .contact-info {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid var(--cyber-cyan);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-neural);
+        }
+        
+        .contact-form {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid var(--matrix-green);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-quantum);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 255, 220, 0.05);
+            border: 1px solid rgba(0, 255, 220, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--matrix-green);
+            transform: translateY(-2px);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-neural);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            animation: icon-pulse 2s ease-in-out infinite;
+        }
+        
+        .contact-details h3 {
+            color: var(--cyber-cyan);
+            font-family: var(--font-ai);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .contact-details p {
+            color: var(--hologram-white);
+            opacity: 0.9;
+        }
+        
+        .contact-details a {
+            color: var(--matrix-green);
+            text-decoration: none;
+            font-family: var(--font-data);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-details a:hover {
+            color: var(--cyber-cyan);
+            text-shadow: 0 0 10px var(--cyber-cyan);
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-label {
+            display: block;
+            color: var(--cyber-cyan);
+            font-family: var(--font-ai);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 255, 220, 0.3);
+            border-radius: 8px;
+            color: var(--hologram-white);
+            font-family: var(--font-neural);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--matrix-green);
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            background: var(--gradient-matrix);
+            color: var(--void-black);
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-ai);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-neural);
+            transition: left 0.3s ease;
+        }
+        
+        .submit-btn:hover::before {
+            left: 0;
+        }
+        
+        .submit-btn:hover {
+            color: var(--hologram-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-neural);
+        }
+        
+        .leadership-section {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+        }
+        
+        .leadership-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid var(--quantum-purple);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-quantum);
+        }
+        
+        .leader-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: var(--gradient-neural);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            animation: leader-glow 3s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .leader-avatar::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid var(--cyber-cyan);
+            border-radius: 50%;
+            opacity: 0;
+            animation: leader-ring 4s ease-out infinite;
+        }
+        
+        @keyframes leader-glow {
+            0%, 100% { box-shadow: var(--shadow-neural); }
+            50% { box-shadow: var(--shadow-quantum); }
+        }
+        
+        @keyframes leader-ring {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 1rem;
+            }
+            
+            .contact-info, .contact-form {
+                padding: 2rem;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🔗</span>
+                <span class="logo-text">AgentChains</span>
+            </div>
+            
+            <div class="nav-center">
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#features" class="nav-link">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#agents" class="nav-link">AI Agents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="careers.html" class="nav-link">Careers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link active">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="./dapp/dashboard.html" class="btn btn-primary">🚀 Launch dApp</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+        <div class="contact-hero-content">
+            <h1>Contact AgentChains</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+                Connect with our AI development team and leadership. We're here to support your journey into the future of AI-powered blockchain technology.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Grid -->
+    <section class="contact-grid">
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <h2 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 2rem; text-align: center;">
+                Get In Touch
+            </h2>
+            
+            <div class="contact-item">
+                <div class="contact-icon">👨‍💼</div>
+                <div class="contact-details">
+                    <h3>CEO & Founder</h3>
+                    <p>Akhil Reddy Danda</p>
+                    <a href="mailto:akhilreddydanda1@gmail.com">akhilreddydanda1@gmail.com</a>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div class="contact-details">
+                    <h3>General Inquiries</h3>
+                    <p>Business & Partnership</p>
+                    <a href="mailto:info@agentchains.ai">info@agentchains.ai</a>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">🤖</div>
+                <div class="contact-details">
+                    <h3>AI Development Support</h3>
+                    <p>Technical & Integration</p>
+                    <a href="mailto:dev@agentchains.ai">dev@agentchains.ai</a>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">💼</div>
+                <div class="contact-details">
+                    <h3>Career Opportunities</h3>
+                    <p>Join Our AI Team</p>
+                    <a href="mailto:careers@agentchains.ai">careers@agentchains.ai</a>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">🔗</div>
+                <div class="contact-details">
+                    <h3>Social & Community</h3>
+                    <p>Follow Our Journey</p>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <a href="https://github.com/DandaAkhilReddy/AgentChain" target="_blank">GitHub</a>
+                        <a href="https://twitter.com/agentchains" target="_blank">Twitter</a>
+                        <a href="https://linkedin.com/company/agentchains" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h2 style="color: var(--matrix-green); font-family: var(--font-ai); margin-bottom: 2rem; text-align: center;">
+                Send Us a Message
+            </h2>
+            
+            <form id="contactForm" onsubmit="sendMessage(event)">
+                <div class="form-group">
+                    <label class="form-label" for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="company">Company/Organization</label>
+                    <input type="text" id="company" name="company" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="subject">Subject</label>
+                    <select id="subject" name="subject" class="form-input" required>
+                        <option value="">Select a topic</option>
+                        <option value="partnership">Partnership Inquiry</option>
+                        <option value="integration">AI Agent Integration</option>
+                        <option value="investment">Investment Opportunity</option>
+                        <option value="career">Career & Jobs</option>
+                        <option value="support">Technical Support</option>
+                        <option value="media">Media & Press</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="message">Message</label>
+                    <textarea id="message" name="message" class="form-textarea" 
+                              placeholder="Tell us about your project, questions, or how we can help you..." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <span style="position: relative; z-index: 2;">Send Message</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="leadership-section">
+        <div class="leadership-card">
+            <div class="leader-avatar">👨‍💼</div>
+            <h2 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                Meet Our CEO & Founder
+            </h2>
+            <h3 style="color: var(--matrix-green); font-size: 1.5rem; margin-bottom: 1.5rem;">
+                Akhil Reddy Danda
+            </h3>
+            <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem;">
+                Visionary blockchain entrepreneur with 3+ years of intensive experience in Machine Learning and Blockchain technologies. 
+                Expert AI agent developer specializing in RAG systems and autonomous task execution. Leading the AgentChains revolution 
+                with cutting-edge DeFi solutions and enterprise-grade AI infrastructure.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="color: var(--matrix-green); font-size: 2rem; font-weight: bold; font-family: var(--font-data);">3+</div>
+                    <div style="color: var(--cyber-cyan); font-size: 0.9rem;">Years ML/Blockchain</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: var(--matrix-green); font-size: 2rem; font-weight: bold; font-family: var(--font-data);">50+</div>
+                    <div style="color: var(--cyber-cyan); font-size: 0.9rem;">AI Agents Created</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: var(--matrix-green); font-size: 2rem; font-weight: bold; font-family: var(--font-data);">1B</div>
+                    <div style="color: var(--cyber-cyan); font-size: 0.9rem;">KAMIKAZE Tokens</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copyright Notice -->
+    <div class="copyright-notice">
+        © 2025 AgentChains. All rights reserved.
+    </div>
+
+    <script>
+        // Contact form submission
+        function sendMessage(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const company = formData.get('company');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+            // Create email body
+            const emailBody = `Name: ${name}%0D%0A` +
+                            `Email: ${email}%0D%0A` +
+                            `Company: ${company || 'Not specified'}%0D%0A` +
+                            `Subject: ${subject}%0D%0A%0D%0A` +
+                            `Message:%0D%0A${message}`;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:info@agentchains.ai?subject=Contact Form: ${subject}&body=${emailBody}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            alert('Thank you for contacting us! Your email client should open now. If not, please email us directly at info@agentchains.ai');
+            
+            // Reset form
+            form.reset();
+        }
+        
+        // Add animations on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactItems = document.querySelectorAll('.contact-item');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 200);
+                    }
+                });
+            });
+            
+            contactItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.6s ease';
+                observer.observe(item);
+            });
+        });
+        
+        // Neural network activity simulation for contact page
+        setInterval(() => {
+            const icons = document.querySelectorAll('.contact-icon');
+            icons.forEach(icon => {
+                icon.style.transform = `scale(${0.95 + Math.random() * 0.1})`;
+            });
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -458,6 +458,70 @@ body::before {
     50% { opacity: 1; }
 }
 
+/* Professional AgentChains Logo Design */
+.nav-logo .logo-icon {
+    width: 45px !important;
+    height: 45px !important;
+    background: linear-gradient(135deg, var(--cyber-cyan) 0%, var(--matrix-green) 50%, var(--neural-blue) 100%) !important;
+    border: 2px solid rgba(0, 255, 220, 0.5);
+    position: relative;
+    font-size: 0 !important;
+    border-radius: 10px !important;
+}
+
+.nav-logo .logo-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    background-image: 
+        linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.8) 50%, transparent 70%),
+        radial-gradient(circle at 30% 30%, var(--hologram-white) 2px, transparent 2px),
+        radial-gradient(circle at 70% 30%, var(--hologram-white) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 30% 70%, var(--hologram-white) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 70% 70%, var(--hologram-white) 2px, transparent 2px);
+    background-size: 28px 28px, 8px 8px, 6px 6px, 6px 6px, 8px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    z-index: 2;
+}
+
+.nav-logo .logo-icon::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: 
+        linear-gradient(90deg, var(--cyber-cyan) 0%, transparent 50%, var(--matrix-green) 100%),
+        linear-gradient(0deg, var(--neural-blue) 0%, transparent 50%, var(--quantum-purple) 100%);
+    background-size: 100% 2px, 2px 100%;
+    background-repeat: no-repeat;
+    background-position: 0 0, 0 0;
+    border-radius: 8px;
+    z-index: 1;
+    animation: logo-circuit-flow 3s linear infinite;
+}
+
+@keyframes logo-circuit-flow {
+    0% { 
+        background-position: -100% 0, 0 -100%; 
+        opacity: 0.8;
+    }
+    50% { 
+        background-position: 100% 0, 0 100%; 
+        opacity: 1;
+    }
+    100% { 
+        background-position: 200% 0, 0 200%; 
+        opacity: 0.8;
+    }
+}
+
 /* Responsive Design for AI Theme */
 @media (max-width: 768px) {
     .metrics-grid {

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers - Join the AgentChains AI Revolution</title>
+    <meta name="description" content="Join AgentChains and shape the future of AI-powered blockchain technology. Explore exciting career opportunities in AI development, blockchain engineering, and more.">
+    <meta name="keywords" content="AgentChains careers, AI developer jobs, blockchain engineer, machine learning careers, crypto jobs, Web3 careers">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/modern-theme.css">
+    <link rel="stylesheet" href="./css/colorful-theme.css">
+    <link rel="stylesheet" href="./css/ultra-modern-theme.css">
+    <link rel="stylesheet" href="./css/futuristic-ai-theme.css">
+    
+    <style>
+        .careers-hero {
+            background: var(--gradient-neural);
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .careers-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="circuit" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%2300ffdc30"/><line x1="10" y1="0" x2="10" y2="20" stroke="%2300ffdc20" stroke-width="0.5"/><line x1="0" y1="10" x2="20" y2="10" stroke="%2300ffdc20" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23circuit)"/></svg>') repeat;
+            animation: circuit-flow 15s linear infinite;
+        }
+        
+        @keyframes circuit-flow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+        
+        .careers-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .careers-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: var(--font-ai);
+            background: var(--gradient-data);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: title-glow 4s ease-in-out infinite;
+            background-size: 400% 400%;
+        }
+        
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 3rem auto 0;
+            padding: 0 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 220, 0.3);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: var(--font-data);
+            color: var(--matrix-green);
+            animation: stat-pulse 2s ease-in-out infinite;
+        }
+        
+        .stat-label {
+            color: var(--cyber-cyan);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+        
+        .jobs-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .jobs-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .job-card {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(0, 255, 220, 0.3);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-neural);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-matrix);
+            transition: left 0.6s ease;
+        }
+        
+        .job-card:hover::before {
+            left: 100%;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--matrix-green);
+            box-shadow: var(--shadow-quantum);
+        }
+        
+        .job-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .job-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-neural);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            animation: job-pulse 3s ease-in-out infinite;
+        }
+        
+        .job-title {
+            color: var(--cyber-cyan);
+            font-family: var(--font-ai);
+            font-size: 1.4rem;
+            margin: 0;
+        }
+        
+        .job-department {
+            color: var(--matrix-green);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .job-tag {
+            background: rgba(0, 255, 220, 0.1);
+            border: 1px solid rgba(0, 255, 220, 0.3);
+            color: var(--cyber-cyan);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-family: var(--font-data);
+        }
+        
+        .job-description {
+            color: var(--hologram-white);
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .job-requirements {
+            margin-bottom: 2rem;
+        }
+        
+        .job-requirements h4 {
+            color: var(--matrix-green);
+            font-family: var(--font-ai);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .requirements-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .requirements-list li {
+            color: var(--hologram-white);
+            opacity: 0.9;
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .requirements-list li::before {
+            content: '▶';
+            color: var(--cyber-cyan);
+            position: absolute;
+            left: 0;
+            font-size: 0.8rem;
+        }
+        
+        .job-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tech-tag {
+            background: var(--gradient-neural);
+            color: var(--void-black);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: var(--font-data);
+            font-weight: 600;
+        }
+        
+        .apply-btn {
+            width: 100%;
+            background: var(--gradient-matrix);
+            color: var(--void-black);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-family: var(--font-ai);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .apply-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-neural);
+            transition: left 0.3s ease;
+        }
+        
+        .apply-btn:hover::before {
+            left: 0;
+        }
+        
+        .apply-btn:hover {
+            color: var(--hologram-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-neural);
+        }
+        
+        .perks-section {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+        
+        .perks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto 0;
+        }
+        
+        .perk-card {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(176, 0, 255, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-quantum);
+        }
+        
+        .perk-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: perk-float 3s ease-in-out infinite;
+        }
+        
+        @keyframes perk-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes job-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes stat-pulse {
+            0%, 100% { color: var(--matrix-green); }
+            50% { color: var(--cyber-cyan); }
+        }
+        
+        @media (max-width: 768px) {
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .job-card {
+                padding: 1.5rem;
+            }
+            
+            .company-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🔗</span>
+                <span class="logo-text">AgentChains</span>
+            </div>
+            
+            <div class="nav-center">
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#features" class="nav-link">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#agents" class="nav-link">AI Agents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="careers.html" class="nav-link active">Careers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="./dapp/dashboard.html" class="btn btn-primary">🚀 Launch dApp</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="careers-hero">
+        <div class="careers-hero-content">
+            <h1>Join the AI Revolution</h1>
+            <p style="font-size: 1.3rem; opacity: 0.9; max-width: 700px; margin: 0 auto 2rem;">
+                Shape the future of AI-powered blockchain technology. Build cutting-edge neural networks, 
+                autonomous agents, and revolutionary DeFi solutions at AgentChains.
+            </p>
+            <div class="company-stats">
+                <div class="stat-item">
+                    <div class="stat-value">3+</div>
+                    <div class="stat-label">Years Innovation</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">50+</div>
+                    <div class="stat-label">AI Agents Created</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1B</div>
+                    <div class="stat-label">KAMIKAZE Tokens</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Neural Networks</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section class="jobs-section">
+        <div class="jobs-header">
+            <h2 style="color: var(--cyber-cyan); font-family: var(--font-ai); font-size: 2.5rem; margin-bottom: 1rem;">
+                Open Positions
+            </h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+                We're looking for exceptional talent to join our mission of revolutionizing AI and blockchain technology.
+            </p>
+        </div>
+        
+        <div class="jobs-grid">
+            <!-- Job 1: Senior AI/ML Engineer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">🧠</div>
+                    <div>
+                        <h3 class="job-title">Senior AI/ML Engineer</h3>
+                        <div class="job-department">AI Research & Development</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote/Hybrid</span>
+                    <span class="job-tag">$120K - $180K</span>
+                    <span class="job-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Lead the development of cutting-edge AI agents and neural networks that power our autonomous blockchain ecosystem. 
+                    Work with transformer models, RAG systems, and reinforcement learning to create intelligent agents that can 
+                    execute complex tasks autonomously.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>5+ years experience in ML/AI development</li>
+                        <li>Expert in Python, TensorFlow/PyTorch, scikit-learn</li>
+                        <li>Experience with transformers, BERT, GPT models</li>
+                        <li>Knowledge of RAG, vector databases, embeddings</li>
+                        <li>Reinforcement learning and autonomous systems</li>
+                        <li>PhD/MS in Computer Science, AI, or related field</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">PyTorch</span>
+                    <span class="tech-tag">TensorFlow</span>
+                    <span class="tech-tag">Transformers</span>
+                    <span class="tech-tag">LangChain</span>
+                    <span class="tech-tag">CUDA</span>
+                    <span class="tech-tag">Docker</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior AI/ML Engineer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 2: Blockchain Developer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">⛓️</div>
+                    <div>
+                        <h3 class="job-title">Senior Blockchain Developer</h3>
+                        <div class="job-department">Blockchain Engineering</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote</span>
+                    <span class="job-tag">$100K - $160K</span>
+                    <span class="job-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Architect and develop the core blockchain infrastructure powering KAMIKAZE token and AI agent marketplace. 
+                    Build smart contracts, DeFi protocols, and Web3 integrations that enable seamless AI-blockchain interactions.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>4+ years blockchain development experience</li>
+                        <li>Expert in Solidity, Web3.js, ethers.js</li>
+                        <li>Smart contract security and auditing</li>
+                        <li>DeFi protocols and token economics</li>
+                        <li>Experience with Ethereum, Polygon, BSC</li>
+                        <li>Node.js, React, JavaScript/TypeScript</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Solidity</span>
+                    <span class="tech-tag">Web3.js</span>
+                    <span class="tech-tag">Hardhat</span>
+                    <span class="tech-tag">MetaMask</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">IPFS</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior Blockchain Developer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 3: Full-Stack Developer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">💻</div>
+                    <div>
+                        <h3 class="job-title">Senior Full-Stack Developer</h3>
+                        <div class="job-department">Frontend & Backend</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Hybrid</span>
+                    <span class="job-tag">$90K - $140K</span>
+                    <span class="job-tag">Mid-Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Build beautiful, responsive web applications and robust backend systems for our AI agent platform. 
+                    Create intuitive UIs for complex AI workflows and develop APIs that seamlessly integrate AI and blockchain components.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>4+ years full-stack development experience</li>
+                        <li>Expert in React, Node.js, TypeScript</li>
+                        <li>RESTful APIs and GraphQL development</li>
+                        <li>Database design (PostgreSQL, MongoDB)</li>
+                        <li>Cloud platforms (AWS, Azure, GCP)</li>
+                        <li>Modern CSS, responsive design, UX/UI</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">AWS</span>
+                    <span class="tech-tag">GraphQL</span>
+                    <span class="tech-tag">Docker</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior Full-Stack Developer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 4: Data Scientist -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">📊</div>
+                    <div>
+                        <h3 class="job-title">Senior Data Scientist</h3>
+                        <div class="job-department">Data Science & Analytics</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote</span>
+                    <span class="job-tag">$110K - $170K</span>
+                    <span class="job-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Drive data-driven decision making across our AI agent ecosystem. Analyze blockchain transactions, AI performance metrics, 
+                    and user behavior to optimize token economics and improve agent intelligence through advanced statistical modeling.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>4+ years data science experience</li>
+                        <li>Expert in Python, R, SQL, pandas, numpy</li>
+                        <li>Statistical modeling and hypothesis testing</li>
+                        <li>Machine learning model deployment</li>
+                        <li>Data visualization (Plotly, D3.js, Tableau)</li>
+                        <li>Experience with blockchain data analysis</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">R</span>
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">Scikit-learn</span>
+                    <span class="tech-tag">Jupyter</span>
+                    <span class="tech-tag">Plotly</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior Data Scientist')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 5: DevOps Engineer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">🚀</div>
+                    <div>
+                        <h3 class="job-title">Senior DevOps Engineer</h3>
+                        <div class="job-department">Infrastructure & Operations</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote</span>
+                    <span class="job-tag">$95K - $150K</span>
+                    <span class="job-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Build and maintain scalable infrastructure for our AI agent platform. Design CI/CD pipelines, 
+                    manage Kubernetes clusters, and ensure high availability for our blockchain and AI workloads across multiple clouds.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>4+ years DevOps/SRE experience</li>
+                        <li>Expert in Kubernetes, Docker, Terraform</li>
+                        <li>CI/CD pipelines (Jenkins, GitHub Actions)</li>
+                        <li>Cloud platforms (AWS, Azure, GCP)</li>
+                        <li>Monitoring and observability tools</li>
+                        <li>Linux/Unix system administration</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Kubernetes</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Terraform</span>
+                    <span class="tech-tag">AWS</span>
+                    <span class="tech-tag">Jenkins</span>
+                    <span class="tech-tag">Prometheus</span>
+                    <span class="tech-tag">Grafana</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior DevOps Engineer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 6: Security Engineer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">🛡️</div>
+                    <div>
+                        <h3 class="job-title">Cybersecurity Engineer</h3>
+                        <div class="job-department">Security & Compliance</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote</span>
+                    <span class="job-tag">$105K - $165K</span>
+                    <span class="tech-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Secure our AI agent platform and blockchain infrastructure against threats. Conduct security audits, 
+                    implement zero-trust architecture, and ensure GDPR/SOC2 compliance across all systems and smart contracts.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>5+ years cybersecurity experience</li>
+                        <li>Smart contract security auditing</li>
+                        <li>Penetration testing and vulnerability assessment</li>
+                        <li>SIEM tools and threat intelligence</li>
+                        <li>Compliance frameworks (SOC2, ISO 27001)</li>
+                        <li>Security certifications (CISSP, CEH, OSCP)</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Solidity Security</span>
+                    <span class="tech-tag">Burp Suite</span>
+                    <span class="tech-tag">Nessus</span>
+                    <span class="tech-tag">Splunk</span>
+                    <span class="tech-tag">OWASP</span>
+                    <span class="tech-tag">Kali Linux</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Cybersecurity Engineer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 7: Product Manager -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">📋</div>
+                    <div>
+                        <h3 class="job-title">Senior Product Manager</h3>
+                        <div class="job-department">Product Strategy</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Hybrid</span>
+                    <span class="job-tag">$100K - $150K</span>
+                    <span class="job-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Define the product strategy for our AI agent platform and KAMIKAZE token ecosystem. 
+                    Work closely with engineering and design teams to deliver features that delight users and drive adoption.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>5+ years product management experience</li>
+                        <li>Experience with AI/ML or blockchain products</li>
+                        <li>Strong analytical and data-driven mindset</li>
+                        <li>User research and product discovery</li>
+                        <li>Agile/Scrum methodologies</li>
+                        <li>Technical background preferred</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Product Strategy</span>
+                    <span class="tech-tag">User Research</span>
+                    <span class="tech-tag">Analytics</span>
+                    <span class="tech-tag">Figma</span>
+                    <span class="tech-tag">Jira</span>
+                    <span class="tech-tag">SQL</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior Product Manager')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 8: QA Engineer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">🧪</div>
+                    <div>
+                        <h3 class="job-title">QA Automation Engineer</h3>
+                        <div class="job-department">Quality Assurance</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote</span>
+                    <span class="job-tag">$75K - $120K</span>
+                    <span class="job-tag">Mid-Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Ensure the quality and reliability of our AI agent platform through comprehensive testing strategies. 
+                    Build automated test suites for web applications, smart contracts, and AI model performance validation.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>3+ years QA automation experience</li>
+                        <li>Expert in test automation frameworks</li>
+                        <li>API testing and performance testing</li>
+                        <li>Smart contract testing experience</li>
+                        <li>CI/CD integration and test reporting</li>
+                        <li>Programming in Python or JavaScript</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Selenium</span>
+                    <span class="tech-tag">Cypress</span>
+                    <span class="tech-tag">Jest</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Postman</span>
+                    <span class="tech-tag">Jenkins</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('QA Automation Engineer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 9: UX/UI Designer -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">🎨</div>
+                    <div>
+                        <h3 class="job-title">Senior UX/UI Designer</h3>
+                        <div class="job-department">Design & User Experience</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Hybrid</span>
+                    <span class="job-tag">$80K - $130K</span>
+                    <span class="job-tag">Senior Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Design intuitive and beautiful interfaces for complex AI and blockchain interactions. 
+                    Create user experiences that make advanced technology accessible to everyone, from crypto novices to AI researchers.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>4+ years UX/UI design experience</li>
+                        <li>Portfolio showcasing complex product design</li>
+                        <li>User research and usability testing</li>
+                        <li>Prototyping and interaction design</li>
+                        <li>Design systems and component libraries</li>
+                        <li>Experience with Web3/DeFi interfaces preferred</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Figma</span>
+                    <span class="tech-tag">Adobe Creative Suite</span>
+                    <span class="tech-tag">Principle</span>
+                    <span class="tech-tag">Sketch</span>
+                    <span class="tech-tag">InVision</span>
+                    <span class="tech-tag">HTML/CSS</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Senior UX/UI Designer')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+
+            <!-- Job 10: Community Manager -->
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-icon">💬</div>
+                    <div>
+                        <h3 class="job-title">Community Manager</h3>
+                        <div class="job-department">Marketing & Community</div>
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <span class="job-tag">Full-time</span>
+                    <span class="job-tag">Remote</span>
+                    <span class="job-tag">$60K - $90K</span>
+                    <span class="job-tag">Mid Level</span>
+                </div>
+                
+                <p class="job-description">
+                    Build and nurture our vibrant community of AI developers, blockchain enthusiasts, and KAMIKAZE token holders. 
+                    Manage social media, organize events, and create engaging content that educates and inspires our community.
+                </p>
+                
+                <div class="job-requirements">
+                    <h4>Key Requirements</h4>
+                    <ul class="requirements-list">
+                        <li>3+ years community management experience</li>
+                        <li>Experience with crypto/blockchain communities</li>
+                        <li>Social media management and content creation</li>
+                        <li>Event planning and execution</li>
+                        <li>Strong written and verbal communication</li>
+                        <li>Understanding of AI/ML and Web3 concepts</li>
+                    </ul>
+                </div>
+                
+                <div class="job-tech">
+                    <span class="tech-tag">Discord</span>
+                    <span class="tech-tag">Twitter</span>
+                    <span class="tech-tag">Telegram</span>
+                    <span class="tech-tag">Reddit</span>
+                    <span class="tech-tag">Content Creation</span>
+                    <span class="tech-tag">Analytics</span>
+                </div>
+                
+                <button class="apply-btn" onclick="applyForJob('Community Manager')">
+                    <span style="position: relative; z-index: 2;">Apply Now</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perks Section -->
+    <section class="perks-section">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="color: var(--quantum-purple); font-family: var(--font-ai); font-size: 2.5rem; margin-bottom: 1rem;">
+                Why Join AgentChains?
+            </h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+                We offer competitive compensation and amazing benefits in a cutting-edge AI and blockchain environment.
+            </p>
+        </div>
+        
+        <div class="perks-grid">
+            <div class="perk-card">
+                <div class="perk-icon">💰</div>
+                <h3 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                    Competitive Salary + Equity
+                </h3>
+                <p>Top-tier compensation packages with KAMIKAZE token equity and performance bonuses.</p>
+            </div>
+            
+            <div class="perk-card">
+                <div class="perk-icon">🌍</div>
+                <h3 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                    Remote-First Culture
+                </h3>
+                <p>Work from anywhere in the world with flexible hours and async collaboration tools.</p>
+            </div>
+            
+            <div class="perk-card">
+                <div class="perk-icon">🧠</div>
+                <h3 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                    Cutting-Edge Technology
+                </h3>
+                <p>Work with the latest AI models, blockchain protocols, and quantum computing research.</p>
+            </div>
+            
+            <div class="perk-card">
+                <div class="perk-icon">📚</div>
+                <h3 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                    Learning & Development
+                </h3>
+                <p>$5000 annual learning budget for courses, conferences, and AI/blockchain certifications.</p>
+            </div>
+            
+            <div class="perk-card">
+                <div class="perk-icon">🏥</div>
+                <h3 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                    Health & Wellness
+                </h3>
+                <p>Comprehensive health insurance, mental health support, and fitness memberships.</p>
+            </div>
+            
+            <div class="perk-card">
+                <div class="perk-icon">🚀</div>
+                <h3 style="color: var(--cyber-cyan); font-family: var(--font-ai); margin-bottom: 1rem;">
+                    Innovation Time
+                </h3>
+                <p>20% time for personal AI/blockchain projects and open-source contributions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copyright Notice -->
+    <div class="copyright-notice">
+        © 2025 AgentChains. All rights reserved.
+    </div>
+
+    <script>
+        // Apply for job function
+        function applyForJob(jobTitle) {
+            const subject = `Application for ${jobTitle} Position`;
+            const body = `Dear AgentChains Team,%0D%0A%0D%0A` +
+                        `I am interested in applying for the ${jobTitle} position at AgentChains.%0D%0A%0D%0A` +
+                        `Please find my resume and portfolio attached. I would love to discuss how I can contribute to your AI-powered blockchain revolution.%0D%0A%0D%0A` +
+                        `Best regards,%0D%0A[Your Name]%0D%0A%0D%0A` +
+                        `Note: Please attach your resume, portfolio, and any relevant work samples to this email.`;
+            
+            const mailtoLink = `mailto:careers@agentchains.ai?subject=${subject}&body=${body}`;
+            window.location.href = mailtoLink;
+        }
+        
+        // Animate job cards on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const jobCards = document.querySelectorAll('.job-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 150);
+                    }
+                });
+            });
+            
+            jobCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+            
+            // Animate stats
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                const value = stat.textContent;
+                stat.style.animation = `stat-pulse 2s ease-in-out infinite`;
+            });
+        });
+        
+        // Neural activity simulation
+        setInterval(() => {
+            const jobIcons = document.querySelectorAll('.job-icon');
+            jobIcons.forEach(icon => {
+                const scale = 0.95 + Math.random() * 0.1;
+                icon.style.transform = `scale(${scale})`;
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
