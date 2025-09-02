@@ -1,0 +1,497 @@
+/**
+ * Futuristic AI Agents Creation Theme
+ * Copyright © 2025 AgentChains. All rights reserved.
+ * Data-driven cyberpunk aesthetic with advanced visualizations
+ */
+
+:root {
+    /* AI Agent Color Palette - Matrix/Cyberpunk Inspired */
+    --matrix-green: #00ff41;
+    --cyber-cyan: #00ffdc;
+    --neural-blue: #0066ff;
+    --quantum-purple: #b000ff;
+    --ai-orange: #ff6600;
+    --data-red: #ff0040;
+    --hologram-white: #ffffff;
+    --void-black: #000000;
+    --carbon-dark: #0a0a0a;
+    --neural-gray: #1a1a1a;
+    
+    /* Advanced Gradients for AI Theme */
+    --gradient-matrix: linear-gradient(135deg, #00ff41 0%, #00ffdc 50%, #0066ff 100%);
+    --gradient-neural: linear-gradient(135deg, #b000ff 0%, #ff0040 50%, #ff6600 100%);
+    --gradient-quantum: radial-gradient(circle, #b000ff 0%, #00ffdc 50%, #00ff41 100%);
+    --gradient-data: linear-gradient(45deg, #ff0040, #ff6600, #00ff41, #00ffdc, #0066ff, #b000ff);
+    --gradient-hologram: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(0,255,220,0.1) 50%, rgba(176,0,255,0.1) 100%);
+    
+    /* AI-Themed Shadows & Effects */
+    --shadow-neural: 0 0 30px rgba(0, 255, 65, 0.3), 0 0 60px rgba(0, 255, 220, 0.2), 0 0 100px rgba(0, 102, 255, 0.1);
+    --shadow-quantum: 0 0 40px rgba(176, 0, 255, 0.4), 0 0 80px rgba(255, 0, 64, 0.2);
+    --shadow-data: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 200px rgba(0, 255, 220, 0.1);
+    --shadow-hologram: inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.3), 0 0 30px rgba(0,255,220,0.2);
+    
+    /* Typography - Futuristic Fonts */
+    --font-ai: 'Orbitron', 'JetBrains Mono', 'Courier New', monospace;
+    --font-data: 'JetBrains Mono', 'Fira Code', monospace;
+    --font-neural: 'Inter', 'Segoe UI Variable', system-ui, sans-serif;
+    
+    /* Animation Speeds */
+    --speed-neural: 2s;
+    --speed-quantum: 3s;
+    --speed-data: 1.5s;
+    --speed-matrix: 4s;
+}
+
+/* Global AI Theme */
+body {
+    background: var(--carbon-dark);
+    color: var(--hologram-white);
+    font-family: var(--font-neural);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Matrix Rain Background Effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(0,255,65,0.03) 100px),
+        repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0,255,220,0.02) 100px);
+    animation: matrix-scan var(--speed-matrix) linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes matrix-scan {
+    0% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-10px) translateX(5px); }
+    50% { transform: translateY(0) translateX(-5px); }
+    75% { transform: translateY(10px) translateX(0); }
+    100% { transform: translateY(0) translateX(0); }
+}
+
+/* AI Agent Creation Cards */
+.feature-card, .agent-card, .tokenomics-card, .team-member, .roadmap-item, .phase-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(0, 255, 220, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: var(--shadow-neural);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.feature-card::before, .agent-card::before, .tokenomics-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-hologram);
+    transition: left 0.6s ease;
+    z-index: -1;
+}
+
+.feature-card:hover::before, .agent-card:hover::before, .tokenomics-card:hover::before {
+    left: 100%;
+}
+
+.feature-card:hover, .agent-card:hover, .tokenomics-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--matrix-green);
+    box-shadow: var(--shadow-quantum);
+}
+
+/* Neural Network Icon Effects */
+.feature-icon, .tokenomics-icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--gradient-neural);
+    box-shadow: var(--shadow-neural);
+    animation: neural-pulse var(--speed-neural) ease-in-out infinite;
+}
+
+.feature-icon::after, .tokenomics-icon::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border: 2px solid var(--cyber-cyan);
+    border-radius: 50%;
+    opacity: 0;
+    animation: neural-ring var(--speed-quantum) ease-out infinite;
+}
+
+@keyframes neural-pulse {
+    0%, 100% { transform: scale(1); box-shadow: var(--shadow-neural); }
+    50% { transform: scale(1.05); box-shadow: var(--shadow-quantum); }
+}
+
+@keyframes neural-ring {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Data Scientist Analytics Dashboard */
+.analytics-dashboard {
+    background: rgba(10, 10, 10, 0.98);
+    border: 1px solid var(--neural-blue);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.analytics-dashboard::before {
+    content: 'NEURAL NETWORK ANALYSIS';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--gradient-matrix);
+    color: var(--void-black);
+    text-align: center;
+    padding: 0.5rem;
+    font-family: var(--font-data);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.metric-card {
+    background: rgba(0, 255, 220, 0.05);
+    border: 1px solid rgba(0, 255, 220, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    border-color: var(--matrix-green);
+    background: rgba(0, 255, 65, 0.1);
+    transform: translateY(-5px);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: var(--font-data);
+    background: var(--gradient-matrix);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: data-flow var(--speed-data) ease-in-out infinite;
+}
+
+.metric-label {
+    color: var(--cyber-cyan);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+}
+
+@keyframes data-flow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* AI Agent Status Indicators */
+.agent-status {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--matrix-green);
+    background: var(--matrix-green);
+    animation: ai-heartbeat var(--speed-neural) ease-in-out infinite;
+}
+
+.agent-status.processing {
+    background: var(--ai-orange);
+    border-color: var(--ai-orange);
+    animation: ai-processing var(--speed-data) linear infinite;
+}
+
+.agent-status.learning {
+    background: var(--quantum-purple);
+    border-color: var(--quantum-purple);
+    animation: ai-learning var(--speed-quantum) ease-in-out infinite;
+}
+
+@keyframes ai-heartbeat {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+@keyframes ai-processing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes ai-learning {
+    0%, 100% { background: var(--quantum-purple); }
+    25% { background: var(--neural-blue); }
+    50% { background: var(--cyber-cyan); }
+    75% { background: var(--matrix-green); }
+}
+
+/* Holographic Buttons */
+.btn {
+    background: transparent;
+    border: 2px solid var(--cyber-cyan);
+    color: var(--cyber-cyan);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-family: var(--font-ai);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-neural);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.btn:hover {
+    color: var(--void-black);
+    border-color: var(--matrix-green);
+    box-shadow: var(--shadow-neural);
+    transform: translateY(-2px);
+}
+
+.btn:hover::before {
+    left: 0;
+}
+
+.btn-primary {
+    background: var(--gradient-matrix);
+    border-color: var(--matrix-green);
+    color: var(--void-black);
+}
+
+.btn-primary:hover {
+    background: var(--gradient-neural);
+    border-color: var(--quantum-purple);
+    color: var(--hologram-white);
+}
+
+/* Data Visualization Charts */
+.chart-container {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--neural-blue);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.chart-container::before {
+    content: 'REAL-TIME ANALYTICS';
+    position: absolute;
+    top: -10px;
+    left: 1rem;
+    background: var(--carbon-dark);
+    color: var(--cyber-cyan);
+    padding: 0 1rem;
+    font-family: var(--font-data);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(26, 26, 26, 0.8);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-matrix);
+    border-radius: 4px;
+    position: relative;
+    animation: data-stream var(--speed-data) ease-in-out infinite;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: progress-shine 2s linear infinite;
+}
+
+@keyframes data-stream {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes progress-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Navigation Enhancement */
+.navbar {
+    background: rgba(0, 0, 0, 0.95);
+    border-bottom: 1px solid var(--cyber-cyan);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-link {
+    color: var(--cyber-cyan);
+    font-family: var(--font-ai);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-matrix);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: var(--matrix-green);
+    text-shadow: 0 0 10px var(--matrix-green);
+}
+
+/* Hero Section AI Enhancement */
+.hero-title {
+    font-family: var(--font-ai);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    background: var(--gradient-data);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    animation: title-glow var(--speed-matrix) ease-in-out infinite;
+    background-size: 400% 400%;
+}
+
+@keyframes title-glow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Copyright Notice */
+.copyright-notice {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--cyber-cyan);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    color: var(--cyber-cyan);
+    font-family: var(--font-data);
+    z-index: 1000;
+    animation: copyright-fade 3s ease-in-out infinite;
+}
+
+@keyframes copyright-fade {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Responsive Design for AI Theme */
+@media (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        letter-spacing: -1px;
+    }
+    
+    .analytics-dashboard {
+        padding: 1rem;
+    }
+    
+    .copyright-notice {
+        position: relative;
+        margin: 1rem auto;
+        text-align: center;
+    }
+}
+
+/* Accessibility for AI Theme */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .copyright-notice, .analytics-dashboard::before, body::before {
+        display: none;
+    }
+}

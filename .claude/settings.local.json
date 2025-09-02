@@ -24,7 +24,9 @@
       "WebFetch(domain:picsum.photos)",
       "Bash(del \"*.md\" /q)",
       "Bash(rm:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "Bash(export:*)",
+      "Bash(set)"
     ],
     "deny": []
   }
