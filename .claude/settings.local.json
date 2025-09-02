@@ -8,7 +8,12 @@
       "Bash(find:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(mkdir:*)",
+      "Bash(python:*)",
+      "Bash(npm install)",
+      "Bash(node server.js)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }
