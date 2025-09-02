@@ -1,0 +1,1 @@
+{\n  \"bindings\": [\n    {\n      \"authLevel\": \"anonymous\",\n      \"type\": \"httpTrigger\",\n      \"direction\": \"in\",\n      \"name\": \"req\",\n      \"methods\": [\"get\"]\n    },\n    {\n      \"type\": \"http\",\n      \"direction\": \"out\",\n      \"name\": \"res\"\n    }\n  ]\n}"

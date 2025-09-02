@@ -1,0 +1,1 @@
+{\n  \"version\": \"2.0\",\n  \"logging\": {\n    \"applicationInsights\": {\n      \"samplingSettings\": {\n        \"isEnabled\": true,\n        \"excludedTypes\": \"Request\"\n      }\n    }\n  },\n  \"extensionBundle\": {\n    \"id\": \"Microsoft.Azure.Functions.ExtensionBundle\",\n    \"version\": \"[2.*, 3.0.0)\"\n  }\n}"
