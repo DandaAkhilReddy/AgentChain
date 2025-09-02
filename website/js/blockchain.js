@@ -77,8 +77,10 @@ class AgentChainsBlockchain {
         this.pendingTransactions = [];
         this.miningReward = 10;
         this.accounts = new Map();
-        this.totalSupply = 1000000000; // 1 billion
+        this.totalSupply = 1000000000; // 1 billion KAMIKAZE tokens
         this.burnRate = 0.02; // 2% burn rate
+        this.tokenName = 'KAMIKAZE';
+        this.tokenSymbol = 'KAMIKAZE';
         
         // Initialize system account
         this.systemAddress = 'system';
@@ -104,11 +106,11 @@ class AgentChainsBlockchain {
         if (!this.accounts.has(address)) {
             this.accounts.set(address, 0);
             
-            // Give new accounts 1000 free tokens
+            // Give new accounts 1,000,000,000 free KAMIKAZE tokens for demo
             const welcomeTransaction = new Transaction(
                 this.systemAddress,
                 address,
-                1000,
+                1000000000,
                 'welcome_bonus'
             );
             this.pendingTransactions.push(welcomeTransaction);

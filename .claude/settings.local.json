@@ -19,7 +19,12 @@
       "Bash(npm test)",
       "Bash(az:*)",
       "Bash(npx:*)",
-      "Bash(docker:*)"
+      "Bash(docker:*)",
+      "WebFetch(domain:icy-mushroom-029b4900f.1.azurestaticapps.net)",
+      "WebFetch(domain:picsum.photos)",
+      "Bash(del \"*.md\" /q)",
+      "Bash(rm:*)",
+      "Bash(touch:*)"
     ],
     "deny": []
   }

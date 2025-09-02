@@ -286,7 +286,7 @@
                 <span>🏪</span> Marketplace
             </div>
             
-            <div class="nav-item" onclick="showSection('staking')">
+            <div class="nav-item" onclick="window.location.href='../staking.html'">
                 <span>🔒</span> Staking
             </div>
             
@@ -360,7 +360,7 @@
                         </div>
                         <div class="card-value">500,000</div>
                         <p>KAMIKAZE tokens staked (15% APY)</p>
-                        <button class="btn" onclick="showSection('staking')">Manage Staking</button>
+                        <button class="btn" onclick="window.location.href='../staking.html'">Manage Staking</button>
                     </div>
                 </div>
 
@@ -375,7 +375,7 @@
                         <div>Browse Marketplace</div>
                     </div>
                     
-                    <div class="action-btn" onclick="showSection('staking')">
+                    <div class="action-btn" onclick="window.location.href='../staking.html'">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
                         <div>Stake Tokens</div>
                     </div>
@@ -438,10 +438,8 @@
     </div>
 
     <script>
-        // Global state
-        let web3;
-        let userAccount;
-        let connected = false;
+        // Redirect to new dashboard
+        window.location.href = './dashboard.html';
 
         // Initialize app
         window.addEventListener('DOMContentLoaded', function() {

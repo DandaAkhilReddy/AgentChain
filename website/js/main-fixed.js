@@ -55,9 +55,22 @@ const authSystem = {
                     address: accounts[0]
                 };
                 
+                // Initialize blockchain account and give 1000 KAMIKAZE tokens
+                if (window.agentBlockchain) {
+                    window.agentBlockchain.createAccount(accounts[0]);
+                    const balance = window.agentBlockchain.getBalance(accounts[0]);
+                    console.log('Account initialized with balance:', balance);
+                    
+                    // Show floating balance
+                    this.showFloatingBalance(balance);
+                }
+                
                 console.log('MetaMask connected:', accounts[0]);
                 this.updateAuthUI();
-                this.launchPlatform();
+                this.showNotification(`Welcome! You received 1,000,000,000 KAMIKAZE tokens!`, 'success');
+                
+                // Don't auto-launch platform, show balance instead
+                // this.launchPlatform();
                 
             } catch (error) {
                 console.error('MetaMask connection failed:', error);
@@ -65,6 +78,17 @@ const authSystem = {
             }
         } else {
             alert('MetaMask not found. Please install MetaMask.');
+        }
+    },
+    
+    // Show floating balance
+    showFloatingBalance(balance) {
+        const floatingBalance = document.getElementById('floatingBalance');
+        const tokenBalance = document.getElementById('tokenBalance');
+        
+        if (floatingBalance && tokenBalance) {
+            tokenBalance.textContent = balance.toLocaleString();
+            floatingBalance.classList.add('show');
         }
     },
     
@@ -276,17 +300,22 @@ class AuthSystem {
                 
                 localStorage.setItem('agentchains-auth', 'wallet');
                 localStorage.setItem('agentchains-wallet', this.wallet);
-                // Give new users 1000 free tokens
-                if (!localStorage.getItem('testnet-mind-balance')) {
-                    localStorage.setItem('testnet-mind-balance', '1000');
+                // Initialize blockchain account and give 1,000,000,000 KAMIKAZE tokens
+                if (window.agentBlockchain) {
+                    window.agentBlockchain.createAccount(this.wallet);
+                    const balance = window.agentBlockchain.getBalance(this.wallet);
+                    console.log('Account initialized with balance:', balance);
+                    
+                    // Show floating balance
+                    this.showFloatingBalance(balance);
                 }
-                this.showNotification(`Connected to ${this.formatAddress(this.wallet)} on ${network}`, 'success');
+                this.showNotification(`Connected! You received 1,000,000,000 KAMIKAZE tokens!`, 'success');
                 this.updateUIAfterAuth('wallet');
                 
-                // Automatically redirect to dashboard after successful connection
-                setTimeout(() => {
-                    this.launchPlatform();
-                }, 1000);
+                // Don't auto-redirect, show balance instead
+                // setTimeout(() => {
+                //     this.launchPlatform();
+                // }, 1000);
                 
                 // Listen for account changes
                 window.ethereum.on('accountsChanged', (accounts) => {
@@ -320,17 +349,24 @@ class AuthSystem {
             this.isAuthenticated = true;
             localStorage.setItem('agentchains-auth', 'google');
             localStorage.setItem('agentchains-user', JSON.stringify(this.user));
-            // Give new users 1000 free tokens
-            if (!localStorage.getItem('testnet-mind-balance')) {
-                localStorage.setItem('testnet-mind-balance', '1000');
+            // Initialize blockchain account for Google users too
+            if (window.agentBlockchain) {
+                // Create a demo address for Google users
+                const demoAddress = 'google_' + this.user.email.replace('@', '_');
+                window.agentBlockchain.createAccount(demoAddress);
+                const balance = window.agentBlockchain.getBalance(demoAddress);
+                console.log('Google account initialized with balance:', balance);
+                
+                // Show floating balance
+                this.showFloatingBalance(balance);
             }
-            this.showNotification('Successfully logged in with Google! (Demo Mode)', 'success');
+            this.showNotification('Welcome! You received 1,000,000,000 KAMIKAZE tokens!', 'success');
             this.updateUIAfterAuth('google');
             
-            // Automatically redirect to dashboard after successful login
-            setTimeout(() => {
-                this.launchPlatform();
-            }, 1000);
+            // Don't auto-redirect
+            // setTimeout(() => {
+            //     this.launchPlatform();
+            // }, 1000);
             
         } catch (error) {
             console.error('Error with Google login:', error);
@@ -717,6 +753,16 @@ class AuthSystem {
         // Reset UI
         location.reload();
     }
+    
+    showFloatingBalance(balance) {
+        const floatingBalance = document.getElementById('floatingBalance');
+        const tokenBalance = document.getElementById('tokenBalance');
+        
+        if (floatingBalance && tokenBalance) {
+            tokenBalance.textContent = balance.toLocaleString();
+            floatingBalance.classList.add('show');
+        }
+    }
 }
 
 // ================================
@@ -757,6 +803,110 @@ function scrollToSection(sectionId) {
 
 // Global access to functions
 window.scrollToSection = scrollToSection;
+
+// Handle Launch dApp button click
+async function handleLaunchDApp(event) {
+    event.preventDefault();
+    
+    // Check if MetaMask is available
+    if (typeof window.ethereum === 'undefined') {
+        const shouldInstall = confirm(
+            '🦊 MetaMask Required!\n\n' +
+            'MetaMask wallet is required to access the KAMIKAZE dApp.\n\n' +
+            'Would you like to install MetaMask now?'
+        );
+        
+        if (shouldInstall) {
+            window.open('https://metamask.io/download/', '_blank');
+        }
+        return;
+    }
+    
+    try {
+        // Request MetaMask connection
+        const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts'
+        });
+        
+        if (accounts.length > 0) {
+            // Initialize blockchain account and give tokens
+            if (window.agentBlockchain) {
+                window.agentBlockchain.createAccount(accounts[0]);
+                const balance = window.agentBlockchain.getBalance(accounts[0]);
+                
+                // Show success message
+                showLaunchNotification(balance);
+            }
+            
+            // Redirect to dashboard after short delay
+            setTimeout(() => {
+                window.location.href = './dapp/dashboard.html';
+            }, 2000);
+        }
+    } catch (error) {
+        console.error('MetaMask connection failed:', error);
+        alert('❌ Connection failed. Please try again.');
+    }
+}
+
+// Show launch notification
+function showLaunchNotification(balance) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #ff6b35, #ff0080, #8b5cf6);
+        color: white;
+        padding: 30px 40px;
+        border-radius: 20px;
+        text-align: center;
+        z-index: 10000;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 100px rgba(255, 107, 53, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(20px);
+        animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    `;
+    
+    notification.innerHTML = `
+        <div style="font-size: 3rem; margin-bottom: 10px;">🚀</div>
+        <h2 style="margin-bottom: 15px; font-size: 1.5rem;">Welcome to KAMIKAZE!</h2>
+        <p style="margin-bottom: 10px; font-size: 1.1rem;">You've received:</p>
+        <div style="font-size: 2rem; font-weight: bold; color: #ffd700; margin-bottom: 15px;">
+            ${balance.toLocaleString()} KAMIKAZE
+        </div>
+        <p style="font-size: 0.9rem; opacity: 0.9;">Launching dApp in 2 seconds...</p>
+    `;
+    
+    // Add animation style
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(180deg); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'popIn 0.3s reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }
+    }, 2500);
+}
+
+// Make function available globally
+window.handleLaunchDApp = handleLaunchDApp;
 
 // ================================
 // BUTTON EVENT HANDLERS

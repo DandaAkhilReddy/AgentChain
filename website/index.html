@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentChains.ai - KAMIKAZE Token Ecosystem | AI Agents Earn Real Crypto</title>
-    <meta name="description" content="Revolutionary KAMIKAZE token ecosystem with deflationary mechanics, AI agent staking, and autonomous task execution. Earn 10-20% APY with AI-powered blockchain technology.">
+    <title>KAMIKAZE Token - AI-Powered Cryptocurrency Platform</title>
+    <meta name="description" content="Revolutionary deflationary KAMIKAZE token with AI agent integration, automated staking rewards, and real-world utility. Join the next generation of decentralized finance.">
     <meta name="keywords" content="KAMIKAZE token, AI agents, blockchain, cryptocurrency, staking, deflationary token, artificial intelligence, task marketplace, Web3, DeFi">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="AgentChains.ai - KAMIKAZE Token Ecosystem">
-    <meta property="og:description" content="Deflationary KAMIKAZE token with AI agent staking, autonomous task execution, and 10-20% APY rewards.">
+    <meta property="og:title" content="KAMIKAZE Token - AI-Powered Cryptocurrency Platform">
+    <meta property="og:description" content="Deflationary KAMIKAZE token with AI agent staking, autonomous task execution, and up to 25% APY rewards.">
     <meta property="og:image" content="https://agentchains.ai/assets/og-image.jpg">
     <meta property="og:url" content="https://agentchains.ai">
     <meta property="og:type" content="website">
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,34 +21,26 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="./css/style.css">
-    
-    <!-- Google OAuth -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="./css/modern-theme.css">
+    <link rel="stylesheet" href="./css/colorful-theme.css">
     
     <!-- MetaMask Web3 -->
     <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
     
     <!-- Scripts -->
-    <script defer src="./js/main-fixed.js"></script>
-    <script defer src="./js/whitepaper-generator.js"></script>
-    <script defer src="./js/testnet-config.js"></script>
-    
-    <!-- Analytics -->
-    <!-- Add your analytics code here -->
+    <script defer src="./js/main.js"></script>
+    <script defer src="./js/blockchain.js"></script>
 </head>
 <body>
     <!-- Animated Background -->
-    <div class="animated-bg">
-        <div class="neural-network"></div>
-        <div class="floating-particles"></div>
-    </div>
+    <div class="animated-bg"></div>
     
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <span class="logo-icon">🔗</span>
-                <span class="logo-text">AgentChains</span>
+                <span class="logo-icon">🔥</span>
+                <span class="logo-text">KAMIKAZE</span>
             </div>
             
             <ul class="nav-menu" id="nav-menu">
@@ -74,39 +62,11 @@
                 <li class="nav-item">
                     <a href="#team" class="nav-link">Team</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#whitepaper" class="nav-link">Whitepaper</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contact</a>
-                </li>
             </ul>
             
             <div class="nav-actions">
-                <div class="login-buttons">
-                    <button id="googleLoginNav" class="btn btn-outline login-btn modern-google-btn">
-                        <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        <span class="btn-text">Google</span>
-                    </button>
-                    <button id="metamaskConnectNav" class="btn btn-outline wallet-btn modern-metamask-btn">
-                        <svg class="metamask-icon" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="#E17726" d="M22.32 1.5L13.5 8.08l1.63-3.8 7.19-2.78z"/>
-                            <path fill="#E27625" d="M1.68 1.5l8.74 6.64-1.55-3.86L1.68 1.5z"/>
-                            <path fill="#E27625" d="M19.07 16.5l-2.35 3.58 5.02 1.38 1.44-4.87-4.11-.09z"/>
-                            <path fill="#E27625" d="M1.02 16.59l1.44 4.87 5.02-1.38-2.35-3.58-4.11.09z"/>
-                            <path fill="#F5841F" d="M7.14 10.42l-1.39 2.1 4.99.22-.17-5.37-3.43 3.05z"/>
-                            <path fill="#F5841F" d="M16.86 10.42l-3.51-3.13-.11 5.45 4.99-.22-1.37-2.1z"/>
-                        </svg>
-                        <span class="btn-text">MetaMask</span>
-                    </button>
-                </div>
-                <a href="#whitepaper" class="btn btn-outline">Whitepaper</a>
-                <button onclick="authSystem.launchPlatform()" class="btn btn-primary">Launch dApp</button>
+                <a href="#whitepaper" class="btn btn-outline">📄 Whitepaper</a>
+                <a href="./dapp/dashboard.html" class="btn btn-primary launch-dapp-btn" onclick="handleLaunchDApp(event)">🚀 Launch dApp</a>
                 <div class="hamburger" id="hamburger">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -121,62 +81,51 @@
         <div class="hero-container">
             <div class="hero-content">
                 <div class="hero-badge">
-                    <span class="badge-icon">⚡</span>
-                    <span>Next-Gen AI Agent Economy</span>
+                    <span class="badge-icon">🔥</span>
+                    <span>KAMIKAZE Token Ecosystem</span>
                 </div>
                 
                 <h1 class="hero-title">
-                    Where AI Agents and Humans <span class="gradient-text">Create Value</span> Together
+                    The Future of <span class="gradient-text">AI-Powered</span> Digital Economy
                 </h1>
                 
-                <p class="hero-description">
-                    Revolutionary blockchain platform where AI agents earn real money by completing tasks. 
-                    Experience the dawn of autonomous AI economy with MIND tokens and join the next generation of intelligent automation.
+                <p class="subtitle">
+                    Revolutionary deflationary token with AI agent integration, automated staking rewards, and real-world utility. Join the next generation of decentralized finance.
                 </p>
                 
-                <div class="hero-highlights">
-                    <div class="highlight-item">
-                        <div class="highlight-icon">⚡</div>
-                        <span>Gas-Free Testing</span>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="highlight-icon">🎯</div>
-                        <span>Instant Rewards</span>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="highlight-icon">🔒</div>
-                        <span>Enterprise Security</span>
-                    </div>
-                </div>
-                
-                <div class="hero-stats">
+                <!-- Token Stats Bar -->
+                <div class="token-stats">
                     <div class="stat-item">
-                        <div class="stat-number" data-target="10000">0</div>
-                        <div class="stat-label">Active Agents</div>
+                        <div class="stat-value">1B</div>
+                        <div class="stat-label">Total Supply</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" data-target="50000">0</div>
-                        <div class="stat-label">Tasks Completed</div>
+                        <div class="stat-value">2%</div>
+                        <div class="stat-label">Burn Rate</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" data-target="1000000">0</div>
-                        <div class="stat-label">MIND Earned</div>
+                        <div class="stat-value">25%</div>
+                        <div class="stat-label">Max APY</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$0.001</div>
+                        <div class="stat-label">Current Price</div>
                     </div>
                 </div>
                 
                 <div class="hero-actions">
-                    <button id="mainLaunchBtn" class="btn btn-hero">
-                        <span class="btn-text">Launch Platform</span>
+                    <a href="./dapp/dashboard.html" class="btn btn-primary btn-hero" onclick="handleLaunchDApp(event)">
                         <span class="btn-icon">🚀</span>
-                    </button>
-                    <button id="connectWalletBtn" class="btn btn-outline wallet-connect-btn">
-                        <span class="btn-icon">🔗</span>
-                        <span class="btn-text">Connect Wallet</span>
-                    </button>
-                    <button id="googleLoginBtn" class="btn btn-outline google-login-btn">
-                        <span class="btn-icon">🟢</span>
-                        <span class="btn-text">Google Login</span>
-                    </button>
+                        <span class="btn-text">Launch dApp</span>
+                    </a>
+                    <a href="#features" class="btn btn-outline btn-hero">
+                        <span class="btn-icon">✨</span>
+                        <span class="btn-text">Explore Features</span>
+                    </a>
+                    <a href="#agents" class="btn btn-secondary btn-hero">
+                        <span class="btn-icon">🤖</span>
+                        <span class="btn-text">Meet AI Agents</span>
+                    </a>
                 </div>
             </div>
             
@@ -194,16 +143,11 @@
                 </div>
                 
                 <div class="floating-tokens">
-                    <div class="token token-1">MIND</div>
+                    <div class="token token-1">KAMIKAZE</div>
                     <div class="token token-2">AI</div>
                     <div class="token token-3">NFT</div>
                 </div>
             </div>
-        </div>
-        
-        <div class="hero-scroll-indicator">
-            <div class="scroll-line"></div>
-            <span>Scroll to explore</span>
         </div>
     </section>
     
@@ -287,38 +231,6 @@
                         <li>Investment potential</li>
                     </ul>
                 </div>
-                
-                <div class="feature-card card-glow" data-tilt>
-                    <div class="feature-icon">
-                        <div class="icon-bg icon-bg-pink"></div>
-                        <span class="icon">⚡</span>
-                    </div>
-                    <h3 class="feature-title">Lightning Fast</h3>
-                    <p class="feature-description">
-                        Experience instant transactions and real-time task completion with our optimized infrastructure.
-                    </p>
-                    <ul class="feature-benefits">
-                        <li>Sub-second execution</li>
-                        <li>Scalable architecture</li>
-                        <li>High throughput</li>
-                    </ul>
-                </div>
-                
-                <div class="feature-card card-glow" data-tilt>
-                    <div class="feature-icon">
-                        <div class="icon-bg icon-bg-blue"></div>
-                        <span class="icon">🔒</span>
-                    </div>
-                    <h3 class="feature-title">Enterprise Security</h3>
-                    <p class="feature-description">
-                        Military-grade encryption and security protocols ensure your assets and data remain protected.
-                    </p>
-                    <ul class="feature-benefits">
-                        <li>Multi-sig wallets</li>
-                        <li>Audit verified</li>
-                        <li>Insurance covered</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </section>
@@ -370,7 +282,7 @@
                         </div>
                         <div class="agent-earnings">
                             <span class="earnings-label">Total Earned:</span>
-                            <span class="earnings-value">12,450 MIND</span>
+                            <span class="earnings-value">124,500 KAMIKAZE</span>
                         </div>
                     </div>
                 </div>
@@ -385,7 +297,7 @@
                         <p class="agent-specialty">Data Analysis</p>
                         <div class="agent-mini-stats">
                             <span>95% Success</span>
-                            <span>8.5K MIND</span>
+                            <span>85K KAMIKAZE</span>
                         </div>
                     </div>
                     
@@ -398,7 +310,7 @@
                         <p class="agent-specialty">Content Creation</p>
                         <div class="agent-mini-stats">
                             <span>97% Success</span>
-                            <span>15.2K MIND</span>
+                            <span>152K KAMIKAZE</span>
                         </div>
                     </div>
                     
@@ -411,7 +323,7 @@
                         <p class="agent-specialty">Development</p>
                         <div class="agent-mini-stats">
                             <span>99% Success</span>
-                            <span>22.1K MIND</span>
+                            <span>221K KAMIKAZE</span>
                         </div>
                     </div>
                     
@@ -424,425 +336,7 @@
                         <p class="agent-specialty">Research</p>
                         <div class="agent-mini-stats">
                             <span>94% Success</span>
-                            <span>9.8K MIND</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Tokenomics Section -->
-    <section class="tokenomics" id="tokenomics">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span class="badge-icon">💰</span>
-                    <span>MIND Token Economy</span>
-                </div>
-                <h2 class="section-title">
-                    Sustainable <span class="gradient-text">Token Economics</span>
-                </h2>
-                <p class="section-description">
-                    Built for long-term growth with deflationary mechanics and utility-driven demand
-                </p>
-            </div>
-            
-            <div class="tokenomics-content">
-                <div class="token-chart">
-                    <div class="chart-container">
-                        <div class="token-distribution">
-                            <div class="distribution-item" data-percent="40">
-                                <div class="item-color color-cyan"></div>
-                                <span>40% - Task Rewards</span>
-                            </div>
-                            <div class="distribution-item" data-percent="25">
-                                <div class="item-color color-purple"></div>
-                                <span>25% - Development</span>
-                            </div>
-                            <div class="distribution-item" data-percent="20">
-                                <div class="item-color color-green"></div>
-                                <span>20% - Community</span>
-                            </div>
-                            <div class="distribution-item" data-percent="10">
-                                <div class="item-color color-orange"></div>
-                                <span>10% - Team</span>
-                            </div>
-                            <div class="distribution-item" data-percent="5">
-                                <div class="item-color color-pink"></div>
-                                <span>5% - Advisors</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="token-info">
-                    <div class="token-stats-grid">
-                        <div class="token-stat">
-                            <div class="stat-icon">🪙</div>
-                            <div class="stat-content">
-                                <div class="stat-value">1B</div>
-                                <div class="stat-label">Total Supply</div>
-                            </div>
-                        </div>
-                        
-                        <div class="token-stat">
-                            <div class="stat-icon">🔥</div>
-                            <div class="stat-content">
-                                <div class="stat-value">2%</div>
-                                <div class="stat-label">Burn Rate</div>
-                            </div>
-                        </div>
-                        
-                        <div class="token-stat">
-                            <div class="stat-icon">⚡</div>
-                            <div class="stat-content">
-                                <div class="stat-value">$0.001</div>
-                                <div class="stat-label">Current Price</div>
-                            </div>
-                        </div>
-                        
-                        <div class="token-stat">
-                            <div class="stat-icon">📈</div>
-                            <div class="stat-content">
-                                <div class="stat-value">+127%</div>
-                                <div class="stat-label">Monthly Growth</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="token-features">
-                        <h3>Token Utility</h3>
-                        <ul class="utility-list">
-                            <li>
-                                <span class="utility-icon">💼</span>
-                                <span>Task payment and rewards</span>
-                            </li>
-                            <li>
-                                <span class="utility-icon">🗳️</span>
-                                <span>Governance voting rights</span>
-                            </li>
-                            <li>
-                                <span class="utility-icon">🏪</span>
-                                <span>Agent marketplace transactions</span>
-                            </li>
-                            <li>
-                                <span class="utility-icon">🔒</span>
-                                <span>Staking for premium features</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Roadmap Section -->
-    <section class="roadmap" id="roadmap">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span class="badge-icon">🗺️</span>
-                    <span>Development Roadmap</span>
-                </div>
-                <h2 class="section-title">
-                    Our Journey to the <span class="gradient-text">Future</span>
-                </h2>
-                <p class="section-description">
-                    Strategic milestones and exciting features coming to AgentChains
-                </p>
-            </div>
-            
-            <div class="roadmap-timeline">
-                <div class="timeline-item completed">
-                    <div class="timeline-marker">
-                        <div class="marker-inner"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Q3 2025</div>
-                        <h3 class="timeline-title">Platform Launch</h3>
-                        <p class="timeline-description">Initial platform release with core AI agent functionality and basic task marketplace.</p>
-                        <ul class="timeline-features">
-                            <li>✅ AI Agent Minting</li>
-                            <li>✅ Task Creation & Completion</li>
-                            <li>✅ MIND Token Launch</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item active">
-                    <div class="timeline-marker">
-                        <div class="marker-inner"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Q4 2025</div>
-                        <h3 class="timeline-title">Enhanced AI Capabilities</h3>
-                        <p class="timeline-description">Advanced AI models and specialized agent types for various industries.</p>
-                        <ul class="timeline-features">
-                            <li>🔄 GPT-4 Integration</li>
-                            <li>🔄 Multi-modal Agents</li>
-                            <li>🔄 Performance Analytics</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item upcoming">
-                    <div class="timeline-marker">
-                        <div class="marker-inner"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Q1 2026</div>
-                        <h3 class="timeline-title">Mobile App & API</h3>
-                        <p class="timeline-description">Mobile application and comprehensive API for third-party integrations.</p>
-                        <ul class="timeline-features">
-                            <li>📱 iOS & Android Apps</li>
-                            <li>🔌 Developer API</li>
-                            <li>🌐 Enterprise Solutions</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item upcoming">
-                    <div class="timeline-marker">
-                        <div class="marker-inner"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">Q2 2026</div>
-                        <h3 class="timeline-title">AI Agent Evaluation & Ratings</h3>
-                        <p class="timeline-description">Advanced evaluation system for agent performance, ratings, and marketplace optimization.</p>
-                        <ul class="timeline-features">
-                            <li>⭐ Performance Ratings</li>
-                            <li>📊 Success Metrics</li>
-                            <li>🏆 Agent Rankings</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Team Section -->
-    <section class="team" id="team">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span class="badge-icon">👥</span>
-                    <span>Meet the Team</span>
-                </div>
-                <h2 class="section-title">
-                    Visionaries Behind <span class="gradient-text">AgentChains</span>
-                </h2>
-                <p class="section-description">
-                    Experienced professionals from AI, blockchain, and fintech industries
-                </p>
-            </div>
-            
-            <div class="team-grid">
-                <div class="team-member" data-tilt>
-                    <div class="member-avatar">
-                        <div class="avatar-placeholder">👨‍💻</div>
-                        <div class="avatar-glow"></div>
-                    </div>
-                    <h3 class="member-name">Akhil Reddy Danda</h3>
-                    <p class="member-role">CEO & Co-Founder</p>
-                    <p class="member-bio">Research Scientist, ex-Amazon with 3+ years of experience in Machine Learning and Blockchain technology.</p>
-                    <div class="member-social">
-                        <a href="#" class="social-link">📧</a>
-                        <a href="#" class="social-link">💼</a>
-                        <a href="#" class="social-link">🐦</a>
-                    </div>
-                </div>
-                
-                <div class="team-member" data-tilt>
-                    <div class="member-avatar">
-                        <div class="avatar-placeholder">👨‍💻</div>
-                        <div class="avatar-glow"></div>
-                    </div>
-                    <h3 class="member-name">Abhishek Jha</h3>
-                    <p class="member-role">CTO & Co-Founder</p>
-                    <p class="member-bio">Full-stack developer and former Senior Engineer in India.</p>
-                    <div class="member-social">
-                        <a href="#" class="social-link">📧</a>
-                        <a href="#" class="social-link">💼</a>
-                        <a href="#" class="social-link">🐦</a>
-                    </div>
-                </div>
-                
-                <div class="team-member" data-tilt>
-                    <div class="member-avatar">
-                        <div class="avatar-placeholder">🧠</div>
-                        <div class="avatar-glow"></div>
-                    </div>
-                    <h3 class="member-name">Akhil Reddy Danda</h3>
-                    <p class="member-role">Head of AI</p>
-                    <p class="member-bio">Research Scientist, ex-Amazon with 3+ years of experience in Machine Learning and Blockchain technology.</p>
-                    <div class="member-social">
-                        <a href="#" class="social-link">📧</a>
-                        <a href="#" class="social-link">💼</a>
-                        <a href="#" class="social-link">🐦</a>
-                    </div>
-                </div>
-                
-                <div class="team-member" data-tilt>
-                    <div class="member-avatar">
-                        <div class="avatar-placeholder">❓</div>
-                        <div class="avatar-glow"></div>
-                    </div>
-                    <h3 class="member-name">?</h3>
-                    <p class="member-role">Head of Strategy</p>
-                    <p class="member-bio">Strategic position available for exceptional talent. Join our leadership team.</p>
-                    <div class="member-social">
-                        <a href="#" class="social-link">📧</a>
-                        <a href="#" class="social-link">💼</a>
-                        <a href="#" class="social-link">🔍</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Whitepaper Section -->
-    <section class="whitepaper" id="whitepaper">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span class="badge-icon">📄</span>
-                    <span>Official Whitepaper</span>
-                </div>
-                <h2 class="section-title">
-                    AgentChains <span class="gradient-text">Technical</span> Whitepaper
-                </h2>
-                <p class="section-description">
-                    Comprehensive technical documentation and roadmap for the future of AI agent economy
-                </p>
-            </div>
-            
-            <div class="whitepaper-content">
-                <div class="whitepaper-preview">
-                    <div class="paper-visual">
-                        <div class="paper-pages">
-                            <div class="paper-page page-1">
-                                <div class="page-header">
-                                    <div class="paper-title">AgentChains.ai</div>
-                                    <div class="paper-subtitle">The Future of AI Agent Economy</div>
-                                </div>
-                                <div class="page-content">
-                                    <div class="content-line full"></div>
-                                    <div class="content-line"></div>
-                                    <div class="content-line full"></div>
-                                    <div class="content-line"></div>
-                                    <div class="content-line full"></div>
-                                </div>
-                            </div>
-                            <div class="paper-page page-2">
-                                <div class="page-content">
-                                    <div class="content-section">
-                                        <div class="section-title-line"></div>
-                                        <div class="content-line"></div>
-                                        <div class="content-line full"></div>
-                                        <div class="content-line"></div>
-                                    </div>
-                                    <div class="content-section">
-                                        <div class="section-title-line"></div>
-                                        <div class="content-line full"></div>
-                                        <div class="content-line"></div>
-                                        <div class="content-line full"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="paper-page page-3"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="whitepaper-info">
-                    <div class="paper-stats">
-                        <div class="paper-stat">
-                            <div class="stat-icon">📊</div>
-                            <div class="stat-content">
-                                <div class="stat-value">47</div>
-                                <div class="stat-label">Pages</div>
-                            </div>
-                        </div>
-                        
-                        <div class="paper-stat">
-                            <div class="stat-icon">🔬</div>
-                            <div class="stat-content">
-                                <div class="stat-value">12</div>
-                                <div class="stat-label">Research Citations</div>
-                            </div>
-                        </div>
-                        
-                        <div class="paper-stat">
-                            <div class="stat-icon">📅</div>
-                            <div class="stat-content">
-                                <div class="stat-value">Q3 2025</div>
-                                <div class="stat-label">Published</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="paper-highlights">
-                        <h3>What's Inside</h3>
-                        <ul class="highlights-list">
-                            <li>
-                                <span class="highlight-icon">🧠</span>
-                                <div class="highlight-content">
-                                    <h4>AI Agent Architecture</h4>
-                                    <p>Deep dive into our revolutionary AI agent design and learning algorithms</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="highlight-icon">⛓️</span>
-                                <div class="highlight-content">
-                                    <h4>Blockchain Integration</h4>
-                                    <p>Technical specifications for smart contracts and tokenomics implementation</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="highlight-icon">💰</span>
-                                <div class="highlight-content">
-                                    <h4>Economic Model</h4>
-                                    <p>Comprehensive analysis of MIND token economics and market dynamics</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="highlight-icon">🔮</span>
-                                <div class="highlight-content">
-                                    <h4>Future Roadmap</h4>
-                                    <p>Strategic vision and development milestones through 2027</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="paper-actions">
-                        <a href="#" class="btn btn-hero" id="downloadWhitepaper">
-                            <span class="btn-text">Download Whitepaper</span>
-                            <span class="btn-icon">📥</span>
-                        </a>
-                        <button class="btn btn-outline" id="viewOnline">
-                            <span class="btn-text">View Online</span>
-                            <span class="btn-icon">👁️</span>
-                        </button>
-                    </div>
-                    
-                    <div class="paper-details">
-                        <div class="detail-item">
-                            <span class="detail-label">Version:</span>
-                            <span class="detail-value">2.0</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Last Updated:</span>
-                            <span class="detail-value">September 2025</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Language:</span>
-                            <span class="detail-value">English</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">File Size:</span>
-                            <span class="detail-value">8.2 MB</span>
+                            <span>98K KAMIKAZE</span>
                         </div>
                     </div>
                 </div>
@@ -850,292 +344,16 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span class="badge-icon">📧</span>
-                    <span>Get In Touch</span>
-                </div>
-                <h2 class="section-title">
-                    Let's Build the <span class="gradient-text">Future Together</span>
-                </h2>
-                <p class="section-description">
-                    Have questions about AgentChains? Want to partner with us? We'd love to hear from you.
-                </p>
-            </div>
+    <script>
+        // Initialize blockchain
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔥 KAMIKAZE Platform loaded');
             
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-card">
-                        <div class="contact-icon">
-                            <span class="icon">📧</span>
-                        </div>
-                        <h3>Email Us</h3>
-                        <p>Reach out for partnerships, support, or general inquiries</p>
-                        <a href="mailto:info@agentchains.ai" class="contact-link">info@agentchains.ai</a>
-                    </div>
-                    
-                    <div class="contact-card">
-                        <div class="contact-icon">
-                            <span class="icon">💬</span>
-                        </div>
-                        <h3>Join Our Community</h3>
-                        <p>Connect with other AI enthusiasts and developers</p>
-                        <div class="social-links">
-                            <a href="#" class="social-btn discord">Discord</a>
-                            <a href="#" class="social-btn telegram">Telegram</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-card">
-                        <div class="contact-icon">
-                            <span class="icon">🚀</span>
-                        </div>
-                        <h3>Launch Your Agent</h3>
-                        <p>Ready to start earning? Launch your first AI agent now</p>
-                        <a href="./dapp" class="btn btn-primary">Start Building</a>
-                    </div>
-                </div>
-                
-                <div class="contact-form-container">
-                    <div class="contact-form-header">
-                        <h3>Send us a Message</h3>
-                        <p>We'll get back to you within 24 hours</p>
-                    </div>
-                    
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="email">Email Address *</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="company">Company (Optional)</label>
-                                <input type="text" id="company" name="company">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subject">Subject *</label>
-                            <select id="subject" name="subject" required>
-                                <option value="">Select a topic...</option>
-                                <option value="partnership">Partnership Inquiry</option>
-                                <option value="support">Technical Support</option>
-                                <option value="investment">Investment Opportunity</option>
-                                <option value="media">Media & Press</option>
-                                <option value="development">Development Collaboration</option>
-                                <option value="general">General Question</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message" rows="6" required placeholder="Tell us about your project, question, or how we can help..."></textarea>
-                        </div>
-                        
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="newsletter" name="newsletter">
-                                <span class="checkmark"></span>
-                                Subscribe to AgentChains newsletter for updates and insights
-                            </label>
-                        </div>
-                        
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="terms" name="terms" required>
-                                <span class="checkmark"></span>
-                                I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a> *
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-hero form-submit-btn">
-                            <span class="btn-text">Send Message</span>
-                            <span class="btn-icon">🚀</span>
-                            <div class="btn-loader">
-                                <div class="loader-spinner"></div>
-                            </div>
-                        </button>
-                        
-                        <div class="form-status" id="formStatus"></div>
-                    </form>
-                </div>
-            </div>
-            
-            <div class="contact-footer">
-                <div class="response-time">
-                    <div class="response-icon">⚡</div>
-                    <div class="response-text">
-                        <strong>Fast Response</strong>
-                        <p>Average response time: 2-4 hours during business days</p>
-                    </div>
-                </div>
-                
-                <div class="contact-stats">
-                    <div class="contact-stat">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Messages Answered</div>
-                    </div>
-                    <div class="contact-stat">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Community Support</div>
-                    </div>
-                    <div class="contact-stat">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Satisfaction Rate</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">
-                    Ready to Join the <span class="gradient-text">AI Revolution</span>?
-                </h2>
-                <p class="cta-description">
-                    Start earning with intelligent AI agents today. Create your first agent and begin earning MIND tokens immediately.
-                </p>
-                
-                <div class="cta-stats">
-                    <div class="cta-stat">
-                        <div class="stat-number">$2.3M</div>
-                        <div class="stat-label">Total Value Locked</div>
-                    </div>
-                    <div class="cta-stat">
-                        <div class="stat-number">50K+</div>
-                        <div class="stat-label">Community Members</div>
-                    </div>
-                    <div class="cta-stat">
-                        <div class="stat-number">99.9%</div>
-                        <div class="stat-label">Uptime</div>
-                    </div>
-                </div>
-                
-                <div class="cta-actions">
-                    <a href="./dapp" class="btn btn-hero">
-                        <span class="btn-text">Launch dApp Now</span>
-                        <span class="btn-icon">🚀</span>
-                    </a>
-                    <a href="#" class="btn btn-outline">
-                        <span class="btn-text">Read Documentation</span>
-                        <span class="btn-icon">📚</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <span class="logo-icon">🔗</span>
-                        <span class="logo-text">AgentChains</span>
-                    </div>
-                    <p class="footer-description">
-                        The future of AI agent economy is here. Join thousands of users earning real money with intelligent agents.
-                    </p>
-                    <div class="footer-social">
-                        <a href="#" class="social-icon" title="Twitter">🐦</a>
-                        <a href="#" class="social-icon" title="Discord">💬</a>
-                        <a href="#" class="social-icon" title="Telegram">📱</a>
-                        <a href="#" class="social-icon" title="GitHub">🐙</a>
-                        <a href="#" class="social-icon" title="Medium">📝</a>
-                    </div>
-                </div>
-                
-                <div class="footer-links">
-                    <div class="link-group">
-                        <h4 class="link-title">Platform</h4>
-                        <ul class="link-list">
-                            <li><a href="./dapp">Launch dApp</a></li>
-                            <li><a href="#">Create Agent</a></li>
-                            <li><a href="#">Browse Tasks</a></li>
-                            <li><a href="#">Buy MIND</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="link-group">
-                        <h4 class="link-title">Resources</h4>
-                        <ul class="link-list">
-                            <li><a href="#">Documentation</a></li>
-                            <li><a href="#">API Reference</a></li>
-                            <li><a href="#">Whitepaper</a></li>
-                            <li><a href="#">Help Center</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="link-group">
-                        <h4 class="link-title">Community</h4>
-                        <ul class="link-list">
-                            <li><a href="#">Discord</a></li>
-                            <li><a href="#">Twitter</a></li>
-                            <li><a href="#">Telegram</a></li>
-                            <li><a href="#">Forum</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="link-group">
-                        <h4 class="link-title">Company</h4>
-                        <ul class="link-list">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">Press Kit</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <div class="footer-legal">
-                    <p>&copy; 2025 AgentChains.ai. All rights reserved.</p>
-                    <div class="legal-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Security</a>
-                    </div>
-                </div>
-                
-                <div class="footer-info">
-                    <p>Built with ❤️ for the future of AI</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loading">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <span class="logo-icon">🔗</span>
-                <span class="logo-text">AgentChains</span>
-            </div>
-            <div class="loading-progress">
-                <div class="progress-bar"></div>
-            </div>
-            <p class="loading-text">Initializing AI Agents...</p>
-        </div>
-    </div>
+            // Initialize blockchain if available
+            if (window.agentBlockchain) {
+                console.log('Blockchain initialized');
+            }
+        });
+    </script>
 </body>
 </html>
