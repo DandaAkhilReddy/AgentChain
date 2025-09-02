@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentChains dApp - KAMIKAZE Token Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    <script src="../js/blockchain.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .dapp-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            padding: 2rem 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #00d4ff;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-left: 4px solid #00d4ff;
+        }
+
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .wallet-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .balance {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00d4ff, #ff6b35);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #00d4ff;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            min-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-connected {
+            background: #00ff88;
+        }
+
+        .status-disconnected {
+            background: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .dapp-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dapp-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <span>🔗</span>
+                <span>AgentChains</span>
+            </div>
+            
+            <div class="nav-item active" onclick="showSection('dashboard')">
+                <span>📊</span> Dashboard
+            </div>
+            
+            <div class="nav-item" onclick="showSection('wallet')">
+                <span>💰</span> Wallet
+            </div>
+            
+            <div class="nav-item" onclick="showSection('agents')">
+                <span>🤖</span> My Agents
+            </div>
+            
+            <div class="nav-item" onclick="showSection('marketplace')">
+                <span>🏪</span> Marketplace
+            </div>
+            
+            <div class="nav-item" onclick="showSection('staking')">
+                <span>🔒</span> Staking
+            </div>
+            
+            <div class="nav-item" onclick="showSection('tasks')">
+                <span>📋</span> Tasks
+            </div>
+            
+            <div class="nav-item" onclick="window.location.href='../agent-creator.html'">
+                <span>⚡</span> Create Agent
+            </div>
+            
+            <div class="nav-item" onclick="logout()">
+                <span>🚪</span> Logout
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Wallet Connection Status -->
+            <div class="wallet-info">
+                <div id="connectionStatus">
+                    <span class="status-indicator status-disconnected"></span>
+                    <span>Wallet: Not Connected</span>
+                    <button class="btn" id="connectWalletBtn" onclick="connectWallet()">Connect Wallet</button>
+                </div>
+                <div class="balance">
+                    Balance: <span id="kamikazeBalance">0</span> KAMIKAZE
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard-section">
+                <h1>Welcome to AgentChains dApp</h1>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">💰</span>
+                            <span class="card-title">KAMIKAZE Balance</span>
+                        </div>
+                        <div class="card-value" id="dashboardBalance">1,000,000,000</div>
+                        <p>Your total KAMIKAZE token balance</p>
+                        <button class="btn" onclick="showBuyModal()">Buy More</button>
+                        <button class="btn btn-outline" onclick="showSendModal()">Send</button>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">🤖</span>
+                            <span class="card-title">Active Agents</span>
+                        </div>
+                        <div class="card-value">3</div>
+                        <p>AI agents currently working</p>
+                        <button class="btn" onclick="window.location.href='../agent-creator.html'">Create Agent</button>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">📈</span>
+                            <span class="card-title">Total Earned</span>
+                        </div>
+                        <div class="card-value">25,430</div>
+                        <p>KAMIKAZE tokens earned from tasks</p>
+                        <button class="btn" onclick="showSection('tasks')">View Tasks</button>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">🔒</span>
+                            <span class="card-title">Staked Amount</span>
+                        </div>
+                        <div class="card-value">500,000</div>
+                        <p>KAMIKAZE tokens staked (15% APY)</p>
+                        <button class="btn" onclick="showSection('staking')">Manage Staking</button>
+                    </div>
+                </div>
+
+                <div class="actions-grid">
+                    <a href="../agent-creator.html" class="action-btn">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+                        <div>Create AI Agent</div>
+                    </a>
+                    
+                    <div class="action-btn" onclick="showSection('marketplace')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏪</div>
+                        <div>Browse Marketplace</div>
+                    </div>
+                    
+                    <div class="action-btn" onclick="showSection('staking')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+                        <div>Stake Tokens</div>
+                    </div>
+                    
+                    <div class="action-btn" onclick="showSection('tasks')">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+                        <div>View Tasks</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Buy Modal -->
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Buy KAMIKAZE Tokens</h2>
+                <button class="modal-close" onclick="closeBuyModal()">×</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Amount (KAMIKAZE)</label>
+                <input type="number" id="buyAmount" placeholder="Enter amount" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select id="paymentMethod">
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="matic">Polygon (MATIC)</option>
+                    <option value="usdc">USD Coin (USDC)</option>
+                </select>
+            </div>
+            
+            <button class="btn" onclick="buyTokens()">Buy Tokens</button>
+        </div>
+    </div>
+
+    <!-- Send Modal -->
+    <div id="sendModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Send KAMIKAZE Tokens</h2>
+                <button class="modal-close" onclick="closeSendModal()">×</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Recipient Address</label>
+                <input type="text" id="recipientAddress" placeholder="0x...">
+            </div>
+            
+            <div class="form-group">
+                <label>Amount (KAMIKAZE)</label>
+                <input type="number" id="sendAmount" placeholder="Enter amount" min="1">
+            </div>
+            
+            <button class="btn" onclick="sendTokens()">Send Tokens</button>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let web3;
+        let userAccount;
+        let connected = false;
+
+        // Initialize app
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('AgentChains dApp loaded');
+            
+            // Check if MetaMask is installed
+            if (typeof window.ethereum !== 'undefined') {
+                console.log('MetaMask detected');
+                web3 = new Web3(window.ethereum);
+                
+                // Check if already connected
+                checkConnection();
+            } else {
+                console.log('MetaMask not detected');
+                alert('Please install MetaMask to use this dApp');
+            }
+        });
+
+        // Connect wallet function
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    userAccount = accounts[0];
+                    connected = true;
+                    
+                    // Update UI
+                    updateWalletUI();
+                    
+                    console.log('Connected to wallet:', userAccount);
+                } catch (error) {
+                    console.error('Failed to connect wallet:', error);
+                    alert('Failed to connect wallet');
+                }
+            } else {
+                alert('MetaMask not found. Please install MetaMask.');
+            }
+        }
+
+        // Check existing connection
+        async function checkConnection() {
+            try {
+                const accounts = await web3.eth.getAccounts();
+                if (accounts.length > 0) {
+                    userAccount = accounts[0];
+                    connected = true;
+                    updateWalletUI();
+                }
+            } catch (error) {
+                console.error('Error checking connection:', error);
+            }
+        }
+
+        // Update wallet UI
+        function updateWalletUI() {
+            const statusElement = document.getElementById('connectionStatus');
+            const balanceElement = document.getElementById('kamikazeBalance');
+            
+            if (connected && userAccount) {
+                statusElement.innerHTML = `
+                    <span class="status-indicator status-connected"></span>
+                    <span>Wallet: ${userAccount.substring(0, 6)}...${userAccount.substring(-4)}</span>
+                `;
+                
+                // Update balance (mock data for now)
+                balanceElement.textContent = '1,000,000,000';
+            } else {
+                statusElement.innerHTML = `
+                    <span class="status-indicator status-disconnected"></span>
+                    <span>Wallet: Not Connected</span>
+                    <button class="btn" onclick="connectWallet()">Connect Wallet</button>
+                `;
+            }
+        }
+
+        // Section navigation
+        function showSection(section) {
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+            
+            console.log('Navigating to:', section);
+            
+            // For now, just show an alert
+            switch(section) {
+                case 'dashboard':
+                    // Already showing dashboard
+                    break;
+                case 'wallet':
+                    alert('Wallet section - Coming soon!');
+                    break;
+                case 'agents':
+                    window.location.href = '../agent-creator.html';
+                    break;
+                case 'marketplace':
+                    alert('Marketplace section - Browse and trade AI agents!');
+                    break;
+                case 'staking':
+                    alert('Staking section - Stake KAMIKAZE tokens for rewards!');
+                    break;
+                case 'tasks':
+                    alert('Tasks section - View completed and available tasks!');
+                    break;
+                default:
+                    console.log('Unknown section:', section);
+            }
+        }
+
+        // Modal functions
+        function showBuyModal() {
+            document.getElementById('buyModal').style.display = 'block';
+        }
+
+        function closeBuyModal() {
+            document.getElementById('buyModal').style.display = 'none';
+        }
+
+        function showSendModal() {
+            if (!connected) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            document.getElementById('sendModal').style.display = 'block';
+        }
+
+        function closeSendModal() {
+            document.getElementById('sendModal').style.display = 'none';
+        }
+
+        // Token operations
+        function buyTokens() {
+            const amount = document.getElementById('buyAmount').value;
+            const method = document.getElementById('paymentMethod').value;
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            // Mock transaction
+            alert(`Buying ${amount} KAMIKAZE tokens with ${method.toUpperCase()}...`);
+            closeBuyModal();
+            
+            // Update balance (mock)
+            const currentBalance = parseInt(document.getElementById('kamikazeBalance').textContent.replace(/,/g, ''));
+            const newBalance = currentBalance + parseInt(amount);
+            document.getElementById('kamikazeBalance').textContent = newBalance.toLocaleString();
+        }
+
+        function sendTokens() {
+            const recipient = document.getElementById('recipientAddress').value;
+            const amount = document.getElementById('sendAmount').value;
+            
+            if (!recipient || !amount || amount <= 0) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Mock transaction
+            alert(`Sending ${amount} KAMIKAZE tokens to ${recipient}...`);
+            closeSendModal();
+            
+            // Update balance (mock)
+            const currentBalance = parseInt(document.getElementById('kamikazeBalance').textContent.replace(/,/g, ''));
+            const newBalance = Math.max(0, currentBalance - parseInt(amount));
+            document.getElementById('kamikazeBalance').textContent = newBalance.toLocaleString();
+        }
+
+        // Logout function
+        function logout() {
+            connected = false;
+            userAccount = null;
+            updateWalletUI();
+            alert('Logged out successfully');
+            window.location.href = '../index.html';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const buyModal = document.getElementById('buyModal');
+            const sendModal = document.getElementById('sendModal');
+            
+            if (event.target === buyModal) {
+                closeBuyModal();
+            }
+            if (event.target === sendModal) {
+                closeSendModal();
+            }
+        }
+    </script>
+</body>
+</html>

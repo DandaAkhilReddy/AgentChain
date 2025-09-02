@@ -1,6 +1,7 @@
 /**
  * AgentChains.ai - Main JavaScript (Fixed Version)
  * Fixed loading screen and authentication issues
+ * Added button functionality and authentication system
  */
 
 // ================================
@@ -9,6 +10,101 @@
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
+
+// ================================
+// AUTHENTICATION SYSTEM
+// ================================
+
+const authSystem = {
+    isAuthenticated: false,
+    user: null,
+    
+    // Google OAuth initialization
+    initGoogleAuth() {
+        if (typeof google !== 'undefined') {
+            google.accounts.id.initialize({
+                client_id: 'your-google-client-id',
+                callback: this.handleGoogleLogin.bind(this)
+            });
+        }
+    },
+    
+    // Handle Google login
+    handleGoogleLogin(response) {
+        console.log('Google login successful:', response);
+        this.isAuthenticated = true;
+        this.user = {
+            type: 'google',
+            credential: response.credential
+        };
+        this.updateAuthUI();
+        this.launchPlatform();
+    },
+    
+    // Handle MetaMask connection
+    async connectMetaMask() {
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                
+                this.isAuthenticated = true;
+                this.user = {
+                    type: 'metamask',
+                    address: accounts[0]
+                };
+                
+                console.log('MetaMask connected:', accounts[0]);
+                this.updateAuthUI();
+                this.launchPlatform();
+                
+            } catch (error) {
+                console.error('MetaMask connection failed:', error);
+                alert('Failed to connect MetaMask');
+            }
+        } else {
+            alert('MetaMask not found. Please install MetaMask.');
+        }
+    },
+    
+    // Update authentication UI
+    updateAuthUI() {
+        const navButtons = $('.login-buttons');
+        const heroButtons = $('.hero-actions');
+        
+        if (this.isAuthenticated && navButtons) {
+            navButtons.innerHTML = `
+                <span class="user-info">
+                    ✅ Connected${this.user.type === 'metamask' ? ' (Wallet)' : ' (Google)'}
+                </span>
+            `;
+        }
+    },
+    
+    // Launch main platform
+    launchPlatform() {
+        console.log('Launching platform...');
+        
+        // Check if we're already on a platform page
+        if (window.location.pathname.includes('dapp') || 
+            window.location.pathname.includes('agent-creator') ||
+            window.location.pathname.includes('app')) {
+            return;
+        }
+        
+        // Redirect to main dApp
+        window.location.href = './dapp/index.html';
+    },
+    
+    // Logout function
+    logout() {
+        this.isAuthenticated = false;
+        this.user = null;
+        console.log('User logged out');
+        window.location.href = '../index.html';
+    }
+};
 
 // ================================
 // LOADING ANIMATION
@@ -659,5 +755,81 @@ function scrollToSection(sectionId) {
     }
 }
 
-// Global access
+// Global access to functions
 window.scrollToSection = scrollToSection;
+
+// ================================
+// BUTTON EVENT HANDLERS
+// ================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Main launch buttons
+    const mainLaunchBtn = $('#mainLaunchBtn');
+    const connectWalletBtn = $('#connectWalletBtn');
+    const googleLoginBtn = $('#googleLoginBtn');
+    
+    // Navigation buttons
+    const googleLoginNav = $('#googleLoginNav');
+    const metamaskConnectNav = $('#metamaskConnectNav');
+    
+    // Whitepaper buttons
+    const downloadWhitepaper = $('#downloadWhitepaper');
+    const viewOnline = $('#viewOnline');
+    
+    // Add event listeners if buttons exist
+    if (mainLaunchBtn) {
+        mainLaunchBtn.addEventListener('click', () => {
+            console.log('Main launch button clicked');
+            authSystem.launchPlatform();
+        });
+    }
+    
+    if (connectWalletBtn) {
+        connectWalletBtn.addEventListener('click', () => {
+            console.log('Connect wallet button clicked');
+            authSystem.connectMetaMask();
+        });
+    }
+    
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', () => {
+            console.log('Google login button clicked');
+            authSystem.showAuthModal();
+        });
+    }
+    
+    if (googleLoginNav) {
+        googleLoginNav.addEventListener('click', () => {
+            console.log('Google login nav clicked');
+            authSystem.showAuthModal();
+        });
+    }
+    
+    if (metamaskConnectNav) {
+        metamaskConnectNav.addEventListener('click', () => {
+            console.log('MetaMask nav clicked');
+            authSystem.connectMetaMask();
+        });
+    }
+    
+    if (downloadWhitepaper) {
+        downloadWhitepaper.addEventListener('click', () => {
+            console.log('Download whitepaper clicked');
+            // Trigger whitepaper download if available
+            if (window.whitepaperHandler) {
+                window.whitepaperHandler.generateAndDownload();
+            } else {
+                alert('Downloading AgentChains Whitepaper...');
+            }
+        });
+    }
+    
+    if (viewOnline) {
+        viewOnline.addEventListener('click', () => {
+            console.log('View online clicked');
+            window.open('https://agentchains.ai/whitepaper', '_blank');
+        });
+    }
+    
+    console.log('Button event listeners attached');
+});

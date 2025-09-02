@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAMIKAZE Staking - AgentChains</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 2rem;
+        }
+
+        .staking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .staking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .staking-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .balance-info {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .balance-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .balance-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .stake-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stake-option {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .stake-option:hover {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .stake-option.selected {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .stake-duration {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stake-apy {
+            font-size: 1.5rem;
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stake-multiplier {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .stake-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .stake-input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-container {
+            position: relative;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stake-input {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .stake-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .max-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .max-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .stake-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #ff6b35);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stake-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .stake-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .rewards-info {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .rewards-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        .rewards-calculation {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .calculation-item {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .calculation-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculation-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .staking-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+        }
+
+        @media (max-width: 768px) {
+            .staking-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stake-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .staking-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .rewards-calculation {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="dapp/index.html" class="back-btn">← Back to Dashboard</a>
+    
+    <div class="staking-container">
+        <header class="header">
+            <h1>🔒 KAMIKAZE Staking</h1>
+            <p>Stake your KAMIKAZE tokens and earn up to 25% APY rewards</p>
+        </header>
+
+        <!-- Staking Statistics -->
+        <div class="staking-stats">
+            <div class="stat-card">
+                <div class="stat-value">500M</div>
+                <div class="stat-label">Total Staked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">18.5%</div>
+                <div class="stat-label">Average APY</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12,450</div>
+                <div class="stat-label">Active Stakers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">45M</div>
+                <div class="stat-label">Rewards Paid</div>
+            </div>
+        </div>
+
+        <div class="staking-grid">
+            <!-- Staking Interface -->
+            <div class="staking-card">
+                <div class="card-header">
+                    <span class="card-icon">💰</span>
+                    <span class="card-title">Stake KAMIKAZE</span>
+                </div>
+
+                <!-- Balance Info -->
+                <div class="balance-info">
+                    <div>
+                        <div class="balance-label">Available Balance</div>
+                        <div class="balance-value" id="availableBalance">1,000,000,000 KAMIKAZE</div>
+                    </div>
+                </div>
+
+                <!-- Stake Duration Options -->
+                <div class="stake-options">
+                    <div class="stake-option" data-duration="0" onclick="selectStakePeriod(0)">
+                        <div class="stake-duration">Flexible</div>
+                        <div class="stake-apy">5% APY</div>
+                        <div class="stake-multiplier">No lock-up</div>
+                    </div>
+                    
+                    <div class="stake-option" data-duration="30" onclick="selectStakePeriod(30)">
+                        <div class="stake-duration">30 Days</div>
+                        <div class="stake-apy">12% APY</div>
+                        <div class="stake-multiplier">2.4x multiplier</div>
+                    </div>
+                    
+                    <div class="stake-option" data-duration="90" onclick="selectStakePeriod(90)">
+                        <div class="stake-duration">90 Days</div>
+                        <div class="stake-apy">18% APY</div>
+                        <div class="stake-multiplier">3.6x multiplier</div>
+                    </div>
+                    
+                    <div class="stake-option selected" data-duration="365" onclick="selectStakePeriod(365)">
+                        <div class="stake-duration">365 Days</div>
+                        <div class="stake-apy">25% APY</div>
+                        <div class="stake-multiplier">5x multiplier</div>
+                    </div>
+                </div>
+
+                <!-- Stake Amount Input -->
+                <div class="stake-input-group">
+                    <label for="stakeAmount">Stake Amount</label>
+                    <div class="input-container">
+                        <input 
+                            type="number" 
+                            id="stakeAmount" 
+                            class="stake-input" 
+                            placeholder="Enter amount to stake"
+                            min="1"
+                            oninput="calculateRewards()"
+                        >
+                        <button class="max-btn" onclick="setMaxAmount()">MAX</button>
+                    </div>
+                </div>
+
+                <!-- Stake Button -->
+                <button class="stake-btn" id="stakeBtn" onclick="stakeTokens()">
+                    🔒 Stake KAMIKAZE Tokens
+                </button>
+            </div>
+
+            <!-- Rewards Calculator -->
+            <div class="staking-card">
+                <div class="card-header">
+                    <span class="card-icon">📈</span>
+                    <span class="card-title">Rewards Calculator</span>
+                </div>
+
+                <div class="rewards-info">
+                    <div class="rewards-header">📊 Estimated Rewards</div>
+                    <div class="rewards-calculation">
+                        <div class="calculation-item">
+                            <div class="calculation-label">Daily Rewards</div>
+                            <div class="calculation-value" id="dailyRewards">0</div>
+                        </div>
+                        <div class="calculation-item">
+                            <div class="calculation-label">Monthly Rewards</div>
+                            <div class="calculation-value" id="monthlyRewards">0</div>
+                        </div>
+                        <div class="calculation-item">
+                            <div class="calculation-label">Annual Rewards</div>
+                            <div class="calculation-value" id="annualRewards">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Stakes (if any) -->
+                <div class="balance-info">
+                    <div>
+                        <div class="balance-label">Currently Staked</div>
+                        <div class="balance-value">500,000 KAMIKAZE</div>
+                    </div>
+                </div>
+
+                <div class="balance-info">
+                    <div>
+                        <div class="balance-label">Pending Rewards</div>
+                        <div class="balance-value" style="color: #00ff88;">2,456 KAMIKAZE</div>
+                    </div>
+                </div>
+
+                <button class="stake-btn" style="background: linear-gradient(135deg, #00ff88, #00d4ff);" onclick="claimRewards()">
+                    💎 Claim Rewards
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPeriod = 365;
+        let selectedAPY = 25;
+
+        // Connect wallet on load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('KAMIKAZE Staking loaded');
+            
+            // Check wallet connection
+            if (typeof window.ethereum !== 'undefined') {
+                console.log('MetaMask detected');
+            }
+            
+            // Initialize with default values
+            calculateRewards();
+        });
+
+        function selectStakePeriod(days) {
+            selectedPeriod = days;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.stake-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            const selectedOption = document.querySelector(`[data-duration="${days}"]`);
+            selectedOption.classList.add('selected');
+            
+            // Set APY based on selected period
+            const apyMap = { 0: 5, 30: 12, 90: 18, 365: 25 };
+            selectedAPY = apyMap[days];
+            
+            // Recalculate rewards
+            calculateRewards();
+            
+            console.log(`Selected staking period: ${days} days, APY: ${selectedAPY}%`);
+        }
+
+        function setMaxAmount() {
+            // Set maximum available balance (mock value)
+            const maxBalance = 1000000000;
+            document.getElementById('stakeAmount').value = maxBalance;
+            calculateRewards();
+        }
+
+        function calculateRewards() {
+            const stakeAmount = parseFloat(document.getElementById('stakeAmount').value) || 0;
+            
+            if (stakeAmount > 0) {
+                // Calculate rewards based on APY
+                const annualReward = (stakeAmount * selectedAPY) / 100;
+                const monthlyReward = annualReward / 12;
+                const dailyReward = annualReward / 365;
+                
+                // Update display
+                document.getElementById('dailyRewards').textContent = Math.floor(dailyReward).toLocaleString();
+                document.getElementById('monthlyRewards').textContent = Math.floor(monthlyReward).toLocaleString();
+                document.getElementById('annualRewards').textContent = Math.floor(annualReward).toLocaleString();
+            } else {
+                // Reset to zero
+                document.getElementById('dailyRewards').textContent = '0';
+                document.getElementById('monthlyRewards').textContent = '0';
+                document.getElementById('annualRewards').textContent = '0';
+            }
+        }
+
+        async function stakeTokens() {
+            const stakeAmount = document.getElementById('stakeAmount').value;
+            
+            if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
+                alert('Please enter a valid stake amount');
+                return;
+            }
+            
+            // Check wallet connection
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask to stake tokens');
+                return;
+            }
+            
+            const stakeBtn = document.getElementById('stakeBtn');
+            stakeBtn.disabled = true;
+            stakeBtn.textContent = '🔄 Processing...';
+            
+            try {
+                // Mock staking transaction
+                console.log(`Staking ${stakeAmount} KAMIKAZE for ${selectedPeriod} days at ${selectedAPY}% APY`);
+                
+                // Simulate transaction delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Mock success
+                alert(`Successfully staked ${parseFloat(stakeAmount).toLocaleString()} KAMIKAZE tokens!\n\nStake Period: ${selectedPeriod} days\nAPY: ${selectedAPY}%\n\nYour rewards will start accruing immediately.`);
+                
+                // Update UI
+                const currentBalance = parseFloat(document.getElementById('availableBalance').textContent.replace(/[^0-9]/g, ''));
+                const newBalance = currentBalance - parseFloat(stakeAmount);
+                document.getElementById('availableBalance').textContent = newBalance.toLocaleString() + ' KAMIKAZE';
+                
+                // Clear input
+                document.getElementById('stakeAmount').value = '';
+                calculateRewards();
+                
+            } catch (error) {
+                console.error('Staking failed:', error);
+                alert('Staking transaction failed. Please try again.');
+            }
+            
+            // Reset button
+            stakeBtn.disabled = false;
+            stakeBtn.textContent = '🔒 Stake KAMIKAZE Tokens';
+        }
+
+        function claimRewards() {
+            // Mock reward claiming
+            alert('Claiming 2,456 KAMIKAZE tokens as rewards!\n\nRewards have been transferred to your wallet.');
+            
+            // Update available balance
+            const currentBalance = parseFloat(document.getElementById('availableBalance').textContent.replace(/[^0-9]/g, ''));
+            const newBalance = currentBalance + 2456;
+            document.getElementById('availableBalance').textContent = newBalance.toLocaleString() + ' KAMIKAZE';
+        }
+    </script>
+</body>
+</html>
