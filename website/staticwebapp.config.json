@@ -1,73 +1,41 @@
 {
-  "routes": [
-    {
-      "route": "/api/*",
-      "allowedRoles": ["anonymous"]
+    "routes": [
+        {
+            "route": "/api/*",
+            "allowedRoles": ["anonymous"]
+        },
+        {
+            "route": "/dapp/*",
+            "allowedRoles": ["anonymous"]
+        }
+    ],
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": ["/api/*", "/dapp/*", "/*.{css,scss,sass,js,ts,tsx,jsx,json,png,gif,jpg,jpeg,svg,ico,woff,woff2,ttf,eot}"]
     },
-    {
-      "route": "/dapp",
-      "redirect": "/dapp/index.html",
-      "statusCode": 301
+    "mimeTypes": {
+        ".json": "application/json",
+        ".js": "application/javascript",
+        ".css": "text/css",
+        ".html": "text/html",
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".gif": "image/gif",
+        ".svg": "image/svg+xml",
+        ".ico": "image/x-icon",
+        ".woff": "font/woff",
+        ".woff2": "font/woff2",
+        ".ttf": "font/ttf",
+        ".eot": "application/vnd.ms-fontobject"
     },
-    {
-      "route": "/app",
-      "redirect": "/dapp/index.html", 
-      "statusCode": 301
+    "globalHeaders": {
+        "Cache-Control": "public, max-age=31536000, immutable"
     },
-    {
-      "route": "/launch",
-      "redirect": "/dapp/index.html",
-      "statusCode": 301
-    },
-    {
-      "route": "/kamikaze",
-      "redirect": "/agent-creator.html",
-      "statusCode": 301
-    },
-    {
-      "route": "/staking",
-      "redirect": "/agent-creator.html",
-      "statusCode": 301
-    },
-    {
-      "route": "/agents",
-      "redirect": "/agent-creator.html",
-      "statusCode": 301
-    },
-    {
-      "route": "/create-agent",
-      "redirect": "/agent-creator.html",
-      "statusCode": 301
+    "responseOverrides": {
+        "404": {
+            "rewrite": "/index.html",
+            "statusCode": 200
+        }
     }
-  ],
-  "navigationFallback": {
-    "rewrite": "/index.html"
-  },
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
-    }
-  },
-  "globalHeaders": {
-    "Cache-Control": "public, max-age=31536000, immutable",
-    "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "DENY",
-    "X-XSS-Protection": "1; mode=block",
-    "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
-  },
-  "mimeTypes": {
-    ".json": "application/json",
-    ".js": "text/javascript",
-    ".css": "text/css",
-    ".html": "text/html",
-    ".png": "image/png",
-    ".jpg": "image/jpeg",
-    ".gif": "image/gif",
-    ".svg": "image/svg+xml",
-    ".ico": "image/x-icon",
-    ".woff": "font/woff",
-    ".woff2": "font/woff2"
-  }
 }

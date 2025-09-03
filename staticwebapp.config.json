@@ -7,15 +7,10 @@
         {
             "route": "/dapp/*",
             "allowedRoles": ["anonymous"]
-        },
-        {
-            "route": "/*",
-            "serve": "/website/index.html",
-            "statusCode": 200
         }
     ],
     "navigationFallback": {
-        "rewrite": "/website/index.html",
+        "rewrite": "/index.html",
         "exclude": ["/api/*", "/dapp/*", "/*.{css,scss,sass,js,ts,tsx,jsx,json,png,gif,jpg,jpeg,svg,ico,woff,woff2,ttf,eot}"]
     },
     "mimeTypes": {
@@ -39,7 +34,7 @@
     },
     "responseOverrides": {
         "404": {
-            "rewrite": "/website/index.html",
+            "rewrite": "/index.html",
             "statusCode": 200
         }
     }
