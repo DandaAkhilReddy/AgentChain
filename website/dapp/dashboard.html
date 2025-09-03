@@ -3,499 +3,642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 AgentChains AI Dashboard - KAMIKAZE Token Management</title>
-    <link rel="stylesheet" href="../css/future-ai-theme.css">
-    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
-    <script src="../js/blockchain.js"></script>
-</head>
-<body class="gpu-accelerated">
-    <!-- Neural Network Background -->
-    <div class="animated-bg"></div>
-    <div class="neural-viz" id="neuralViz"></div>
+    <title>AgentChains Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .main-container {
+            padding: 6rem 2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Grid Layouts */
+        .dashboard-grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .main-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-content {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-primary { color: var(--primary-light); }
+        .stat-success { color: var(--success); }
+        .stat-warning { color: var(--warning); }
+        .stat-accent { color: var(--accent); }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Status Indicators */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-connected {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Transaction History */
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .transaction-info h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .transaction-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .transaction-amount {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* AI Agent Cards */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .agent-card {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .agent-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .agent-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 5rem 1rem 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .dashboard-grid {
+                gap: 1rem;
+            }
+            
+            .card-content {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <span class="logo-icon">🤖</span>
-                <span class="logo-text">AgentChains</span>
+                🤖 AgentChains
             </div>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <span id="walletStatus" class="glass-effect" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.9rem;">
-                    🔗 Connect Wallet
-                </span>
-                <a href="../index.html" class="cta-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
-                    ← Back to Home
-                </a>
+            <div class="nav-actions">
+                <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+                <a href="../index.html" class="btn btn-secondary">← Home</a>
             </div>
         </div>
     </nav>
 
-    <div style="padding-top: 100px; min-height: 100vh;">
-        <!-- AI Dashboard Header -->
-        <div style="text-align: center; padding: 2rem; margin-bottom: 3rem;">
-            <h1 style="font-size: 3rem; font-weight: 800; background: linear-gradient(45deg, #00ff88, #00d4ff, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem;">
-                AI-Powered KAMIKAZE Dashboard
-            </h1>
-            <p style="color: #b4bcd0; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
-                Manage your deflationary tokens with Principal Scientist-grade AI intelligence
-            </p>
+    <!-- Main Dashboard -->
+    <div class="main-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">AI Dashboard</h1>
+            <p class="dashboard-subtitle">Monitor your AI agents and manage blockchain operations</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="dashboard-grid stats-grid">
+            <div class="card stat-card">
+                <div class="stat-value stat-primary" id="totalBalance">0.00</div>
+                <div class="stat-label">Total Balance</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value stat-success" id="activeAgents">4</div>
+                <div class="stat-label">Active Agents</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value stat-warning" id="totalTasks">1,247</div>
+                <div class="stat-label">Tasks Completed</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value stat-accent" id="efficiency">98.2%</div>
+                <div class="stat-label">Efficiency Score</div>
+            </div>
         </div>
 
         <!-- Main Dashboard Grid -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-            
-            <!-- Wallet Overview Card -->
-            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.3);">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-                    <span style="font-size: 2rem;">💎</span>
-                    <h2 style="font-size: 1.5rem; font-weight: 700;">Wallet Overview</h2>
-                </div>
-                
-                <div style="margin-bottom: 2rem;">
-                    <div style="color: #b4bcd0; font-size: 0.9rem; margin-bottom: 0.5rem;">KAMIKAZE Balance</div>
-                    <div style="font-size: 2.5rem; font-weight: 800; color: #00ff88;" id="tokenBalance">
-                        0 KAMIKAZE
-                    </div>
-                    <div style="color: #b4bcd0; font-size: 0.9rem; margin-top: 0.5rem;">
-                        ≈ $<span id="usdValue">0.00</span> USD
+        <div class="dashboard-grid main-grid">
+            <!-- Wallet Management -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Wallet Management</h3>
+                    <div id="walletStatus" class="status status-disconnected">
+                        <span>●</span> Disconnected
                     </div>
                 </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="glass-effect" style="padding: 1rem; border-radius: 12px; text-align: center;">
-                        <div style="color: #00d4ff; font-size: 1.3rem; font-weight: 700;">2%</div>
-                        <div style="color: #b4bcd0; font-size: 0.8rem;">Burn Rate</div>
+                <div class="card-content">
+                    <div class="form-group">
+                        <label class="form-label">Wallet Address</label>
+                        <input type="text" class="form-input" id="walletAddress" readonly placeholder="Connect wallet to view address">
                     </div>
-                    <div class="glass-effect" style="padding: 1rem; border-radius: 12px; text-align: center;">
-                        <div style="color: #ff6b35; font-size: 1.3rem; font-weight: 700;" id="totalBurned">0</div>
-                        <div style="color: #b4bcd0; font-size: 0.8rem;">Tokens Burned</div>
+                    <div class="form-group">
+                        <label class="form-label">Token Balance</label>
+                        <input type="text" class="form-input" id="tokenBalance" readonly placeholder="0.00 KAMIKAZE">
                     </div>
-                </div>
-            </div>
-
-            <!-- AI Trading Assistant -->
-            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(124, 58, 237, 0.3);">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-                    <span style="font-size: 2rem;">🧠</span>
-                    <h2 style="font-size: 1.5rem; font-weight: 700;">AI Trading Assistant</h2>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span style="color: #b4bcd0;">Market Sentiment</span>
-                        <span style="color: #00ff88; font-weight: 600;">Bullish 📈</span>
-                    </div>
-                    <div class="progress-bar" style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
-                        <div class="progress-fill" style="width: 76%; height: 100%; background: linear-gradient(90deg, #00ff88, #00d4ff); animation: pulse 2s infinite;"></div>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
-                    <div style="text-align: center;">
-                        <div style="color: #7c3aed; font-size: 1.2rem; font-weight: 700;">94.7%</div>
-                        <div style="color: #b4bcd0; font-size: 0.8rem;">AI Accuracy</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="color: #ec4899; font-size: 1.2rem; font-weight: 700;">2.3ms</div>
-                        <div style="color: #b4bcd0; font-size: 0.8rem;">Response Time</div>
-                    </div>
-                </div>
-
-                <button class="cta-primary" style="width: 100%; justify-content: center;">
-                    🎯 Enable AI Trading
-                </button>
-            </div>
-
-            <!-- Send Tokens Card -->
-            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(0, 212, 255, 0.3);">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-                    <span style="font-size: 2rem;">🚀</span>
-                    <h2 style="font-size: 1.5rem; font-weight: 700;">Send KAMIKAZE</h2>
-                </div>
-                
-                <form id="sendTokenForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div>
-                        <label style="color: #b4bcd0; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Recipient Address</label>
-                        <input type="text" id="recipientAddress" placeholder="0x..." 
-                               style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-family: 'JetBrains Mono', monospace;">
-                    </div>
-                    
-                    <div>
-                        <label style="color: #b4bcd0; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Amount</label>
-                        <input type="number" id="sendAmount" placeholder="0.00" 
-                               style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;">
-                    </div>
-                    
-                    <div class="glass-effect" style="padding: 1rem; border-radius: 8px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                            <span style="color: #b4bcd0;">Amount to send:</span>
-                            <span id="sendPreview">0 KAMIKAZE</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem;">
-                            <span style="color: #ff6b35;">Burn (2%):</span>
-                            <span id="burnPreview">0 KAMIKAZE</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem;">
-                            <span style="color: #00ff88; font-weight: 600;">Recipient receives:</span>
-                            <span id="receivePreview">0 KAMIKAZE</span>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="cta-primary" style="width: 100%; justify-content: center;">
-                        ⚡ Send Tokens
+                    <button class="btn btn-primary" style="width: 100%;" onclick="refreshBalance()">
+                        🔄 Refresh Balance
                     </button>
-                </form>
+                </div>
             </div>
 
-            <!-- Transaction History -->
-            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(255, 107, 53, 0.3);">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-                    <span style="font-size: 2rem;">📊</span>
-                    <h2 style="font-size: 1.5rem; font-weight: 700;">Transaction History</h2>
+            <!-- AI Agent Control -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">AI Agent Control</h3>
+                    <button class="btn btn-secondary" onclick="refreshAgents()">Refresh</button>
                 </div>
-                
-                <div id="transactionHistory" style="max-height: 300px; overflow-y: auto;">
-                    <div style="text-align: center; color: #b4bcd0; padding: 2rem;">
-                        <span style="font-size: 3rem; opacity: 0.3;">📝</span>
-                        <p>No transactions yet</p>
-                        <p style="font-size: 0.9rem;">Connect your wallet to view history</p>
+                <div class="card-content">
+                    <div class="agent-grid">
+                        <div class="agent-card">
+                            <div class="agent-icon">🧠</div>
+                            <div class="agent-name">Analytics Agent</div>
+                            <div class="agent-status status-connected">Active</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-icon">⚡</div>
+                            <div class="agent-name">Automation Engine</div>
+                            <div class="agent-status status-connected">Active</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- AI Analytics Section -->
-        <div style="margin: 4rem auto; max-width: 1200px; padding: 0 2rem;">
-            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; background: linear-gradient(45deg, #00ff88, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                Real-Time Neural Analytics
-            </h2>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
-                    <div style="font-size: 2rem; font-weight: 800; color: #00ff88;" id="networkSpeed">47.3 TH/s</div>
-                    <div style="color: #b4bcd0;">Network Hashrate</div>
+        <!-- Transaction History -->
+        <div class="dashboard-grid">
+            <div class="card full-width">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Activity</h3>
+                    <button class="btn btn-secondary" onclick="loadTransactions()">Refresh</button>
                 </div>
-                
-                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤖</div>
-                    <div style="font-size: 2rem; font-weight: 800; color: #00d4ff;" id="activeAI">156,429</div>
-                    <div style="color: #b4bcd0;">AI Operations/Hour</div>
-                </div>
-                
-                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔥</div>
-                    <div style="font-size: 2rem; font-weight: 800; color: #ff6b35;" id="burnRate">2.1%</div>
-                    <div style="color: #b4bcd0;">Effective Burn Rate</div>
-                </div>
-                
-                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">💎</div>
-                    <div style="font-size: 2rem; font-weight: 800; color: #7c3aed;" id="stakingAPY">25.3%</div>
-                    <div style="color: #b4bcd0;">Current Staking APY</div>
+                <div class="card-content">
+                    <div id="transactionList">
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                                    📈
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>AI Task Completion Reward</h4>
+                                    <p>2 minutes ago • Analytics Agent</p>
+                                </div>
+                            </div>
+                            <div class="transaction-amount">
+                                <div style="color: var(--success); font-weight: 600;">+15.47 KAMIKAZE</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">≈ $23.45</div>
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent);">
+                                    🔧
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>Agent Configuration Update</h4>
+                                    <p>5 minutes ago • Automation Engine</p>
+                                </div>
+                            </div>
+                            <div class="transaction-amount">
+                                <div style="color: var(--text-secondary); font-weight: 600;">Configuration</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Successful</div>
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon" style="background: rgba(37, 99, 235, 0.1); color: var(--primary);">
+                                    🚀
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>AI Agent Activated</h4>
+                                    <p>15 minutes ago • Security Guardian</p>
+                                </div>
+                            </div>
+                            <div class="transaction-amount">
+                                <div style="color: var(--text-secondary); font-weight: 600;">Activated</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">System Ready</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize Web3 and blockchain
-        let web3;
-        let userAccount;
-        let blockchain;
+        // Wallet Connection
+        let isConnected = false;
+        let walletAddress = '';
 
-        // Initialize the dApp
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Initialize blockchain
-            blockchain = new AgentChainsBlockchain();
-            
-            // Add neural nodes
-            createNeuralNodes();
-            
-            // Animate counters
-            animateAnalytics();
-            
-            // Setup form handlers
-            setupFormHandlers();
-            
-            // Check if MetaMask is available
-            if (typeof window.ethereum !== 'undefined') {
-                web3 = new Web3(window.ethereum);
-                
-                // Check if already connected
-                const accounts = await web3.eth.getAccounts();
-                if (accounts.length > 0) {
-                    connectWallet();
-                }
-            }
-            
-            // Auto-connect prompt after 2 seconds
-            setTimeout(() => {
-                if (!userAccount) {
-                    document.getElementById('walletStatus').innerHTML = '🔗 <span style="animation: pulse 1s infinite;">Click to Connect Wallet</span>';
-                    document.getElementById('walletStatus').onclick = connectWallet;
-                }
-            }, 2000);
-        });
+        document.getElementById('connectWallet').addEventListener('click', connectWallet);
 
-        // Connect MetaMask wallet
         async function connectWallet() {
-            try {
-                if (typeof window.ethereum === 'undefined') {
-                    alert('Please install MetaMask to use this dApp!');
-                    return;
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    walletAddress = accounts[0];
+                    isConnected = true;
+                    updateWalletUI();
+                } catch (error) {
+                    console.error('Failed to connect wallet:', error);
                 }
-
-                // Request account access
-                const accounts = await window.ethereum.request({
-                    method: 'eth_requestAccounts'
-                });
-
-                userAccount = accounts[0];
-                
-                // Create account in blockchain if doesn't exist
-                blockchain.createAccount(userAccount);
-                
-                // Update UI
-                updateWalletDisplay();
-                updateTransactionHistory();
-                
-                console.log('Wallet connected:', userAccount);
-                
-                // Show success message
-                showNotification('🎉 Wallet connected successfully!', 'success');
-                
-            } catch (error) {
-                console.error('Failed to connect wallet:', error);
-                showNotification('❌ Failed to connect wallet', 'error');
+            } else {
+                alert('Please install MetaMask to use this feature!');
             }
         }
 
-        // Update wallet display
-        function updateWalletDisplay() {
-            if (userAccount) {
-                const balance = blockchain.getBalance(userAccount);
-                document.getElementById('tokenBalance').textContent = 
-                    balance.toLocaleString() + ' KAMIKAZE';
-                document.getElementById('usdValue').textContent = 
-                    (balance * 0.001).toFixed(2);
-                
-                // Update wallet status
-                document.getElementById('walletStatus').innerHTML = 
-                    `🟢 ${userAccount.substring(0, 6)}...${userAccount.substring(userAccount.length - 4)}`;
-                document.getElementById('walletStatus').onclick = null;
+        function updateWalletUI() {
+            const statusElement = document.getElementById('walletStatus');
+            const addressInput = document.getElementById('walletAddress');
+            const connectButton = document.getElementById('connectWallet');
+
+            if (isConnected) {
+                statusElement.className = 'status status-connected';
+                statusElement.innerHTML = '<span>●</span> Connected';
+                addressInput.value = walletAddress.substring(0, 6) + '...' + walletAddress.substring(38);
+                connectButton.textContent = 'Disconnect';
+                connectButton.onclick = disconnectWallet;
+            } else {
+                statusElement.className = 'status status-disconnected';
+                statusElement.innerHTML = '<span>●</span> Disconnected';
+                addressInput.value = '';
+                connectButton.textContent = 'Connect Wallet';
+                connectButton.onclick = connectWallet;
             }
         }
 
-        // Setup form handlers
-        function setupFormHandlers() {
-            const sendForm = document.getElementById('sendTokenForm');
-            const amountInput = document.getElementById('sendAmount');
-            
-            // Real-time preview updates
-            amountInput.addEventListener('input', updateSendPreview);
-            
-            // Form submission
-            sendForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendTokens();
-            });
+        function disconnectWallet() {
+            isConnected = false;
+            walletAddress = '';
+            updateWalletUI();
         }
 
-        // Update send preview
-        function updateSendPreview() {
-            const amount = parseFloat(document.getElementById('sendAmount').value) || 0;
-            const burnAmount = amount * 0.02;
-            const receiveAmount = amount - burnAmount;
-            
-            document.getElementById('sendPreview').textContent = amount.toFixed(4) + ' KAMIKAZE';
-            document.getElementById('burnPreview').textContent = burnAmount.toFixed(4) + ' KAMIKAZE';
-            document.getElementById('receivePreview').textContent = receiveAmount.toFixed(4) + ' KAMIKAZE';
-        }
-
-        // Send tokens
-        function sendTokens() {
-            if (!userAccount) {
-                showNotification('⚠️ Please connect your wallet first', 'warning');
-                return;
-            }
-            
-            const recipient = document.getElementById('recipientAddress').value;
-            const amount = parseFloat(document.getElementById('sendAmount').value);
-            
-            if (!recipient || !amount || amount <= 0) {
-                showNotification('⚠️ Please enter valid recipient and amount', 'warning');
-                return;
-            }
-            
-            try {
-                // Create and process transaction
-                blockchain.createTransaction(userAccount, recipient, amount);
-                blockchain.minePendingTransactions(userAccount);
-                
-                // Update UI
-                updateWalletDisplay();
-                updateTransactionHistory();
-                
-                // Clear form
-                document.getElementById('sendTokenForm').reset();
-                updateSendPreview();
-                
-                showNotification('🚀 Transaction sent successfully!', 'success');
-                
-            } catch (error) {
-                console.error('Transaction failed:', error);
-                showNotification('❌ Transaction failed: ' + error.message, 'error');
-            }
-        }
-
-        // Update transaction history
-        function updateTransactionHistory() {
-            if (!userAccount) return;
-            
-            const transactions = blockchain.getTransactionsForAddress(userAccount);
-            const historyDiv = document.getElementById('transactionHistory');
-            
-            if (transactions.length === 0) {
-                historyDiv.innerHTML = `
-                    <div style="text-align: center; color: #b4bcd0; padding: 2rem;">
-                        <span style="font-size: 3rem; opacity: 0.3;">📝</span>
-                        <p>No transactions yet</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            historyDiv.innerHTML = transactions.slice(0, 10).map(tx => {
-                const isOutgoing = tx.fromAddress === userAccount;
-                const direction = isOutgoing ? 'Sent' : 'Received';
-                const address = isOutgoing ? tx.toAddress : tx.fromAddress;
-                const color = isOutgoing ? '#ff6b35' : '#00ff88';
-                
-                return `
-                    <div class="glass-effect" style="padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; border-left: 3px solid ${color};">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="color: ${color}; font-weight: 600; font-size: 0.9rem;">${direction}</div>
-                                <div style="color: #b4bcd0; font-size: 0.8rem;">${address.substring(0, 10)}...${address.substring(address.length - 8)}</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="color: white; font-weight: 600;">${tx.amount.toLocaleString()} KAMIKAZE</div>
-                                <div style="color: #b4bcd0; font-size: 0.8rem;">${new Date(tx.timestamp).toLocaleString()}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Show notification
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                padding: 1rem 1.5rem;
-                border-radius: 12px;
-                color: white;
-                font-weight: 600;
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255,255,255,0.2);
-            `;
-            
-            switch(type) {
-                case 'success':
-                    notification.style.background = 'rgba(0, 255, 136, 0.2)';
-                    break;
-                case 'error':
-                    notification.style.background = 'rgba(255, 107, 53, 0.2)';
-                    break;
-                case 'warning':
-                    notification.style.background = 'rgba(255, 193, 7, 0.2)';
-                    break;
-            }
-            
-            notification.textContent = message;
-            document.body.appendChild(notification);
+        function refreshBalance() {
+            const balanceInput = document.getElementById('tokenBalance');
+            balanceInput.classList.add('pulse');
             
             setTimeout(() => {
-                notification.remove();
-            }, 4000);
+                balanceInput.value = '1,247.58 KAMIKAZE';
+                balanceInput.classList.remove('pulse');
+                document.getElementById('totalBalance').textContent = '1,247.58';
+            }, 1000);
         }
 
-        // Animate analytics
-        function animateAnalytics() {
-            const analytics = {
-                networkSpeed: { start: 40, end: 47.3, suffix: ' TH/s' },
-                activeAI: { start: 150000, end: 156429, suffix: '' },
-                burnRate: { start: 2.0, end: 2.1, suffix: '%' },
-                stakingAPY: { start: 24.5, end: 25.3, suffix: '%' }
-            };
+        function refreshAgents() {
+            const agentCards = document.querySelectorAll('.agent-card');
+            agentCards.forEach(card => card.classList.add('pulse'));
             
-            Object.keys(analytics).forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    const data = analytics[id];
-                    let current = data.start;
-                    const increment = (data.end - data.start) / 100;
-                    
-                    const timer = setInterval(() => {
-                        current += increment;
-                        if (current >= data.end) {
-                            current = data.end;
-                            clearInterval(timer);
-                        }
-                        element.textContent = current.toFixed(1) + data.suffix;
-                    }, 30);
-                }
-            });
+            setTimeout(() => {
+                agentCards.forEach(card => card.classList.remove('pulse'));
+            }, 1000);
         }
 
-        // Create neural nodes
-        function createNeuralNodes() {
-            const viz = document.getElementById('neuralViz');
-            if (!viz) return;
+        function loadTransactions() {
+            const transactionList = document.getElementById('transactionList');
+            transactionList.classList.add('pulse');
             
-            for (let i = 0; i < 30; i++) {
-                const node = document.createElement('div');
-                node.className = 'neural-node';
-                node.style.left = Math.random() * 100 + '%';
-                node.style.top = Math.random() * 100 + '%';
-                node.style.animationDelay = Math.random() * 4 + 's';
-                viz.appendChild(node);
-            }
+            setTimeout(() => {
+                transactionList.classList.remove('pulse');
+            }, 1000);
         }
+
+        // Auto-refresh stats
+        function updateStats() {
+            const efficiency = document.getElementById('efficiency');
+            const tasks = document.getElementById('totalTasks');
+            
+            const currentEfficiency = parseFloat(efficiency.textContent);
+            const newEfficiency = (currentEfficiency + (Math.random() - 0.5) * 0.1).toFixed(1);
+            efficiency.textContent = Math.max(95, Math.min(99.9, newEfficiency)) + '%';
+            
+            const currentTasks = parseInt(tasks.textContent.replace(',', ''));
+            tasks.textContent = (currentTasks + Math.floor(Math.random() * 5)).toLocaleString();
+        }
+
+        // Update stats every 10 seconds
+        setInterval(updateStats, 10000);
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('AgentChains Dashboard loaded');
+        });
     </script>
-
-    <style>
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: #00ff88 !important;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-        
-        .glass-effect:hover {
-            border-color: rgba(0, 255, 136, 0.5);
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
-        }
-        
-        .neural-glow:hover {
-            animation: neuralPulse 2s ease-in-out infinite;
-        }
-    </style>
 </body>
 </html>
