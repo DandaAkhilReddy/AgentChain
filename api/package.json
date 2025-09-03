@@ -1,1 +1,17 @@
-{\n  \"name\": \"kamikaze-api\",\n  \"version\": \"1.0.0\",\n  \"description\": \"KAMIKAZE Token Zero-Knowledge API Functions\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"start\": \"func start\",\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"dependencies\": {\n    \"@azure/functions\": \"^3.0.0\",\n    \"axios\": \"^1.5.0\"\n  },\n  \"devDependencies\": {\n    \"@azure/functions-core-tools\": \"^4.0.0\"\n  }\n}"
+{
+  "name": "kamikaze-api",
+  "version": "1.0.0",
+  "description": "KAMIKAZE Token Zero-Knowledge API Functions",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@azure/functions": "^3.0.0",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.0.0"
+  }
+}

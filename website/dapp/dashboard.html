@@ -3,858 +3,499 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentChains Dashboard - KAMIKAZE Token Transactions</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>🤖 AgentChains AI Dashboard - KAMIKAZE Token Management</title>
+    <link rel="stylesheet" href="../css/future-ai-theme.css">
     <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
     <script src="../js/blockchain.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-        }
-
-        .dapp-container {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            padding: 2rem 1rem;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            color: #00d4ff;
-        }
-
-        .nav-item {
-            display: block;
-            padding: 1rem;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(0, 212, 255, 0.2);
-            border-left: 4px solid #00d4ff;
-        }
-
-        .main-content {
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        .wallet-section {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .wallet-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .wallet-address {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .address-text {
-            font-family: monospace;
-            font-size: 1.1rem;
-        }
-
-        .copy-btn {
-            background: rgba(0, 212, 255, 0.2);
-            border: 1px solid #00d4ff;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: rgba(0, 212, 255, 0.3);
-        }
-
-        .balance-display {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .balance-label {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-
-        .balance-amount {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #00d4ff;
-            margin-bottom: 0.5rem;
-        }
-
-        .balance-usd {
-            font-size: 1.2rem;
-            opacity: 0.7;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #00d4ff, #ff6b35);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #00d4ff;
-        }
-
-        .transaction-section {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .transaction-form {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .form-label {
-            font-weight: 500;
-            opacity: 0.9;
-        }
-
-        .form-input {
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #00d4ff;
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        .amount-helpers {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .helper-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 6px;
-            color: #00d4ff;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .helper-btn:hover {
-            background: rgba(0, 212, 255, 0.2);
-            border-color: #00d4ff;
-        }
-
-        .fee-info {
-            background: rgba(255, 107, 53, 0.1);
-            border: 1px solid rgba(255, 107, 53, 0.3);
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
-        .transaction-history {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .transaction-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .transaction-item {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 1rem;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .transaction-item:hover {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(0, 212, 255, 0.3);
-        }
-
-        .tx-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .tx-icon.sent {
-            background: rgba(255, 107, 53, 0.2);
-        }
-
-        .tx-icon.received {
-            background: rgba(0, 255, 136, 0.2);
-        }
-
-        .tx-details {
-            display: grid;
-            gap: 0.3rem;
-        }
-
-        .tx-type {
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
-
-        .tx-address {
-            font-family: monospace;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .tx-time {
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-
-        .tx-amount {
-            text-align: right;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .tx-amount.sent {
-            color: #ff6b35;
-        }
-
-        .tx-amount.received {
-            color: #00ff88;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            opacity: 0.6;
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-
-        .status-connected {
-            background: #00ff88;
-            animation: pulse 2s infinite;
-        }
-
-        .status-disconnected {
-            background: #ff4444;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #00d4ff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .dapp-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                display: none;
-            }
-            
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
-<body>
-    <div class="dapp-container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="logo">
-                <span>🔗</span>
-                <span>AgentChains</span>
+<body class="gpu-accelerated">
+    <!-- Neural Network Background -->
+    <div class="animated-bg"></div>
+    <div class="neural-viz" id="neuralViz"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">AgentChains</span>
             </div>
-            
-            <div class="nav-item active" onclick="showSection('dashboard')">
-                <span>📊</span> Dashboard
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <span id="walletStatus" class="glass-effect" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.9rem;">
+                    🔗 Connect Wallet
+                </span>
+                <a href="../index.html" class="cta-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    ← Back to Home
+                </a>
             </div>
-            
-            <div class="nav-item" onclick="showSection('send')">
-                <span>💸</span> Send
-            </div>
-            
-            <div class="nav-item" onclick="showSection('history')">
-                <span>📜</span> History
-            </div>
-            
-            <a href="../staking.html" class="nav-item">
-                <span>🔒</span> Staking
-            </a>
-            
-            <a href="../agent-creator.html" class="nav-item">
-                <span>🤖</span> AI Agents
-            </a>
-            
-            <div class="nav-item" onclick="logout()">
-                <span>🚪</span> Logout
-            </div>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Dashboard Section -->
-            <div id="dashboard-section" class="section">
-                <h1>AgentChains Dashboard</h1>
-                
-                <!-- Wallet Info -->
-                <div class="wallet-section">
-                    <div class="wallet-header">
-                        <h2>My Wallet</h2>
-                        <div id="connectionStatus">
-                            <span class="status-indicator status-disconnected"></span>
-                            <span>Not Connected</span>
-                        </div>
-                    </div>
-                    
-                    <div class="wallet-address" id="walletAddressSection" style="display: none;">
-                        <span class="address-text" id="walletAddress">0x0000...0000</span>
-                        <button class="copy-btn" onclick="copyAddress()">📋 Copy</button>
-                    </div>
-                    
-                    <div class="balance-display">
-                        <div class="balance-label">Total Balance</div>
-                        <div class="balance-amount" id="kamikazeBalance">0</div>
-                        <div class="balance-usd">≈ $0.00 USD</div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn" onclick="showSection('send')">Send</button>
-                        <button class="btn btn-outline" onclick="showReceiveModal()">Receive</button>
-                        <button class="btn btn-outline" onclick="window.location.href='../staking.html'">Stake</button>
-                    </div>
-                </div>
-                
-                <!-- Recent Activity -->
-                <div class="transaction-history">
-                    <div class="history-header">
-                        <h2>Recent Activity</h2>
-                        <button class="btn btn-outline" onclick="showSection('history')">View All</button>
-                    </div>
-                    <div id="recentActivity" class="transaction-list">
-                        <div class="empty-state">No recent transactions</div>
-                    </div>
-                </div>
-            </div>
+    <div style="padding-top: 100px; min-height: 100vh;">
+        <!-- AI Dashboard Header -->
+        <div style="text-align: center; padding: 2rem; margin-bottom: 3rem;">
+            <h1 style="font-size: 3rem; font-weight: 800; background: linear-gradient(45deg, #00ff88, #00d4ff, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem;">
+                AI-Powered KAMIKAZE Dashboard
+            </h1>
+            <p style="color: #b4bcd0; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Manage your deflationary tokens with Principal Scientist-grade AI intelligence
+            </p>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
             
-            <!-- Send Section -->
-            <div id="send-section" class="section" style="display: none;">
-                <h1>Send KAMIKAZE Tokens</h1>
-                
-                <div class="transaction-section">
-                    <form class="transaction-form" onsubmit="sendTokens(event)">
-                        <div class="form-group">
-                            <label class="form-label">Recipient Address</label>
-                            <input type="text" 
-                                   class="form-input" 
-                                   id="recipientAddress" 
-                                   placeholder="0x..." 
-                                   pattern="^0x[a-fA-F0-9]{40}$"
-                                   required>
-                            <small style="opacity: 0.7;">Enter a valid Ethereum address</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Amount (KAMIKAZE)</label>
-                            <input type="number" 
-                                   class="form-input" 
-                                   id="sendAmount" 
-                                   placeholder="0.00" 
-                                   min="1" 
-                                   step="any"
-                                   required>
-                            <div class="amount-helpers">
-                                <button type="button" class="helper-btn" onclick="setAmount(25)">25%</button>
-                                <button type="button" class="helper-btn" onclick="setAmount(50)">50%</button>
-                                <button type="button" class="helper-btn" onclick="setAmount(75)">75%</button>
-                                <button type="button" class="helper-btn" onclick="setAmount(100)">MAX</button>
-                            </div>
-                        </div>
-                        
-                        <div class="fee-info">
-                            ⚠️ 2% burn fee will be applied to all transfers
-                            <div id="feeCalculation" style="margin-top: 0.5rem;"></div>
-                        </div>
-                        
-                        <button type="submit" class="btn" id="sendBtn">
-                            Send KAMIKAZE
-                        </button>
-                    </form>
+            <!-- Wallet Overview Card -->
+            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.3);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <span style="font-size: 2rem;">💎</span>
+                    <h2 style="font-size: 1.5rem; font-weight: 700;">Wallet Overview</h2>
                 </div>
-            </div>
-            
-            <!-- History Section -->
-            <div id="history-section" class="section" style="display: none;">
-                <h1>Transaction History</h1>
                 
-                <div class="transaction-history">
-                    <div id="fullHistory" class="transaction-list">
-                        <div class="empty-state">Loading transactions...</div>
+                <div style="margin-bottom: 2rem;">
+                    <div style="color: #b4bcd0; font-size: 0.9rem; margin-bottom: 0.5rem;">KAMIKAZE Balance</div>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #00ff88;" id="tokenBalance">
+                        0 KAMIKAZE
+                    </div>
+                    <div style="color: #b4bcd0; font-size: 0.9rem; margin-top: 0.5rem;">
+                        ≈ $<span id="usdValue">0.00</span> USD
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="glass-effect" style="padding: 1rem; border-radius: 12px; text-align: center;">
+                        <div style="color: #00d4ff; font-size: 1.3rem; font-weight: 700;">2%</div>
+                        <div style="color: #b4bcd0; font-size: 0.8rem;">Burn Rate</div>
+                    </div>
+                    <div class="glass-effect" style="padding: 1rem; border-radius: 12px; text-align: center;">
+                        <div style="color: #ff6b35; font-size: 1.3rem; font-weight: 700;" id="totalBurned">0</div>
+                        <div style="color: #b4bcd0; font-size: 0.8rem;">Tokens Burned</div>
                     </div>
                 </div>
             </div>
-        </main>
+
+            <!-- AI Trading Assistant -->
+            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(124, 58, 237, 0.3);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <span style="font-size: 2rem;">🧠</span>
+                    <h2 style="font-size: 1.5rem; font-weight: 700;">AI Trading Assistant</h2>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #b4bcd0;">Market Sentiment</span>
+                        <span style="color: #00ff88; font-weight: 600;">Bullish 📈</span>
+                    </div>
+                    <div class="progress-bar" style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                        <div class="progress-fill" style="width: 76%; height: 100%; background: linear-gradient(90deg, #00ff88, #00d4ff); animation: pulse 2s infinite;"></div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="color: #7c3aed; font-size: 1.2rem; font-weight: 700;">94.7%</div>
+                        <div style="color: #b4bcd0; font-size: 0.8rem;">AI Accuracy</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #ec4899; font-size: 1.2rem; font-weight: 700;">2.3ms</div>
+                        <div style="color: #b4bcd0; font-size: 0.8rem;">Response Time</div>
+                    </div>
+                </div>
+
+                <button class="cta-primary" style="width: 100%; justify-content: center;">
+                    🎯 Enable AI Trading
+                </button>
+            </div>
+
+            <!-- Send Tokens Card -->
+            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(0, 212, 255, 0.3);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <span style="font-size: 2rem;">🚀</span>
+                    <h2 style="font-size: 1.5rem; font-weight: 700;">Send KAMIKAZE</h2>
+                </div>
+                
+                <form id="sendTokenForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label style="color: #b4bcd0; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Recipient Address</label>
+                        <input type="text" id="recipientAddress" placeholder="0x..." 
+                               style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-family: 'JetBrains Mono', monospace;">
+                    </div>
+                    
+                    <div>
+                        <label style="color: #b4bcd0; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Amount</label>
+                        <input type="number" id="sendAmount" placeholder="0.00" 
+                               style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;">
+                    </div>
+                    
+                    <div class="glass-effect" style="padding: 1rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <span style="color: #b4bcd0;">Amount to send:</span>
+                            <span id="sendPreview">0 KAMIKAZE</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem;">
+                            <span style="color: #ff6b35;">Burn (2%):</span>
+                            <span id="burnPreview">0 KAMIKAZE</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                            <span style="color: #00ff88; font-weight: 600;">Recipient receives:</span>
+                            <span id="receivePreview">0 KAMIKAZE</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="cta-primary" style="width: 100%; justify-content: center;">
+                        ⚡ Send Tokens
+                    </button>
+                </form>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="glass-effect" style="padding: 2rem; border-radius: 20px; border: 1px solid rgba(255, 107, 53, 0.3);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <span style="font-size: 2rem;">📊</span>
+                    <h2 style="font-size: 1.5rem; font-weight: 700;">Transaction History</h2>
+                </div>
+                
+                <div id="transactionHistory" style="max-height: 300px; overflow-y: auto;">
+                    <div style="text-align: center; color: #b4bcd0; padding: 2rem;">
+                        <span style="font-size: 3rem; opacity: 0.3;">📝</span>
+                        <p>No transactions yet</p>
+                        <p style="font-size: 0.9rem;">Connect your wallet to view history</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Analytics Section -->
+        <div style="margin: 4rem auto; max-width: 1200px; padding: 0 2rem;">
+            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; background: linear-gradient(45deg, #00ff88, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Real-Time Neural Analytics
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #00ff88;" id="networkSpeed">47.3 TH/s</div>
+                    <div style="color: #b4bcd0;">Network Hashrate</div>
+                </div>
+                
+                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤖</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #00d4ff;" id="activeAI">156,429</div>
+                    <div style="color: #b4bcd0;">AI Operations/Hour</div>
+                </div>
+                
+                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔥</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #ff6b35;" id="burnRate">2.1%</div>
+                    <div style="color: #b4bcd0;">Effective Burn Rate</div>
+                </div>
+                
+                <div class="glass-effect neural-glow" style="padding: 2rem; border-radius: 16px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">💎</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #7c3aed;" id="stakingAPY">25.3%</div>
+                    <div style="color: #b4bcd0;">Current Staking APY</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Global variables
-        let blockchain = window.agentBlockchain;
-        let userAccount = null;
-        let connected = false;
-        let web3 = null;
+        // Initialize Web3 and blockchain
+        let web3;
+        let userAccount;
+        let blockchain;
 
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', async function() {
-            console.log('KAMIKAZE Dashboard loaded');
+        // Initialize the dApp
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize blockchain
+            blockchain = new AgentChainsBlockchain();
             
-            // Check MetaMask
+            // Add neural nodes
+            createNeuralNodes();
+            
+            // Animate counters
+            animateAnalytics();
+            
+            // Setup form handlers
+            setupFormHandlers();
+            
+            // Check if MetaMask is available
             if (typeof window.ethereum !== 'undefined') {
                 web3 = new Web3(window.ethereum);
-                await checkConnection();
-            } else {
-                setTimeout(() => {
-                    if (confirm('MetaMask not detected. Would you like to install it?')) {
-                        window.open('https://metamask.io/download/', '_blank');
-                    }
-                }, 1000);
-            }
-            
-            // Listen for blockchain events
-            blockchain.on('transactionCreated', updateUI);
-            blockchain.on('blockMined', updateUI);
-            
-            // Update balance periodically
-            setInterval(updateBalance, 5000);
-        });
-
-        // Check existing connection
-        async function checkConnection() {
-            try {
+                
+                // Check if already connected
                 const accounts = await web3.eth.getAccounts();
                 if (accounts.length > 0) {
-                    await connectWallet(accounts[0]);
-                } else {
-                    // Auto-connect prompt
-                    setTimeout(promptConnection, 2000);
-                }
-            } catch (error) {
-                console.error('Connection check failed:', error);
-            }
-        }
-
-        // Prompt for connection
-        async function promptConnection() {
-            if (!connected) {
-                const shouldConnect = confirm('Connect your wallet to start using KAMIKAZE tokens?');
-                if (shouldConnect) {
-                    await connectWallet();
+                    connectWallet();
                 }
             }
-        }
+            
+            // Auto-connect prompt after 2 seconds
+            setTimeout(() => {
+                if (!userAccount) {
+                    document.getElementById('walletStatus').innerHTML = '🔗 <span style="animation: pulse 1s infinite;">Click to Connect Wallet</span>';
+                    document.getElementById('walletStatus').onclick = connectWallet;
+                }
+            }, 2000);
+        });
 
-        // Connect wallet
-        async function connectWallet(existingAccount = null) {
+        // Connect MetaMask wallet
+        async function connectWallet() {
             try {
-                let account = existingAccount;
-                
-                if (!account) {
-                    const accounts = await window.ethereum.request({
-                        method: 'eth_requestAccounts'
-                    });
-                    account = accounts[0];
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask to use this dApp!');
+                    return;
                 }
+
+                // Request account access
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+
+                userAccount = accounts[0];
                 
-                userAccount = account;
-                connected = true;
-                
-                // Create blockchain account
+                // Create account in blockchain if doesn't exist
                 blockchain.createAccount(userAccount);
                 
                 // Update UI
-                updateUI();
+                updateWalletDisplay();
+                updateTransactionHistory();
                 
-                // Listen for account changes
-                window.ethereum.on('accountsChanged', handleAccountChange);
-                window.ethereum.on('chainChanged', () => window.location.reload());
+                console.log('Wallet connected:', userAccount);
                 
-                console.log('Connected to wallet:', userAccount);
+                // Show success message
+                showNotification('🎉 Wallet connected successfully!', 'success');
+                
             } catch (error) {
-                console.error('Failed to connect:', error);
-                alert('Failed to connect wallet. Please try again.');
+                console.error('Failed to connect wallet:', error);
+                showNotification('❌ Failed to connect wallet', 'error');
             }
         }
 
-        // Handle account change
-        function handleAccountChange(accounts) {
-            if (accounts.length === 0) {
-                logout();
-            } else if (accounts[0] !== userAccount) {
-                connectWallet(accounts[0]);
-            }
-        }
-
-        // Update UI
-        function updateUI() {
-            updateConnectionStatus();
-            updateBalance();
-            updateTransactionHistory();
-        }
-
-        // Update connection status
-        function updateConnectionStatus() {
-            const statusElement = document.getElementById('connectionStatus');
-            const addressSection = document.getElementById('walletAddressSection');
-            const addressElement = document.getElementById('walletAddress');
-            
-            if (connected && userAccount) {
-                statusElement.innerHTML = `
-                    <span class="status-indicator status-connected"></span>
-                    <span>Connected</span>
-                `;
-                
-                addressSection.style.display = 'flex';
-                addressElement.textContent = userAccount;
-            } else {
-                statusElement.innerHTML = `
-                    <span class="status-indicator status-disconnected"></span>
-                    <span>Not Connected</span>
-                    <button class="btn" onclick="connectWallet()">Connect</button>
-                `;
-                
-                addressSection.style.display = 'none';
-            }
-        }
-
-        // Update balance
-        function updateBalance() {
-            if (connected && userAccount) {
-                const balance = blockchain.getBalance(userAccount);
-                document.getElementById('kamikazeBalance').textContent = balance.toLocaleString();
-                
-                // Update USD value (mock price)
-                const usdValue = balance * 0.00001; // Mock price
-                document.querySelector('.balance-usd').textContent = `≈ $${usdValue.toFixed(2)} USD`;
-            }
-        }
-
-        // Update transaction history
-        function updateTransactionHistory() {
-            if (!connected || !userAccount) return;
-            
-            const transactions = blockchain.getTransactionHistory(userAccount);
-            const recentActivity = document.getElementById('recentActivity');
-            const fullHistory = document.getElementById('fullHistory');
-            
-            if (transactions.length === 0) {
-                recentActivity.innerHTML = '<div class="empty-state">No recent transactions</div>';
-                fullHistory.innerHTML = '<div class="empty-state">No transactions yet</div>';
-                return;
-            }
-            
-            // Recent activity (last 3)
-            const recentTxs = transactions.slice(0, 3);
-            recentActivity.innerHTML = recentTxs.map(tx => createTransactionElement(tx)).join('');
-            
-            // Full history
-            fullHistory.innerHTML = transactions.map(tx => createTransactionElement(tx)).join('');
-        }
-
-        // Create transaction element
-        function createTransactionElement(tx) {
-            const isSent = tx.fromAddress === userAccount;
-            const type = isSent ? 'sent' : 'received';
-            const address = isSent ? tx.toAddress : tx.fromAddress;
-            const amount = isSent ? `-${tx.amount}` : `+${tx.netAmount || tx.amount}`;
-            const time = new Date(tx.timestamp).toLocaleString();
-            
-            return `
-                <div class="transaction-item">
-                    <div class="tx-icon ${type}">
-                        ${isSent ? '↗️' : '↘️'}
-                    </div>
-                    <div class="tx-details">
-                        <div class="tx-type">${isSent ? 'Sent' : 'Received'}</div>
-                        <div class="tx-address">${formatAddress(address)}</div>
-                        <div class="tx-time">${time}</div>
-                    </div>
-                    <div class="tx-amount ${type}">${amount} KAMIKAZE</div>
-                </div>
-            `;
-        }
-
-        // Format address
-        function formatAddress(address) {
-            if (!address) return 'Unknown';
-            if (address === 'system') return 'System';
-            if (address === 'staking_pool') return 'Staking Pool';
-            return `${address.slice(0, 6)}...${address.slice(-4)}`;
-        }
-
-        // Copy address
-        function copyAddress() {
+        // Update wallet display
+        function updateWalletDisplay() {
             if (userAccount) {
-                navigator.clipboard.writeText(userAccount);
-                alert('Address copied to clipboard!');
+                const balance = blockchain.getBalance(userAccount);
+                document.getElementById('tokenBalance').textContent = 
+                    balance.toLocaleString() + ' KAMIKAZE';
+                document.getElementById('usdValue').textContent = 
+                    (balance * 0.001).toFixed(2);
+                
+                // Update wallet status
+                document.getElementById('walletStatus').innerHTML = 
+                    `🟢 ${userAccount.substring(0, 6)}...${userAccount.substring(userAccount.length - 4)}`;
+                document.getElementById('walletStatus').onclick = null;
             }
+        }
+
+        // Setup form handlers
+        function setupFormHandlers() {
+            const sendForm = document.getElementById('sendTokenForm');
+            const amountInput = document.getElementById('sendAmount');
+            
+            // Real-time preview updates
+            amountInput.addEventListener('input', updateSendPreview);
+            
+            // Form submission
+            sendForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                sendTokens();
+            });
+        }
+
+        // Update send preview
+        function updateSendPreview() {
+            const amount = parseFloat(document.getElementById('sendAmount').value) || 0;
+            const burnAmount = amount * 0.02;
+            const receiveAmount = amount - burnAmount;
+            
+            document.getElementById('sendPreview').textContent = amount.toFixed(4) + ' KAMIKAZE';
+            document.getElementById('burnPreview').textContent = burnAmount.toFixed(4) + ' KAMIKAZE';
+            document.getElementById('receivePreview').textContent = receiveAmount.toFixed(4) + ' KAMIKAZE';
         }
 
         // Send tokens
-        async function sendTokens(event) {
-            event.preventDefault();
-            
-            if (!connected) {
-                alert('Please connect your wallet first');
+        function sendTokens() {
+            if (!userAccount) {
+                showNotification('⚠️ Please connect your wallet first', 'warning');
                 return;
             }
             
             const recipient = document.getElementById('recipientAddress').value;
             const amount = parseFloat(document.getElementById('sendAmount').value);
             
-            // Validate
-            if (!recipient || !web3.utils.isAddress(recipient)) {
-                alert('Please enter a valid recipient address');
+            if (!recipient || !amount || amount <= 0) {
+                showNotification('⚠️ Please enter valid recipient and amount', 'warning');
                 return;
             }
-            
-            if (amount <= 0 || isNaN(amount)) {
-                alert('Please enter a valid amount');
-                return;
-            }
-            
-            const balance = blockchain.getBalance(userAccount);
-            if (amount > balance) {
-                alert('Insufficient balance');
-                return;
-            }
-            
-            // Confirm transaction
-            const burnAmount = amount * 0.02;
-            const netAmount = amount - burnAmount;
-            const confirm = window.confirm(
-                `Send ${amount} KAMIKAZE to ${formatAddress(recipient)}?\n\n` +
-                `Amount: ${amount} KAMIKAZE\n` +
-                `Burn Fee (2%): ${burnAmount.toFixed(2)} KAMIKAZE\n` +
-                `Recipient receives: ${netAmount.toFixed(2)} KAMIKAZE`
-            );
-            
-            if (!confirm) return;
-            
-            const sendBtn = document.getElementById('sendBtn');
-            sendBtn.disabled = true;
-            sendBtn.innerHTML = '<span class="loading"></span> Sending...';
             
             try {
-                // Create transaction
-                const tx = new Transaction(userAccount, recipient, amount);
-                blockchain.createTransaction(tx);
+                // Create and process transaction
+                blockchain.createTransaction(userAccount, recipient, amount);
+                blockchain.minePendingTransactions(userAccount);
                 
-                // Mine the transaction
-                await blockchain.minePendingTransactions(userAccount);
+                // Update UI
+                updateWalletDisplay();
+                updateTransactionHistory();
                 
-                alert(`Successfully sent ${amount} KAMIKAZE!\nTransaction ID: ${tx.id}`);
+                // Clear form
+                document.getElementById('sendTokenForm').reset();
+                updateSendPreview();
                 
-                // Reset form
-                document.getElementById('recipientAddress').value = '';
-                document.getElementById('sendAmount').value = '';
+                showNotification('🚀 Transaction sent successfully!', 'success');
                 
-                // Go back to dashboard
-                showSection('dashboard');
             } catch (error) {
                 console.error('Transaction failed:', error);
-                alert('Transaction failed: ' + error.message);
-            } finally {
-                sendBtn.disabled = false;
-                sendBtn.innerHTML = 'Send KAMIKAZE';
+                showNotification('❌ Transaction failed: ' + error.message, 'error');
             }
         }
 
-        // Set amount helpers
-        function setAmount(percentage) {
-            const balance = blockchain.getBalance(userAccount);
-            const amount = (balance * percentage) / 100;
-            document.getElementById('sendAmount').value = Math.floor(amount);
-            updateFeeCalculation();
-        }
-
-        // Update fee calculation
-        function updateFeeCalculation() {
-            const amount = parseFloat(document.getElementById('sendAmount').value) || 0;
-            const burnAmount = amount * 0.02;
-            const netAmount = amount - burnAmount;
+        // Update transaction history
+        function updateTransactionHistory() {
+            if (!userAccount) return;
             
-            const feeCalc = document.getElementById('feeCalculation');
-            if (amount > 0) {
-                feeCalc.innerHTML = `
-                    Burn: ${burnAmount.toFixed(2)} KAMIKAZE<br>
-                    Recipient receives: ${netAmount.toFixed(2)} KAMIKAZE
+            const transactions = blockchain.getTransactionsForAddress(userAccount);
+            const historyDiv = document.getElementById('transactionHistory');
+            
+            if (transactions.length === 0) {
+                historyDiv.innerHTML = `
+                    <div style="text-align: center; color: #b4bcd0; padding: 2rem;">
+                        <span style="font-size: 3rem; opacity: 0.3;">📝</span>
+                        <p>No transactions yet</p>
+                    </div>
                 `;
-            } else {
-                feeCalc.innerHTML = '';
-            }
-        }
-
-        // Show receive modal
-        function showReceiveModal() {
-            if (!connected) {
-                alert('Please connect your wallet first');
                 return;
             }
             
-            alert(`Your KAMIKAZE address:\n${userAccount}\n\nShare this address to receive tokens.`);
+            historyDiv.innerHTML = transactions.slice(0, 10).map(tx => {
+                const isOutgoing = tx.fromAddress === userAccount;
+                const direction = isOutgoing ? 'Sent' : 'Received';
+                const address = isOutgoing ? tx.toAddress : tx.fromAddress;
+                const color = isOutgoing ? '#ff6b35' : '#00ff88';
+                
+                return `
+                    <div class="glass-effect" style="padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; border-left: 3px solid ${color};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="color: ${color}; font-weight: 600; font-size: 0.9rem;">${direction}</div>
+                                <div style="color: #b4bcd0; font-size: 0.8rem;">${address.substring(0, 10)}...${address.substring(address.length - 8)}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: white; font-weight: 600;">${tx.amount.toLocaleString()} KAMIKAZE</div>
+                                <div style="color: #b4bcd0; font-size: 0.8rem;">${new Date(tx.timestamp).toLocaleString()}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        // Show section
-        function showSection(section) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255,255,255,0.2);
+            `;
             
-            // Show selected section
-            const sectionElement = document.getElementById(`${section}-section`);
-            if (sectionElement) {
-                sectionElement.style.display = 'block';
+            switch(type) {
+                case 'success':
+                    notification.style.background = 'rgba(0, 255, 136, 0.2)';
+                    break;
+                case 'error':
+                    notification.style.background = 'rgba(255, 107, 53, 0.2)';
+                    break;
+                case 'warning':
+                    notification.style.background = 'rgba(255, 193, 7, 0.2)';
+                    break;
             }
             
-            // Update nav
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Animate analytics
+        function animateAnalytics() {
+            const analytics = {
+                networkSpeed: { start: 40, end: 47.3, suffix: ' TH/s' },
+                activeAI: { start: 150000, end: 156429, suffix: '' },
+                burnRate: { start: 2.0, end: 2.1, suffix: '%' },
+                stakingAPY: { start: 24.5, end: 25.3, suffix: '%' }
+            };
+            
+            Object.keys(analytics).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const data = analytics[id];
+                    let current = data.start;
+                    const increment = (data.end - data.start) / 100;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= data.end) {
+                            current = data.end;
+                            clearInterval(timer);
+                        }
+                        element.textContent = current.toFixed(1) + data.suffix;
+                    }, 30);
+                }
             });
-            event.target.classList.add('active');
         }
 
-        // Logout
-        function logout() {
-            connected = false;
-            userAccount = null;
-            window.location.href = '../index.html';
+        // Create neural nodes
+        function createNeuralNodes() {
+            const viz = document.getElementById('neuralViz');
+            if (!viz) return;
+            
+            for (let i = 0; i < 30; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                node.style.left = Math.random() * 100 + '%';
+                node.style.top = Math.random() * 100 + '%';
+                node.style.animationDelay = Math.random() * 4 + 's';
+                viz.appendChild(node);
+            }
         }
-
-        // Listen for amount input
-        document.getElementById('sendAmount')?.addEventListener('input', updateFeeCalculation);
     </script>
+
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00ff88 !important;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        .glass-effect:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+        }
+        
+        .neural-glow:hover {
+            animation: neuralPulse 2s ease-in-out infinite;
+        }
+    </style>
 </body>
 </html>
