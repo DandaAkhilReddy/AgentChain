@@ -1,0 +1,29 @@
+{
+  "totalAgentsCreated": 3,
+  "activeAgents": 3,
+  "agentTypes": {
+    "chatbot": 1,
+    "task-automation": 1,
+    "data-analysis": 0,
+    "content-generation": 0,
+    "code-assistant": 1,
+    "customer-service": 0,
+    "other": 0
+  },
+  "dailyStats": {
+    "2025-09-03": {
+      "created": 3,
+      "types": {
+        "chatbot": 1,
+        "task-automation": 0,
+        "data-analysis": 0,
+        "content-generation": 0,
+        "code-assistant": 0,
+        "customer-service": 0,
+        "other": 0
+      }
+    }
+  },
+  "createdToday": 3,
+  "lastReset": "2025-09-03"
+}

@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentChains Dashboard</title>
+    <title>AgentChains Dashboard - KAMIKAZE Token</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Web3 Dependencies -->
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    <script src="../js/web3-integration.js"></script>
     
     <style>
         * {
@@ -16,19 +20,20 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --primary-light: #3b82f6;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
             --accent: #06b6d4;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
             --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --background: #0f172a;
+            --text-secondary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --background: #0a0f1c;
+            --background-lighter: #1a1f2e;
             --surface: #1e293b;
-            --surface-light: #334155;
             --border: rgba(255, 255, 255, 0.1);
+            --glow: rgba(99, 102, 241, 0.4);
         }
 
         body {
@@ -45,7 +50,7 @@
             top: 0;
             width: 100%;
             padding: 1rem 0;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(10, 15, 28, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
@@ -61,12 +66,11 @@
         }
 
         .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary-light);
+            color: var(--primary);
+            text-decoration: none;
         }
 
         .nav-actions {
@@ -75,19 +79,39 @@
             align-items: center;
         }
 
+        /* Buttons */
         .btn {
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 15px var(--glow);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--glow);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
             color: white;
         }
 
@@ -97,8 +121,9 @@
             border: 1px solid var(--border);
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
         }
 
         /* Main Container */
@@ -114,9 +139,10 @@
         }
 
         .dashboard-title {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -149,8 +175,8 @@
 
         /* Cards */
         .card {
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
             border: 1px solid var(--border);
             backdrop-filter: blur(20px);
             transition: all 0.3s ease;
@@ -160,7 +186,7 @@
         .card:hover {
             transform: translateY(-4px);
             border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
         }
 
         .card-header {
@@ -171,8 +197,9 @@
         }
 
         .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--text-primary);
         }
 
@@ -183,14 +210,18 @@
         /* Stat Cards */
         .stat-card {
             text-align: center;
-            padding: 2rem;
+            padding: 2.5rem;
         }
 
         .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 2.5rem;
             font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
             margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-label {
@@ -198,12 +229,8 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
-
-        .stat-primary { color: var(--primary-light); }
-        .stat-success { color: var(--success); }
-        .stat-warning { color: var(--warning); }
-        .stat-accent { color: var(--accent); }
 
         /* Form Elements */
         .form-group {
@@ -213,25 +240,30 @@
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-secondary);
         }
 
         .form-input {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(51, 65, 85, 0.5);
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Space Grotesk', monospace;
             transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-input:read-only {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
         }
 
         /* Status Indicators */
@@ -242,7 +274,7 @@
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.85rem;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .status-connected {
@@ -257,78 +289,54 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        /* Transaction History */
-        .transaction-item {
+        /* Send Tokens Section */
+        .send-form {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .transaction-item:last-child {
-            border-bottom: none;
-        }
-
-        .transaction-details {
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 1rem;
         }
 
-        .transaction-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .send-form-row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+            gap: 1rem;
         }
 
-        .transaction-info h4 {
-            margin: 0 0 0.25rem 0;
-            font-size: 0.9rem;
-            font-weight: 600;
+        .send-form-row .form-input {
+            flex: 1;
         }
 
-        .transaction-info p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .transaction-amount {
-            text-align: right;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* AI Agent Cards */
-        .agent-grid {
+        /* Live Data Section */
+        .live-data-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
-        .agent-card {
-            padding: 1.5rem;
-            text-align: center;
+        .price-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid var(--primary);
         }
 
-        .agent-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .agent-name {
-            font-size: 1.1rem;
+        .price-change {
             font-weight: 600;
-            margin-bottom: 0.5rem;
         }
 
-        .agent-status {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        .price-up { color: var(--success); }
+        .price-down { color: var(--error); }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         /* Responsive Design */
@@ -360,8 +368,8 @@
                 gap: 1rem;
             }
             
-            .card-content {
-                padding: 1rem;
+            .send-form-row {
+                flex-direction: column;
             }
         }
 
@@ -369,25 +377,6 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .stat-value {
-                font-size: 2rem;
-            }
-        }
-
-        /* Loading States */
-        .loading {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
     </style>
 </head>
@@ -395,9 +384,9 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="../index.html" class="nav-logo">
                 🤖 AgentChains
-            </div>
+            </a>
             <div class="nav-actions">
                 <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
                 <a href="../index.html" class="btn btn-secondary">← Home</a>
@@ -408,27 +397,27 @@
     <!-- Main Dashboard -->
     <div class="main-container">
         <div class="dashboard-header">
-            <h1 class="dashboard-title">AI Dashboard</h1>
-            <p class="dashboard-subtitle">Monitor your AI agents and manage blockchain operations</p>
+            <h1 class="dashboard-title">KAMIKAZE Token Dashboard</h1>
+            <p class="dashboard-subtitle">Claim free tokens, send to friends, and monitor your balance</p>
         </div>
 
-        <!-- Statistics Overview -->
+        <!-- Token Statistics -->
         <div class="dashboard-grid stats-grid">
             <div class="card stat-card">
-                <div class="stat-value stat-primary" id="totalBalance">0.00</div>
-                <div class="stat-label">Total Balance</div>
+                <div class="stat-value" id="totalBalance">0.00</div>
+                <div class="stat-label">Your Balance</div>
             </div>
             <div class="card stat-card">
-                <div class="stat-value stat-success" id="activeAgents">4</div>
-                <div class="stat-label">Active Agents</div>
+                <div class="stat-value" id="totalSupplyEl">1B</div>
+                <div class="stat-label">Total Supply</div>
             </div>
             <div class="card stat-card">
-                <div class="stat-value stat-warning" id="totalTasks">1,247</div>
-                <div class="stat-label">Tasks Completed</div>
+                <div class="stat-value" id="totalBurnedEl">0</div>
+                <div class="stat-label">Tokens Burned</div>
             </div>
             <div class="card stat-card">
-                <div class="stat-value stat-accent" id="efficiency">98.2%</div>
-                <div class="stat-label">Efficiency Score</div>
+                <div class="stat-value">2%</div>
+                <div class="stat-label">Burn Rate</div>
             </div>
         </div>
 
@@ -437,7 +426,7 @@
             <!-- Wallet Management -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Wallet Management</h3>
+                    <h3 class="card-title">💰 Wallet Management</h3>
                     <div id="walletStatus" class="status status-disconnected">
                         <span>●</span> Disconnected
                     </div>
@@ -448,93 +437,94 @@
                         <input type="text" class="form-input" id="walletAddress" readonly placeholder="Connect wallet to view address">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Token Balance</label>
+                        <label class="form-label">KAMIKAZE Balance</label>
                         <input type="text" class="form-input" id="tokenBalance" readonly placeholder="0.00 KAMIKAZE">
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="refreshBalance()">
-                        🔄 Refresh Balance
-                    </button>
+                    <div style="display: flex; gap: 1rem;">
+                        <button id="claimTokensBtn" class="btn btn-success" style="flex: 1;">
+                            🎁 Claim 1000 Free Tokens
+                        </button>
+                        <button onclick="refreshBalance()" class="btn btn-secondary">
+                            🔄 Refresh
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- AI Agent Control -->
+            <!-- Send Tokens -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">AI Agent Control</h3>
-                    <button class="btn btn-secondary" onclick="refreshAgents()">Refresh</button>
+                    <h3 class="card-title">🚀 Send Tokens</h3>
                 </div>
                 <div class="card-content">
-                    <div class="agent-grid">
-                        <div class="agent-card">
-                            <div class="agent-icon">🧠</div>
-                            <div class="agent-name">Analytics Agent</div>
-                            <div class="agent-status status-connected">Active</div>
+                    <div class="send-form">
+                        <div class="form-group">
+                            <label class="form-label">Recipient Address</label>
+                            <input type="text" class="form-input" id="recipientAddress" placeholder="0x..." maxlength="42">
                         </div>
-                        <div class="agent-card">
-                            <div class="agent-icon">⚡</div>
-                            <div class="agent-name">Automation Engine</div>
-                            <div class="agent-status status-connected">Active</div>
+                        <div class="form-group">
+                            <label class="form-label">Amount (KAMIKAZE)</label>
+                            <input type="number" class="form-input" id="sendAmount" placeholder="0.0" min="0" step="0.01">
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                            ⚠️ Note: 2% of tokens will be burned during transfer
+                        </div>
+                        <button id="sendTokensBtn" class="btn btn-primary" style="width: 100%;">
+                            💸 Send Tokens
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Market Data -->
+        <div class="dashboard-grid">
+            <div class="card full-width">
+                <div class="card-header">
+                    <h3 class="card-title">📊 Live Market Data</h3>
+                    <button onclick="refreshMarketData()" class="btn btn-secondary">Refresh</button>
+                </div>
+                <div class="card-content">
+                    <div class="live-data-grid">
+                        <div class="card price-card">
+                            <div class="card-content">
+                                <h4 style="margin-bottom: 1rem; color: var(--primary);">Bitcoin (BTC)</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;" id="btcPrice">$0</div>
+                                <div class="price-change" id="btcChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card price-card">
+                            <div class="card-content">
+                                <h4 style="margin-bottom: 1rem; color: var(--accent);">Ethereum (ETH)</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;" id="ethPrice">$0</div>
+                                <div class="price-change" id="ethChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card price-card">
+                            <div class="card-content">
+                                <h4 style="margin-bottom: 1rem; color: var(--success);">Global Market Cap</h4>
+                                <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;" id="marketCap">$0</div>
+                                <div style="font-size: 0.9rem; color: var(--text-muted);">Total Crypto Market</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Transaction History -->
+        <!-- Recent Transactions -->
         <div class="dashboard-grid">
             <div class="card full-width">
                 <div class="card-header">
-                    <h3 class="card-title">Recent Activity</h3>
-                    <button class="btn btn-secondary" onclick="loadTransactions()">Refresh</button>
+                    <h3 class="card-title">📈 Recent Activity</h3>
                 </div>
                 <div class="card-content">
                     <div id="transactionList">
-                        <div class="transaction-item">
-                            <div class="transaction-details">
-                                <div class="transaction-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
-                                    📈
-                                </div>
-                                <div class="transaction-info">
-                                    <h4>AI Task Completion Reward</h4>
-                                    <p>2 minutes ago • Analytics Agent</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount">
-                                <div style="color: var(--success); font-weight: 600;">+15.47 KAMIKAZE</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">≈ $23.45</div>
-                            </div>
-                        </div>
-                        
-                        <div class="transaction-item">
-                            <div class="transaction-details">
-                                <div class="transaction-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent);">
-                                    🔧
-                                </div>
-                                <div class="transaction-info">
-                                    <h4>Agent Configuration Update</h4>
-                                    <p>5 minutes ago • Automation Engine</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount">
-                                <div style="color: var(--text-secondary); font-weight: 600;">Configuration</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">Successful</div>
-                            </div>
-                        </div>
-                        
-                        <div class="transaction-item">
-                            <div class="transaction-details">
-                                <div class="transaction-icon" style="background: rgba(37, 99, 235, 0.1); color: var(--primary);">
-                                    🚀
-                                </div>
-                                <div class="transaction-info">
-                                    <h4>AI Agent Activated</h4>
-                                    <p>15 minutes ago • Security Guardian</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount">
-                                <div style="color: var(--text-secondary); font-weight: 600;">Activated</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">System Ready</div>
-                            </div>
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                            <div>Connect your wallet to view transactions</div>
                         </div>
                     </div>
                 </div>
@@ -543,102 +533,216 @@
     </div>
 
     <script>
-        // Wallet Connection
+        // Global variables
         let isConnected = false;
-        let walletAddress = '';
+        let currentAccount = null;
 
-        document.getElementById('connectWallet').addEventListener('click', connectWallet);
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('Dashboard loaded');
+            
+            // Set up event listeners
+            document.getElementById('connectWallet').addEventListener('click', toggleWallet);
+            document.getElementById('claimTokensBtn').addEventListener('click', claimFreeTokens);
+            document.getElementById('sendTokensBtn').addEventListener('click', sendTokens);
+            
+            // Load market data
+            loadMarketData();
+            
+            // Auto-refresh market data every 30 seconds
+            setInterval(loadMarketData, 30000);
+        });
 
-        async function connectWallet() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    walletAddress = accounts[0];
-                    isConnected = true;
-                    updateWalletUI();
-                } catch (error) {
-                    console.error('Failed to connect wallet:', error);
-                }
-            } else {
-                alert('Please install MetaMask to use this feature!');
-            }
-        }
-
-        function updateWalletUI() {
-            const statusElement = document.getElementById('walletStatus');
-            const addressInput = document.getElementById('walletAddress');
-            const connectButton = document.getElementById('connectWallet');
-
+        // Toggle wallet connection
+        async function toggleWallet() {
             if (isConnected) {
-                statusElement.className = 'status status-connected';
-                statusElement.innerHTML = '<span>●</span> Connected';
-                addressInput.value = walletAddress.substring(0, 6) + '...' + walletAddress.substring(38);
-                connectButton.textContent = 'Disconnect';
-                connectButton.onclick = disconnectWallet;
+                disconnectWallet();
             } else {
-                statusElement.className = 'status status-disconnected';
-                statusElement.innerHTML = '<span>●</span> Disconnected';
-                addressInput.value = '';
-                connectButton.textContent = 'Connect Wallet';
-                connectButton.onclick = connectWallet;
+                await connectWallet();
             }
         }
 
-        function disconnectWallet() {
-            isConnected = false;
-            walletAddress = '';
-            updateWalletUI();
+        // Connect wallet
+        async function connectWallet() {
+            try {
+                const connectBtn = document.getElementById('connectWallet');
+                connectBtn.textContent = 'Connecting...';
+                connectBtn.disabled = true;
+
+                const success = await window.web3Manager.init();
+                if (success) {
+                    isConnected = true;
+                    currentAccount = window.web3Manager.account;
+                    
+                    connectBtn.textContent = 'Disconnect';
+                    connectBtn.className = 'btn btn-secondary';
+                    connectBtn.disabled = false;
+                    
+                    showNotification('Wallet connected successfully!', 'success');
+                    await refreshBalance();
+                }
+            } catch (error) {
+                console.error('Connection failed:', error);
+                showNotification('Failed to connect wallet: ' + error.message, 'error');
+                
+                const connectBtn = document.getElementById('connectWallet');
+                connectBtn.textContent = 'Connect Wallet';
+                connectBtn.disabled = false;
+            }
         }
 
-        function refreshBalance() {
+        // Disconnect wallet
+        function disconnectWallet() {
+            window.web3Manager.disconnect();
+            isConnected = false;
+            currentAccount = null;
+            
+            const connectBtn = document.getElementById('connectWallet');
+            connectBtn.textContent = 'Connect Wallet';
+            connectBtn.className = 'btn btn-primary';
+            
+            showNotification('Wallet disconnected', 'info');
+        }
+
+        // Claim free tokens
+        async function claimFreeTokens() {
+            if (!isConnected) {
+                showNotification('Please connect your wallet first', 'error');
+                return;
+            }
+
+            try {
+                const claimBtn = document.getElementById('claimTokensBtn');
+                claimBtn.textContent = 'Claiming...';
+                claimBtn.disabled = true;
+
+                await window.web3Manager.claimFreeTokens();
+                
+                claimBtn.textContent = '✅ Tokens Claimed!';
+                setTimeout(() => {
+                    claimBtn.textContent = '🎁 Claim 1000 Free Tokens';
+                    claimBtn.disabled = false;
+                }, 3000);
+                
+            } catch (error) {
+                const claimBtn = document.getElementById('claimTokensBtn');
+                claimBtn.textContent = '🎁 Claim 1000 Free Tokens';
+                claimBtn.disabled = false;
+            }
+        }
+
+        // Send tokens
+        async function sendTokens() {
+            if (!isConnected) {
+                showNotification('Please connect your wallet first', 'error');
+                return;
+            }
+
+            const recipientAddress = document.getElementById('recipientAddress').value;
+            const amount = document.getElementById('sendAmount').value;
+
+            if (!recipientAddress || !amount) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (!window.web3Manager.web3.utils.isAddress(recipientAddress)) {
+                showNotification('Invalid recipient address', 'error');
+                return;
+            }
+
+            if (parseFloat(amount) <= 0) {
+                showNotification('Amount must be greater than 0', 'error');
+                return;
+            }
+
+            try {
+                const sendBtn = document.getElementById('sendTokensBtn');
+                sendBtn.textContent = 'Sending...';
+                sendBtn.disabled = true;
+
+                await window.web3Manager.sendTokens(recipientAddress, amount);
+                
+                // Clear form
+                document.getElementById('recipientAddress').value = '';
+                document.getElementById('sendAmount').value = '';
+                
+                sendBtn.textContent = '✅ Sent!';
+                setTimeout(() => {
+                    sendBtn.textContent = '💸 Send Tokens';
+                    sendBtn.disabled = false;
+                }, 3000);
+                
+            } catch (error) {
+                const sendBtn = document.getElementById('sendTokensBtn');
+                sendBtn.textContent = '💸 Send Tokens';
+                sendBtn.disabled = false;
+            }
+        }
+
+        // Refresh balance
+        async function refreshBalance() {
+            if (!isConnected) return;
+            
             const balanceInput = document.getElementById('tokenBalance');
             balanceInput.classList.add('pulse');
             
+            await window.web3Manager.updateUI();
+            
             setTimeout(() => {
-                balanceInput.value = '1,247.58 KAMIKAZE';
                 balanceInput.classList.remove('pulse');
-                document.getElementById('totalBalance').textContent = '1,247.58';
             }, 1000);
         }
 
-        function refreshAgents() {
-            const agentCards = document.querySelectorAll('.agent-card');
-            agentCards.forEach(card => card.classList.add('pulse'));
-            
-            setTimeout(() => {
-                agentCards.forEach(card => card.classList.remove('pulse'));
-            }, 1000);
+        // Load market data from CoinGecko API
+        async function loadMarketData() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+                const data = await response.json();
+                
+                // Update Bitcoin data
+                document.getElementById('btcPrice').textContent = '$' + data.bitcoin.usd.toLocaleString();
+                const btcChangeEl = document.getElementById('btcChange');
+                btcChangeEl.textContent = (data.bitcoin.usd_24h_change > 0 ? '+' : '') + data.bitcoin.usd_24h_change.toFixed(2) + '%';
+                btcChangeEl.className = data.bitcoin.usd_24h_change > 0 ? 'price-change price-up' : 'price-change price-down';
+                
+                // Update Ethereum data
+                document.getElementById('ethPrice').textContent = '$' + data.ethereum.usd.toLocaleString();
+                const ethChangeEl = document.getElementById('ethChange');
+                ethChangeEl.textContent = (data.ethereum.usd_24h_change > 0 ? '+' : '') + data.ethereum.usd_24h_change.toFixed(2) + '%';
+                ethChangeEl.className = data.ethereum.usd_24h_change > 0 ? 'price-change price-up' : 'price-change price-down';
+                
+                // Get global market cap
+                const globalResponse = await fetch('https://api.coingecko.com/api/v3/global');
+                const globalData = await globalResponse.json();
+                const marketCap = globalData.data.total_market_cap.usd;
+                document.getElementById('marketCap').textContent = '$' + (marketCap / 1e12).toFixed(2) + 'T';
+                
+            } catch (error) {
+                console.error('Failed to load market data:', error);
+            }
         }
 
-        function loadTransactions() {
-            const transactionList = document.getElementById('transactionList');
-            transactionList.classList.add('pulse');
+        // Refresh market data manually
+        function refreshMarketData() {
+            const cards = document.querySelectorAll('.price-card');
+            cards.forEach(card => card.classList.add('pulse'));
             
-            setTimeout(() => {
-                transactionList.classList.remove('pulse');
-            }, 1000);
+            loadMarketData().then(() => {
+                setTimeout(() => {
+                    cards.forEach(card => card.classList.remove('pulse'));
+                }, 1000);
+            });
         }
 
-        // Auto-refresh stats
-        function updateStats() {
-            const efficiency = document.getElementById('efficiency');
-            const tasks = document.getElementById('totalTasks');
-            
-            const currentEfficiency = parseFloat(efficiency.textContent);
-            const newEfficiency = (currentEfficiency + (Math.random() - 0.5) * 0.1).toFixed(1);
-            efficiency.textContent = Math.max(95, Math.min(99.9, newEfficiency)) + '%';
-            
-            const currentTasks = parseInt(tasks.textContent.replace(',', ''));
-            tasks.textContent = (currentTasks + Math.floor(Math.random() * 5)).toLocaleString();
+        // Show notification
+        function showNotification(message, type = 'info') {
+            if (window.web3Manager) {
+                window.web3Manager.showNotification(message, type);
+            } else {
+                alert(message);
+            }
         }
-
-        // Update stats every 10 seconds
-        setInterval(updateStats, 10000);
-
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('AgentChains Dashboard loaded');
-        });
     </script>
 </body>
 </html>

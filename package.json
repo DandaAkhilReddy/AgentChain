@@ -1,0 +1,47 @@
+{
+  "name": "agentchains-kamikaze-token",
+  "version": "1.0.0",
+  "description": "KAMIKAZE Token - World Population Based Deflationary Cryptocurrency",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run contracts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run contracts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run contracts/deploy.js --network mainnet",
+    "deploy:polygon": "hardhat run contracts/deploy.js --network polygon",
+    "deploy:bsc": "hardhat run contracts/deploy.js --network bsc",
+    "node": "hardhat node",
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "verify:mainnet": "hardhat verify --network mainnet"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "defi",
+    "token",
+    "kamikaze",
+    "deflationary",
+    "world-population",
+    "agentchains",
+    "ai"
+  ],
+  "author": "AgentChains Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0",
+    "@openzeppelin/contracts": "^5.0.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dandaakhilreddy/agentchains.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dandaakhilreddy/agentchains/issues"
+  },
+  "homepage": "https://agentchains.ai"
+}

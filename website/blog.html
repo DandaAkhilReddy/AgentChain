@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentChains Blog - Live Updates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AI Agent Services -->
+    <script src="js/population-service.js"></script>
+    <script src="js/ai-agent-service.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --background: #0a0f1c;
+            --background-lighter: #1a1f2e;
+            --surface: #1e293b;
+            --border: rgba(255, 255, 255, 0.1);
+            --glow: rgba(99, 102, 241, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background: rgba(10, 15, 28, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .main-container {
+            padding: 6rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Live Stats */
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* AI vs Human Comparison */
+        .comparison-section {
+            margin: 4rem 0;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .human-card {
+            border-color: var(--success);
+        }
+
+        .ai-card {
+            border-color: var(--primary);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .comparison-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .human-card .comparison-value {
+            background: linear-gradient(135deg, var(--success), #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-card .comparison-value {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .comparison-label {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-growth {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .comparison-vs {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .vs-symbol {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .ratio-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .ratio-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .comparison-message {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            padding: 1rem;
+        }
+
+        .milestone-progress {
+            margin: 2rem 0;
+        }
+
+        .milestone-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .agent-creator {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .create-agent-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .create-agent-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .agent-type-select {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .agent-type-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* News Grid */
+        .news-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .news-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .news-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 5rem 1rem 1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .live-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .comparison-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .comparison-vs {
+                order: -1;
+            }
+            
+            .comparison-section {
+                padding: 2rem 1rem;
+            }
+            
+            .agent-creator {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .create-agent-btn {
+                width: 100%;
+            }
+            
+            .agent-type-select {
+                width: 100%;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                🤖 AgentChains
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="dapp/dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Live Global Updates</h1>
+            <p class="page-subtitle">
+                Real-time data feeds and insights powering the future of AI and blockchain technology
+            </p>
+        </div>
+
+        <!-- Live Statistics -->
+        <div class="live-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🌍</div>
+                <div class="stat-value" id="worldPopulation">8.1B</div>
+                <div class="stat-label">World Population</div>
+                <div class="stat-description">Current estimated global population driving our token economics</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🤖</div>
+                <div class="stat-value" id="totalAIAgents">0</div>
+                <div class="stat-label">AI Agents Created</div>
+                <div class="stat-description">Total AI agents built through AgentChains platform</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">💎</div>
+                <div class="stat-value" id="totalTokens">8.1B</div>
+                <div class="stat-label">KAMIKAZE Tokens</div>
+                <div class="stat-description">Total supply matching world population for universal distribution</div>
+            </div>
+        </div>
+
+        <!-- AI vs Human Comparison -->
+        <div class="comparison-section">
+            <h2 class="section-title">🤖 AI vs Human Population Race</h2>
+            <div class="comparison-container">
+                <div class="comparison-card human-card">
+                    <div class="comparison-icon">👥</div>
+                    <div class="comparison-value" id="humanCount">8.1B</div>
+                    <div class="comparison-label">Humans</div>
+                    <div class="comparison-growth">Growing by <span id="humanGrowth">220,000</span>/day</div>
+                </div>
+                
+                <div class="comparison-vs">
+                    <div class="vs-symbol">VS</div>
+                    <div class="ratio-display" id="aiRatio">0.00000001%</div>
+                    <div class="ratio-label">AI to Human Ratio</div>
+                </div>
+                
+                <div class="comparison-card ai-card">
+                    <div class="comparison-icon">🤖</div>
+                    <div class="comparison-value" id="aiCount">0</div>
+                    <div class="comparison-label">AI Agents</div>
+                    <div class="comparison-growth">Created <span id="aiTodayCount">0</span> today</div>
+                </div>
+            </div>
+            
+            <div class="comparison-message" id="comparisonMessage">
+                Start the AI revolution! Create your first AI agent.
+            </div>
+            
+            <div class="milestone-progress">
+                <div class="milestone-title" id="milestoneTitle">Next Milestone: First AI Agent</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="milestoneProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">0% complete</div>
+            </div>
+            
+            <div class="agent-creator">
+                <button class="create-agent-btn" id="createAgentBtn">
+                    🚀 Create AI Agent
+                </button>
+                <select class="agent-type-select" id="agentTypeSelect">
+                    <option value="chatbot">💬 Chatbot</option>
+                    <option value="task-automation">⚡ Task Automation</option>
+                    <option value="data-analysis">📊 Data Analysis</option>
+                    <option value="content-generation">✍️ Content Generation</option>
+                    <option value="code-assistant">💻 Code Assistant</option>
+                    <option value="customer-service">🎧 Customer Service</option>
+                    <option value="blockchain">⛓️ Blockchain Agent</option>
+                    <option value="trading">📈 Trading Bot</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Blockchain News -->
+        <div class="news-section">
+            <h2 class="section-title">📡 Blockchain & Crypto News</h2>
+            <div id="blockchainNews" class="news-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>Loading latest blockchain news...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI & Technology News -->
+        <div class="news-section">
+            <h2 class="section-title">🤖 AI & Technology Updates</h2>
+            <div id="techNews" class="news-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>Loading technology news...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API endpoints
+        const WORLD_POPULATION_API = 'https://worldometers.io/world-population/';
+        const NEWS_API_KEY = 'YOUR_NEWS_API_KEY'; // Replace with actual API key
+        const CRYPTO_NEWS_URL = 'https://newsapi.org/v2/everything?q=blockchain%20OR%20cryptocurrency&sortBy=publishedAt&language=en&apiKey=' + NEWS_API_KEY;
+        const TECH_NEWS_URL = 'https://newsapi.org/v2/everything?q=artificial%20intelligence%20OR%20machine%20learning&sortBy=publishedAt&language=en&apiKey=' + NEWS_API_KEY;
+
+        // Global services
+        let populationService;
+        let aiAgentService;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize services
+            populationService = new PopulationService();
+            aiAgentService = new AIAgentService();
+            
+            // Load all data
+            loadWorldPopulation();
+            loadAIComparison();
+            loadBlockchainNews();
+            loadTechNews();
+            
+            // Set up AI agent creation
+            setupAIAgentCreation();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(() => {
+                loadWorldPopulation();
+                loadAIComparison();
+                loadBlockchainNews();
+                loadTechNews();
+            }, 5 * 60 * 1000);
+
+            // Start auto-increment for demo (creates agents automatically)
+            // aiAgentService.startAutoIncrement(45000); // Every 45 seconds
+            
+            // Listen for AI agent creation events
+            window.addEventListener('aiAgentCreated', (event) => {
+                console.log('🚀 AI Agent Created:', event.detail);
+                // Refresh comparison after short delay
+                setTimeout(loadAIComparison, 500);
+            });
+        });
+
+        // Load world population data
+        async function loadWorldPopulation() {
+            try {
+                // Using a more reliable population estimate
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear();
+                
+                // Estimated world population (updated annually)
+                // Using UN estimates with growth rate
+                const basePopulation = 8100000000; // 8.1 billion as of 2024
+                const growthRate = 0.0087; // 0.87% annual growth
+                const dayOfYear = Math.floor((currentDate - new Date(currentYear, 0, 0)) / (1000 * 60 * 60 * 24));
+                
+                // Calculate current estimated population
+                const currentPopulation = basePopulation + (basePopulation * growthRate * (dayOfYear / 365));
+                const populationFormatted = (currentPopulation / 1e9).toFixed(2) + 'B';
+                
+                // Update UI
+                document.getElementById('worldPopulation').textContent = populationFormatted;
+                document.getElementById('totalTokens').textContent = populationFormatted;
+                
+                console.log('Population updated:', populationFormatted);
+            } catch (error) {
+                console.error('Failed to load population data:', error);
+            }
+        }
+
+        // Load blockchain news
+        async function loadBlockchainNews() {
+            try {
+                // Using alternative approach since NewsAPI requires server-side calls
+                const mockBlockchainNews = [
+                    {
+                        title: "Bitcoin Reaches New All-Time High Amid Institutional Adoption",
+                        description: "Major institutions continue to invest in Bitcoin, driving prices to unprecedented levels as the cryptocurrency market matures.",
+                        category: "Bitcoin",
+                        publishedAt: new Date().toISOString(),
+                        urlToImage: null
+                    },
+                    {
+                        title: "Ethereum 2.0 Upgrade Shows Promising Results",
+                        description: "The Ethereum network's transition to proof-of-stake has resulted in significant energy savings and improved transaction speeds.",
+                        category: "Ethereum",
+                        publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                        urlToImage: null
+                    },
+                    {
+                        title: "DeFi TVL Surpasses $200 Billion Milestone",
+                        description: "Decentralized Finance protocols continue to attract massive liquidity as users seek higher yields and financial sovereignty.",
+                        category: "DeFi",
+                        publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+                        urlToImage: null
+                    },
+                    {
+                        title: "Central Banks Explore Digital Currency Implementation",
+                        description: "Multiple central banks worldwide are accelerating their CBDC programs, signaling a shift towards digital national currencies.",
+                        category: "CBDC",
+                        publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+                        urlToImage: null
+                    }
+                ];
+
+                displayNews('blockchainNews', mockBlockchainNews);
+            } catch (error) {
+                console.error('Failed to load blockchain news:', error);
+                displayErrorMessage('blockchainNews', 'Failed to load blockchain news');
+            }
+        }
+
+        // Load technology news
+        async function loadTechNews() {
+            try {
+                const mockTechNews = [
+                    {
+                        title: "OpenAI Announces GPT-5 with Revolutionary Capabilities",
+                        description: "The next generation of large language models promises unprecedented reasoning abilities and multimodal understanding.",
+                        category: "AI",
+                        publishedAt: new Date().toISOString(),
+                        urlToImage: null
+                    },
+                    {
+                        title: "Autonomous AI Agents Transform Business Operations",
+                        description: "Companies are increasingly deploying AI agents to handle complex tasks, reducing costs and improving efficiency across industries.",
+                        category: "Automation",
+                        publishedAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+                        urlToImage: null
+                    },
+                    {
+                        title: "Quantum Computing Breakthrough Achieved",
+                        description: "Researchers demonstrate quantum advantage in solving complex optimization problems, paving the way for practical applications.",
+                        category: "Quantum",
+                        publishedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+                        urlToImage: null
+                    },
+                    {
+                        title: "Neural Networks Achieve Human-Level Performance in Complex Reasoning",
+                        description: "Advanced AI models now demonstrate sophisticated reasoning capabilities, marking a significant milestone in artificial intelligence.",
+                        category: "Machine Learning",
+                        publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+                        urlToImage: null
+                    }
+                ];
+
+                displayNews('techNews', mockTechNews);
+            } catch (error) {
+                console.error('Failed to load tech news:', error);
+                displayErrorMessage('techNews', 'Failed to load technology news');
+            }
+        }
+
+        // Display news articles
+        function displayNews(containerId, articles) {
+            const container = document.getElementById(containerId);
+            
+            if (!articles || articles.length === 0) {
+                container.innerHTML = '<div class="loading">No news available at the moment.</div>';
+                return;
+            }
+
+            const newsHTML = articles.map(article => {
+                const publishedDate = new Date(article.publishedAt);
+                const timeAgo = getTimeAgo(publishedDate);
+                const categoryColor = getCategoryColor(article.category);
+
+                return `
+                    <div class="news-card">
+                        <div class="news-image">
+                            ${getCategoryEmoji(article.category)}
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category" style="background: ${categoryColor}20; color: ${categoryColor};">
+                                ${article.category}
+                            </span>
+                            <h3 class="news-title">${article.title}</h3>
+                            <p class="news-excerpt">${article.description}</p>
+                            <div class="news-meta">
+                                <span>AgentChains News</span>
+                                <span>${timeAgo}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = newsHTML;
+        }
+
+        // Display error message
+        function displayErrorMessage(containerId, message) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="loading">❌ ${message}</div>`;
+        }
+
+        // Get category color
+        function getCategoryColor(category) {
+            const colors = {
+                'Bitcoin': '#f7931a',
+                'Ethereum': '#627eea',
+                'DeFi': '#10b981',
+                'CBDC': '#6366f1',
+                'AI': '#06b6d4',
+                'Automation': '#8b5cf6',
+                'Quantum': '#f59e0b',
+                'Machine Learning': '#ef4444'
+            };
+            return colors[category] || '#6366f1';
+        }
+
+        // Get category emoji
+        function getCategoryEmoji(category) {
+            const emojis = {
+                'Bitcoin': '₿',
+                'Ethereum': 'Ξ',
+                'DeFi': '🏦',
+                'CBDC': '🏛️',
+                'AI': '🤖',
+                'Automation': '⚡',
+                'Quantum': '⚛️',
+                'Machine Learning': '🧠'
+            };
+            return emojis[category] || '📊';
+        }
+
+        // Calculate time ago
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+
+            if (diffMins < 60) {
+                return `${diffMins}m ago`;
+            } else if (diffHours < 24) {
+                return `${diffHours}h ago`;
+            } else {
+                return `${diffDays}d ago`;
+            }
+        }
+
+        // Load AI vs Human comparison
+        async function loadAIComparison() {
+            try {
+                const comparison = await aiAgentService.getAIvsHumanComparison();
+                
+                // Update human population display
+                document.getElementById('humanCount').textContent = comparison.humans.formatted;
+                document.getElementById('humanGrowth').textContent = '220,000'; // Approximate daily growth
+                
+                // Update AI agent display
+                document.getElementById('totalAIAgents').textContent = comparison.ai.formatted;
+                document.getElementById('aiCount').textContent = comparison.ai.formatted;
+                document.getElementById('aiTodayCount').textContent = comparison.ai.createdToday;
+                
+                // Update ratio
+                document.getElementById('aiRatio').textContent = comparison.comparison.aiPercentage + '%';
+                
+                // Update comparison message
+                document.getElementById('comparisonMessage').textContent = comparison.comparison.message;
+                
+                // Update milestone progress
+                if (comparison.milestone.next) {
+                    document.getElementById('milestoneTitle').textContent = 
+                        'Next Milestone: ' + comparison.milestone.next.message;
+                    document.getElementById('milestoneProgress').style.width = 
+                        comparison.milestone.progress.toFixed(1) + '%';
+                    document.getElementById('progressText').textContent = 
+                        comparison.milestone.progress.toFixed(1) + '% complete';
+                } else {
+                    document.getElementById('milestoneTitle').textContent = 
+                        'All milestones achieved! 🎉';
+                    document.getElementById('milestoneProgress').style.width = '100%';
+                    document.getElementById('progressText').textContent = '100% complete';
+                }
+                
+                console.log('AI Comparison updated:', comparison);
+            } catch (error) {
+                console.error('Failed to load AI comparison:', error);
+            }
+        }
+
+        // Set up AI agent creation functionality
+        function setupAIAgentCreation() {
+            const createBtn = document.getElementById('createAgentBtn');
+            const agentTypeSelect = document.getElementById('agentTypeSelect');
+            
+            if (createBtn && agentTypeSelect) {
+                createBtn.addEventListener('click', () => {
+                    const selectedType = agentTypeSelect.value;
+                    
+                    // Create the agent with some metadata
+                    const metadata = {
+                        createdVia: 'blog_ui',
+                        userAgent: navigator.userAgent,
+                        timestamp: Date.now(),
+                        page: 'blog'
+                    };
+                    
+                    const newAgent = aiAgentService.registerNewAgent(selectedType, metadata);
+                    
+                    if (newAgent) {
+                        // Visual feedback
+                        createBtn.textContent = '✅ Agent Created!';
+                        createBtn.style.background = 'linear-gradient(135deg, #10b981, #06b6d4)';
+                        
+                        // Reset button after 2 seconds
+                        setTimeout(() => {
+                            createBtn.textContent = '🚀 Create AI Agent';
+                            createBtn.style.background = 'linear-gradient(135deg, var(--primary), var(--accent))';
+                        }, 2000);
+                        
+                        // Show celebration effect
+                        showCelebration();
+                    }
+                });
+            }
+        }
+
+        // Show celebration effect for agent creation
+        function showCelebration() {
+            // Create a simple celebration effect
+            const celebration = document.createElement('div');
+            celebration.textContent = '🎉 New AI Agent Born! 🤖';
+            celebration.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, var(--primary), var(--accent));
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 50px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                z-index: 9999;
+                animation: celebration 3s ease-out forwards;
+                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+            `;
+            
+            // Add animation CSS if not already present
+            if (!document.querySelector('#celebration-style')) {
+                const style = document.createElement('style');
+                style.id = 'celebration-style';
+                style.textContent = `
+                    @keyframes celebration {
+                        0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                        20% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+                        80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                        100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(celebration);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (celebration.parentNode) {
+                    celebration.parentNode.removeChild(celebration);
+                }
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

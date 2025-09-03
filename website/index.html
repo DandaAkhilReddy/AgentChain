@@ -3,16 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentChains - Next-Generation AI Platform</title>
-    <meta name="description" content="Advanced AI-powered blockchain platform with autonomous agents, smart analytics, and decentralized intelligence.">
-    <meta name="keywords" content="AI, blockchain, autonomous agents, machine learning, DeFi, Web3, artificial intelligence">
-    
-    <!-- Fonts -->
+    <title>AgentChains - Advanced AI Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
     <style>
         * {
             margin: 0;
@@ -21,17 +16,21 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --primary-light: #3b82f6;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
             --accent: #06b6d4;
-            --accent-light: #0891b2;
+            --accent-dark: #0891b2;
+            --success: #10b981;
+            --warning: #f59e0b;
             --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --background: #0f172a;
+            --text-secondary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --background: #0a0f1c;
+            --background-lighter: #1a1f2e;
             --surface: #1e293b;
             --surface-light: #334155;
             --border: rgba(255, 255, 255, 0.1);
+            --glow: rgba(99, 102, 241, 0.4);
         }
 
         body {
@@ -42,16 +41,43 @@
             overflow-x: hidden;
         }
 
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(1deg); }
+            66% { transform: translate(-20px, 20px) rotate(-1deg); }
+        }
+
         /* Navigation */
         .navbar {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1rem 0;
-            background: rgba(15, 23, 42, 0.95);
+            padding: 1.5rem 0;
+            background: rgba(10, 15, 28, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 0;
+            background: rgba(10, 15, 28, 0.95);
         }
 
         .nav-container {
@@ -66,39 +92,63 @@
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary-light);
+            color: var(--primary);
+            text-decoration: none;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
+            align-items: center;
         }
 
         .nav-link {
             text-decoration: none;
             color: var(--text-secondary);
             font-weight: 500;
-            transition: color 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-link:hover {
-            color: var(--text-primary);
+            color: var(--primary);
+            transform: translateY(-2px);
         }
 
-        .nav-link.cta {
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--glow);
         }
 
-        .nav-link.cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--glow);
         }
 
         /* Hero Section */
@@ -112,34 +162,39 @@
             position: relative;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-            pointer-events: none;
+        .hero-content {
+            max-width: 900px;
+            z-index: 1;
         }
 
-        .hero-content {
-            max-width: 800px;
-            z-index: 1;
-            position: relative;
+        .hero-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
             font-weight: 800;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            background: linear-gradient(135deg, var(--text-primary), var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.1;
         }
 
         .hero .subtitle {
@@ -147,11 +202,14 @@
             color: var(--text-secondary);
             margin-bottom: 3rem;
             line-height: 1.7;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .cta-buttons {
+        .hero-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
             margin-bottom: 4rem;
@@ -162,35 +220,43 @@
             border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 1rem;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 2px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
         }
 
         .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
-            color: var(--text-primary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
-        /* Stats */
+        /* Stats Section */
+        .stats-section {
+            margin-top: 2rem;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -200,49 +266,56 @@
         }
 
         .stat-card {
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1px solid var(--border);
             backdrop-filter: blur(20px);
             transition: all 0.3s ease;
+            text-align: center;
         }
 
         .stat-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px);
             border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-light);
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
-        /* Sections */
+        /* Features Section */
         .section {
-            padding: 6rem 2rem;
+            padding: 8rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
 
         .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -253,22 +326,23 @@
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* AI Agents Grid */
         .agents-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .agent-card {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 2.5rem;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 24px;
             border: 1px solid var(--border);
             backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -284,18 +358,19 @@
         }
 
         .agent-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-12px);
             border-color: var(--primary);
-            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.25);
         }
 
         .agent-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
             display: block;
         }
 
         .agent-title {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
@@ -306,12 +381,15 @@
             color: var(--text-secondary);
             margin-bottom: 2rem;
             line-height: 1.7;
+            font-size: 1rem;
         }
 
         .agent-metrics {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
         }
 
         .metric {
@@ -319,16 +397,18 @@
         }
 
         .metric-value {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary-light);
-            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         .metric-label {
             font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Team Section */
@@ -339,9 +419,9 @@
         }
 
         .team-card {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 2rem;
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
             border: 1px solid var(--border);
             backdrop-filter: blur(20px);
             text-align: center;
@@ -349,23 +429,26 @@
         }
 
         .team-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px);
             border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
         }
 
         .team-avatar {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
         }
 
         .team-name {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
@@ -374,7 +457,7 @@
 
         .team-role {
             color: var(--accent);
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 1rem;
         }
 
@@ -386,8 +469,8 @@
 
         /* Footer */
         .footer {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 3rem 2rem 2rem;
+            background: var(--background-lighter);
+            padding: 4rem 2rem 2rem;
             border-top: 1px solid var(--border);
             text-align: center;
         }
@@ -398,32 +481,31 @@
         }
 
         .footer-logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary-light);
+            color: var(--primary);
             margin-bottom: 2rem;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 3rem;
+            margin-bottom: 3rem;
             flex-wrap: wrap;
         }
 
         .footer-link {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .footer-link:hover {
-            color: var(--text-primary);
+            color: var(--primary);
+            transform: translateY(-2px);
         }
 
         .footer-copyright {
@@ -433,15 +515,20 @@
             border-top: 1px solid var(--border);
         }
 
-        /* Responsive */
+        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
             }
             
-            .cta-buttons {
+            .hero-buttons {
                 flex-direction: column;
                 align-items: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
             }
             
             .agents-grid,
@@ -449,39 +536,64 @@
                 grid-template-columns: 1fr;
             }
             
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .section {
+                padding: 4rem 1rem;
             }
         }
 
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .floating {
-            animation: float 6s ease-in-out infinite;
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .agent-card,
+            .team-card {
+                padding: 2rem;
+            }
         }
 
         /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
         }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
     </style>
 </head>
 <body>
+    <div class="animated-bg"></div>
+
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="#home" class="nav-logo">
                 🤖 AgentChains
-            </div>
+            </a>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#agents" class="nav-link">AI Agents</a></li>
                 <li><a href="#team" class="nav-link">Team</a></li>
-                <li><a href="./dapp/dashboard.html" class="nav-link cta">Launch App</a></li>
+                <li><a href="./dapp/dashboard.html" class="cta-button">Launch App</a></li>
             </ul>
         </div>
     </nav>
@@ -489,33 +601,39 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1 class="floating">Next-Generation AI Platform</h1>
+            <div class="hero-badge">
+                🚀 Revolutionary AI Technology
+            </div>
+            <h1>The Future of AI-Powered Automation</h1>
             <p class="subtitle">
-                Advanced autonomous AI agents powered by cutting-edge machine learning and blockchain technology. 
-                Built for the future of decentralized intelligence and automated decision-making.
+                Experience next-generation artificial intelligence with advanced autonomous agents, 
+                smart analytics, and blockchain integration. Built for enterprises and developers 
+                who demand cutting-edge AI solutions.
             </p>
             
-            <div class="cta-buttons">
-                <a href="./dapp/dashboard.html" class="btn btn-primary">🚀 Launch Dashboard</a>
+            <div class="hero-buttons">
+                <a href="./dapp/dashboard.html" class="btn btn-primary">🚀 Get Free Tokens</a>
                 <a href="#agents" class="btn btn-secondary">🤖 Explore AI Agents</a>
             </div>
             
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="activeAgents">1,247+</div>
-                    <div class="stat-label">Active AI Agents</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">99.8%</div>
-                    <div class="stat-label">Uptime</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">2.4M</div>
-                    <div class="stat-label">Tasks Completed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">24/7</div>
-                    <div class="stat-label">Monitoring</div>
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeAgents">1,247+</div>
+                        <div class="stat-label">Active AI Agents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">99.9%</div>
+                        <div class="stat-label">System Uptime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2.4M+</div>
+                        <div class="stat-label">Tasks Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">AI Monitoring</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -526,99 +644,100 @@
         <div class="section-header">
             <h2 class="section-title">Advanced AI Agent Suite</h2>
             <p class="section-subtitle">
-                Sophisticated autonomous agents designed for real-world applications with advanced machine learning capabilities
+                Sophisticated autonomous agents powered by cutting-edge machine learning algorithms 
+                and designed for real-world enterprise applications
             </p>
         </div>
         
         <div class="agents-grid">
             <div class="agent-card">
                 <span class="agent-icon">🧠</span>
-                <h3 class="agent-title">Smart Analytics Agent</h3>
+                <h3 class="agent-title">Neural Analytics Engine</h3>
                 <p class="agent-description">
-                    Advanced data processing with neural networks for pattern recognition and predictive analytics. 
-                    Processes millions of data points in real-time with high accuracy.
+                    Advanced deep learning system that processes vast datasets in real-time, 
+                    providing actionable insights with industry-leading accuracy and speed.
                 </p>
                 <div class="agent-metrics">
                     <div class="metric">
-                        <div class="metric-value">94.7%</div>
+                        <div class="metric-value">96.8%</div>
                         <div class="metric-label">Accuracy</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value">15.4K</div>
-                        <div class="metric-label">Predictions</div>
+                        <div class="metric-value">0.1s</div>
+                        <div class="metric-label">Response</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value">0.2s</div>
-                        <div class="metric-label">Response</div>
+                        <div class="metric-value">24/7</div>
+                        <div class="metric-label">Available</div>
                     </div>
                 </div>
             </div>
             
             <div class="agent-card">
                 <span class="agent-icon">⚡</span>
-                <h3 class="agent-title">Automation Engine</h3>
+                <h3 class="agent-title">Smart Automation Hub</h3>
                 <p class="agent-description">
-                    High-performance automation system with intelligent task scheduling and resource optimization. 
-                    Handles complex workflows with minimal human intervention.
+                    Intelligent workflow automation that learns from patterns and optimizes processes 
+                    automatically, reducing manual work by up to 80% while improving efficiency.
                 </p>
                 <div class="agent-metrics">
                     <div class="metric">
-                        <div class="metric-value">847ms</div>
-                        <div class="metric-label">Avg Speed</div>
+                        <div class="metric-value">80%</div>
+                        <div class="metric-label">Efficiency</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value">89.2K</div>
-                        <div class="metric-label">Tasks</div>
+                        <div class="metric-value">15K</div>
+                        <div class="metric-label">Tasks/Day</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value">99.1%</div>
+                        <div class="metric-value">99.5%</div>
                         <div class="metric-label">Success Rate</div>
                     </div>
                 </div>
             </div>
             
             <div class="agent-card">
-                <span class="agent-icon">🔮</span>
-                <h3 class="agent-title">Predictive Oracle</h3>
+                <span class="agent-icon">🛡️</span>
+                <h3 class="agent-title">Security Guardian AI</h3>
                 <p class="agent-description">
-                    Multi-modal AI system that processes various data sources to provide accurate forecasts 
-                    and intelligent recommendations for decision-making.
+                    Advanced threat detection and response system with behavioral analysis, 
+                    protecting your infrastructure with military-grade security protocols.
                 </p>
                 <div class="agent-metrics">
                     <div class="metric">
-                        <div class="metric-value">156</div>
-                        <div class="metric-label">Data Sources</div>
+                        <div class="metric-value">99.9%</div>
+                        <div class="metric-label">Detection</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">0</div>
+                        <div class="metric-label">Breaches</div>
                     </div>
                     <div class="metric">
                         <div class="metric-value">24/7</div>
                         <div class="metric-label">Monitoring</div>
                     </div>
-                    <div class="metric">
-                        <div class="metric-value">0.02s</div>
-                        <div class="metric-label">Latency</div>
-                    </div>
                 </div>
             </div>
             
             <div class="agent-card">
-                <span class="agent-icon">🛡️</span>
-                <h3 class="agent-title">Security Guardian</h3>
+                <span class="agent-icon">🎯</span>
+                <h3 class="agent-title">Predictive Intelligence</h3>
                 <p class="agent-description">
-                    Advanced threat detection and prevention system with behavioral analysis and anomaly detection. 
-                    Provides comprehensive security monitoring and incident response.
+                    Machine learning models that forecast trends, predict outcomes, and provide 
+                    strategic recommendations to help you stay ahead of the competition.
                 </p>
                 <div class="agent-metrics">
                     <div class="metric">
-                        <div class="metric-value">99.94%</div>
-                        <div class="metric-label">Detection</div>
+                        <div class="metric-value">94.2%</div>
+                        <div class="metric-label">Prediction</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value">12.8K</div>
-                        <div class="metric-label">Scans/Hour</div>
+                        <div class="metric-value">50+</div>
+                        <div class="metric-label">Data Sources</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value">Zero</div>
-                        <div class="metric-label">Breaches</div>
+                        <div class="metric-value">Real-time</div>
+                        <div class="metric-label">Updates</div>
                     </div>
                 </div>
             </div>
@@ -628,9 +747,9 @@
     <!-- Team Section -->
     <section class="section" id="team">
         <div class="section-header">
-            <h2 class="section-title">Our Team</h2>
+            <h2 class="section-title">Meet Our Team</h2>
             <p class="section-subtitle">
-                Experienced AI engineers and blockchain developers building the future of intelligent automation
+                World-class AI engineers and blockchain developers building the future of intelligent automation
             </p>
         </div>
         
@@ -640,18 +759,18 @@
                 <div class="team-name">Akhil Reddy Danda</div>
                 <div class="team-role">CEO & Lead AI Engineer</div>
                 <div class="team-bio">
-                    Expert in neural networks and blockchain technology. Leading innovation in 
-                    autonomous AI systems with focus on practical applications.
+                    Expert in neural networks, blockchain technology, and distributed systems. 
+                    Leading innovation in autonomous AI with focus on enterprise solutions.
                 </div>
             </div>
             
             <div class="team-card">
                 <div class="team-avatar">🔬</div>
-                <div class="team-name">Sarah Chen</div>
+                <div class="team-name">Dr. Sarah Chen</div>
                 <div class="team-role">AI Research Director</div>
                 <div class="team-bio">
-                    Specializes in machine learning algorithms and AI model optimization. 
-                    Leading research in next-generation intelligent systems.
+                    PhD in Machine Learning with expertise in deep neural networks and 
+                    natural language processing. Published researcher with 50+ papers.
                 </div>
             </div>
             
@@ -660,18 +779,18 @@
                 <div class="team-name">Michael Rodriguez</div>
                 <div class="team-role">Blockchain Architect</div>
                 <div class="team-bio">
-                    Expert in distributed systems and blockchain infrastructure. 
-                    Designing scalable solutions for decentralized AI applications.
+                    Senior blockchain developer with experience in smart contracts, 
+                    DeFi protocols, and large-scale distributed systems architecture.
                 </div>
             </div>
             
             <div class="team-card">
                 <div class="team-avatar">🎯</div>
                 <div class="team-name">Emma Wilson</div>
-                <div class="team-role">Product Manager</div>
+                <div class="team-role">Head of Product</div>
                 <div class="team-bio">
-                    Product strategy and user experience specialist. Ensuring AI solutions 
-                    meet real-world needs with intuitive interfaces.
+                    Product strategy expert with 10+ years in AI/ML products. 
+                    Focused on creating intuitive interfaces for complex AI systems.
                 </div>
             </div>
         </div>
@@ -686,40 +805,52 @@
             
             <div class="footer-links">
                 <a href="#" class="footer-link">Documentation</a>
-                <a href="#" class="footer-link">API</a>
+                <a href="#" class="footer-link">API Reference</a>
                 <a href="#" class="footer-link">Support</a>
                 <a href="#" class="footer-link">GitHub</a>
                 <a href="./careers.html" class="footer-link">Careers</a>
             </div>
             
             <div class="footer-copyright">
-                © 2025 AgentChains. Built with advanced AI technology.
+                © 2025 AgentChains. Powered by advanced artificial intelligence.
             </div>
         </div>
     </footer>
 
     <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
         // Counter animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-value');
-            counters.forEach(counter => {
-                if (counter.id === 'activeAgents') {
-                    let count = 1000;
-                    const target = 1247;
-                    const timer = setInterval(() => {
-                        count += Math.ceil((target - count) / 10);
-                        counter.textContent = count.toLocaleString() + '+';
-                        if (count >= target) {
-                            clearInterval(timer);
-                        }
-                    }, 50);
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target.toLocaleString() + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start).toLocaleString() + '+';
                 }
-            });
+            }, 16);
         }
-        
-        // Initialize on load
+
+        // Initialize animations when page loads
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(animateCounters, 1000);
+            setTimeout(() => {
+                const agentCounter = document.getElementById('activeAgents');
+                if (agentCounter) {
+                    animateCounter(agentCounter, 1247);
+                }
+            }, 1000);
         });
     </script>
 </body>
